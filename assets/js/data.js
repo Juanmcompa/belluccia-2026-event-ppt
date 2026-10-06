@@ -556,6 +556,53 @@ const CALLE = [
     prueba: "Un soporte interrumpido. Parantes, puertas y marcos cortan la imagen: ¿el sistema resiste los cortes?", f: ["colectivos"] }
 ];
 
+/* --- Ejemplos resueltos: imágenes en assets/img/ejemplos/ -------------
+   Para acreditar un proyecto, completá "autor" y "url" (link de Behance).
+   "piezas" conecta la imagen con las fichas de las 12 piezas.          */
+const EJEMPLOS = [
+  { img: "01-innofashion-programa", w: 1518, h: 1077, proyecto: "Innofashion BA", evento: "Evento de moda", grupo: "programa", tag: "Pieza 03 · Programa + aficheta", piezas: ["programa"], ir: "piezas",
+    muestra: "Programa plegable y aficheta decorativa.",
+    mirar: "El frente ordena los días en bloques, con mapa y QR. El dorso es una sola frase grande. Los pliegues ya están previstos en la diagramación.",
+    autor: "", url: "" },
+  { img: "02-bicilovers-programa", w: 1440, h: 600, proyecto: "Bicilovers", evento: "Feria de ciclismo", grupo: "programa", tag: "Pieza 03 · Programa + aficheta", piezas: ["programa"], ir: "piezas",
+    muestra: "Aficheta y programa, las dos caras lado a lado.",
+    mirar: "Una cara ilustra y la otra informa: cinco días en columnas, con el mapa abajo. Las dos comparten paleta y marca.",
+    autor: "", url: "" },
+  { img: "03-music-beats-programa", w: 1518, h: 815, proyecto: "Music & Beats", evento: "Festival de música electrónica", grupo: "programa", tag: "Pieza 03 · Programa + aficheta", piezas: ["programa"], ir: "piezas",
+    muestra: "Programa y póster con doble función.",
+    mirar: "Cronograma por día con expositores destacados, mapa y QR de inscripción. Del otro lado, solo imagen y marca.",
+    autor: "", url: "" },
+  { img: "04-baires-me-mata-via-publica", w: 1518, h: 1012, proyecto: "Baires Me Mata", evento: "Festival de cine policial negro", grupo: "calle", tag: "Vía pública · pantalla de vereda", piezas: ["afiche"], ir: "calle",
+    muestra: "Afiche en una pantalla de vereda.",
+    mirar: "Una imagen (la silueta de tiza), título, fecha y lugar. La cinta amarilla funciona como miscelánea y alcanza para reconocer el evento.",
+    autor: "", url: "" },
+  { img: "05-lancelot-valla", w: 1400, h: 765, proyecto: "Lancelot", evento: "Feria medieval", grupo: "calle", tag: "Vía pública · valla", piezas: ["afiche"], ir: "calle",
+    muestra: "Valla sobre el ingreso al predio.",
+    mirar: "Formato muy apaisado: marca, ilustración y fecha en una sola línea de lectura. Los sponsors van en la franja inferior.",
+    autor: "", url: "" },
+  { img: "06-music-beats-instagram", w: 1240, h: 1190, proyecto: "Music & Beats · otra propuesta", evento: "Festival de música electrónica", grupo: "pantalla", tag: "Pieza 07 · Perfil de Instagram", piezas: ["ig"], ir: "piezas",
+    muestra: "Feed de Instagram y carrusel.",
+    mirar: "La grilla se diseña completa: line up, expositores, cuenta regresiva y entradas. El carrusel ordena un día en cuatro placas y cierra con el llamado a la acción. Es el mismo tema que el programa violeta, resuelto con otro sistema.",
+    autor: "", url: "" },
+  { img: "07-sabor-latam-digital", w: 1048, h: 1212, proyecto: "Sabor Latam", evento: "Festival gastronómico latinoamericano", grupo: "pantalla", tag: "Piezas 07, 09 y 10 · Redes, web y streaming", piezas: ["ig", "web", "overlays"], ir: "piezas",
+    muestra: "Perfil de Instagram, landing y overlays de streaming.",
+    mirar: "El mismo sistema en tres pantallas. En la landing los sponsors tienen su franja; en el streaming la gráfica se corre a los bordes y deja ver el video.",
+    autor: "", url: "" },
+  { img: "08-nauta-merchandising", w: 930, h: 1314, proyecto: "Nauta", evento: "Feria de pesca", grupo: "merch", tag: "Pieza 11 · Merchandising", piezas: ["merch"], ir: "piezas",
+    muestra: "Merchandising y credenciales.",
+    mirar: "Los íconos del sistema se vuelven patrón en la remera y stickers sueltos. No es el logo repetido: es el lenguaje del evento aplicado a objetos.",
+    autor: "", url: "" },
+  { img: "09-suwaidi-park-portal", w: 1518, h: 854, proyecto: "Suwaidi Park", evento: "Diseño de evento", grupo: "espacio", tag: "Pieza 12 · Photo opportunity", piezas: ["photo"], ir: "piezas",
+    muestra: "Portal de ingreso.",
+    mirar: "Una entrada pensada para la foto: la marca arriba, dentro del encuadre, y las formas del sistema llevadas a volumen. Las personas dan la escala.",
+    autor: "", url: "" },
+  { img: "10-mercado-livre-stand", w: 1518, h: 855, proyecto: "Stand de Mercado Livre", evento: "Stand de marca · 3D by 40m2", grupo: "espacio", tag: "Sponsors en el espacio", piezas: [], ir: "espacio",
+    muestra: "Stand de una marca en una feria.",
+    mirar: "Así llega un sponsor al espacio: color, luz y un volumen que se reconoce de lejos. Sirve para pensar cómo conviven la marca del sponsor y la del evento.",
+    autor: "", url: "" }
+];
+const EJEMPLO_GRUPOS = [["T", "Todos"], ["programa", "Programa y aficheta"], ["calle", "Vía pública"], ["pantalla", "Redes y pantalla"], ["merch", "Merchandising"], ["espacio", "Espacio"]];
+
 /* --- Datos obligatorios --------------------------------------------- */
 const DATOS = [
   { id: "que", t: "Qué", d: "Nombre del evento y de qué se trata, en una línea." },

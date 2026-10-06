@@ -364,12 +364,59 @@
           <div class="err"><span class="lbl">Error típico</span>${esc(p.error)}</div>
           <div class="pru"><span class="lbl">Prueba rápida</span>${esc(p.prueba)}</div>
         </div>
+        ${(() => { const ej = EJEMPLOS.map((e, i) => [e, i]).filter(([e]) => e.piezas.includes(p.id));
+          return ej.length ? `<div><p class="lbl" style="margin-bottom:8px">Ejemplos resueltos</p><div class="chips">${ej.map(([e, i]) => `<a class="chip chip--ej" href="#ejemplos" data-ej="${i}"><i>↗</i>${esc(e.proyecto)}</a>`).join("")}</div></div>` : ""; })()}
         ${srcs(["tp"].concat(p.f || []))}
       </div>`;
   }
   $$(".pz").forEach(b => b.addEventListener("click", () => renderPieza(b.dataset.id)));
   renderPieza("marca");
   $("#photoSvg").innerHTML = WF.photo();
+
+  /* ── Ejemplos resueltos: carrusel ──────────────────────── */
+  const RUTA_EJ = "assets/img/ejemplos/";
+  let ejGrupo = "T", ejI = 0;
+  const ejLista = () => EJEMPLOS.map((e, i) => i).filter(i => ejGrupo === "T" || EJEMPLOS[i].grupo === ejGrupo);
+  $("#ejFiltro").innerHTML = EJEMPLO_GRUPOS.map(([k, t]) =>
+    `<button role="radio" data-g="${k}" aria-checked="${k === "T"}">${t}<small>${k === "T" ? EJEMPLOS.length : EJEMPLOS.filter(e => e.grupo === k).length}</small></button>`).join("");
+  $$("#ejFiltro button").forEach(b => b.addEventListener("click", () => { ejGrupo = b.dataset.g; ejI = ejLista()[0]; renderEjemplo(); }));
+  function renderEjemplo() {
+    const lista = ejLista(), e = EJEMPLOS[ejI], pos = lista.indexOf(ejI);
+    const focoEnMinis = document.activeElement && document.activeElement.closest && document.activeElement.closest("#ejMinis");
+    $$("#ejFiltro button").forEach(b => b.setAttribute("aria-checked", b.dataset.g === ejGrupo));
+    const img = $("#ejImg");
+    img.src = RUTA_EJ + e.img + ".webp"; img.width = e.w; img.height = e.h;
+    img.alt = `${e.proyecto}, ${e.evento.toLowerCase()}: ${e.muestra}`;
+    $("#ejCount").textContent = `${pos + 1} / ${lista.length}`;
+    const destino = e.ir === "piezas" ? `<a class="chip" href="#piezas" data-pieza="${e.piezas[0]}"><i>→</i>Ver la ficha de la pieza</a>`
+      : e.ir === "calle" ? `<a class="chip" href="#calle"><i>→</i>Ver los medios de vía pública</a>`
+      : `<a class="chip" href="#espacio"><i>→</i>Ver espacio y sponsors</a>`;
+    $("#ejInfo").innerHTML = `
+      <p class="ej__tag">${esc(e.tag)}</p>
+      <h3>${esc(e.proyecto)}</h3>
+      <p class="ej__ev">${esc(e.evento)}</p>
+      <p class="ej__m">${esc(e.muestra)}</p>
+      <div class="ej__mirar"><span class="lbl">Qué mirar</span>${esc(e.mirar)}</div>
+      <div class="chips">${destino}</div>
+      <p class="src"><span>Crédito</span>${e.url ? `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.autor || e.proyecto)} en Behance ↗</a>` : `${e.autor ? esc(e.autor) + " · " : ""}Proyecto publicado en Behance`}</p>`;
+    $$("[data-pieza]", $("#ejInfo")).forEach(a => a.addEventListener("click", () => renderPieza(a.dataset.pieza)));
+    $("#ejMinis").innerHTML = lista.map(i => { const x = EJEMPLOS[i];
+      return `<button role="tab" data-i="${i}" aria-selected="${i === ejI}" title="${esc(x.proyecto)} · ${esc(x.muestra)}"><img src="${RUTA_EJ}${x.img}-mini.webp" alt="${esc(x.proyecto)}" loading="lazy" width="120" height="80"><span>${esc(x.proyecto)}</span></button>`; }).join("");
+    $$("#ejMinis button").forEach(b => b.addEventListener("click", () => { ejI = +b.dataset.i; renderEjemplo(); }));
+    const sel = $('#ejMinis [aria-selected="true"]'), tira = $("#ejMinis");
+    if (sel) { tira.scrollLeft = sel.offsetLeft - tira.offsetLeft - (tira.clientWidth - sel.offsetWidth) / 2; if (focoEnMinis) sel.focus({ preventScroll: true }); }
+    if (visor.open) pintarVisor();
+  }
+  function moverEjemplo(d) { const l = ejLista(); ejI = l[(l.indexOf(ejI) + d + l.length) % l.length]; renderEjemplo(); }
+  const visor = $("#visor");
+  function pintarVisor() { const e = EJEMPLOS[ejI]; $("#visorImg").src = RUTA_EJ + e.img + ".webp"; $("#visorImg").alt = $("#ejImg").alt; $("#visorT").textContent = `${e.proyecto} · ${e.muestra}`; }
+  $("#ejPrev").addEventListener("click", () => moverEjemplo(-1));
+  $("#ejNext").addEventListener("click", () => moverEjemplo(1));
+  $("#ejZoom").addEventListener("click", () => { pintarVisor(); if (visor.showModal) visor.showModal(); });
+  $("#visorX").addEventListener("click", () => visor.close());
+  visor.addEventListener("click", e => { if (e.target === visor) visor.close(); });
+  document.addEventListener("click", e => { const a = e.target.closest("[data-ej]"); if (a) { ejGrupo = "T"; ejI = +a.dataset.ej; renderEjemplo(); } });
+  renderEjemplo();
 
   /* ── 10 Escala y duración ──────────────────────────────── */
   (function escala() {
@@ -478,6 +525,12 @@
 
   document.addEventListener("keydown", e => {
     if (e.target.matches("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey) return;
+    /* Dentro del carrusel (o con la imagen ampliada) las flechas pasan imágenes */
+    if ((e.key === "ArrowRight" || e.key === "ArrowLeft") && (visor.open || (e.target.closest && e.target.closest("#carrusel, #ejMinis")))) {
+      const l = ejLista(), p = l.indexOf(ejI), d = e.key === "ArrowRight" ? 1 : -1;
+      if (visor.open || (p + d >= 0 && p + d < l.length)) { e.preventDefault(); return moverEjemplo(d); }
+    }
+    if (visor.open) return;
     if (e.key === "Escape") return toggleIndice(false);
     if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); ir(actual + 1); }
     else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); ir(actual - 1); }

@@ -39,23 +39,26 @@ Todo el contenido está en **`assets/js/data.js`**. No hace falta tocar el HTML 
 | Espacios inventados de cada evento (4 por tema) | `TEMAS` → `espacios` |
 | Programa de ejemplo (3 jornadas, 10 actividades por día) | `TEMAS` → `programa`. Cada actividad: hora, espacio (0 a 3), título, tipo, modalidad (`P`, `V`, `H`) y bajada |
 | Medios de vía pública (séxtuple, mupi, valla, transporte) | `CALLE` |
+| Carrusel de ejemplos resueltos (imagen, texto, crédito) | `EJEMPLOS`. Las imágenes van en `assets/img/ejemplos/`: una `.webp` grande y una `-mini.webp` por ejemplo |
 | Fichas de las 12 piezas | `PIEZAS` |
 | Una fuente o un link | `FUENTES` (y su nombre corto en `FUENTE_CORTA`) |
 | Checklist de autoevaluación | `PAUTAS` |
 | Colores de cada tema | `assets/css/styles.css`, sección «1. Tokens» |
 
 ```
-index.html            Estructura de las 16 pantallas
+index.html            Estructura de las 17 pantallas
 assets/css/styles.css Estilos
 assets/js/data.js     Contenido (editar acá)
 assets/js/app.js      Navegación e interacciones
 assets/fonts/         Archivo y Chivo Mono (Omnibus-Type, licencia SIL OFL)
+assets/img/ejemplos/  Imágenes del carrusel, optimizadas para web
 ```
 
 ## Criterios del material
 
 - **Todo dato con número tiene fuente.** Los links con ↗ debajo de cada bloque abren la nota original. Relevamiento: octubre de 2026.
-- **No se reproducen imágenes de terceros.** Los diagramas son propios y esquemáticos; para ver las piezas reales de cada referente hay que abrir la fuente.
+- **Los diagramas son propios y esquemáticos.** De los referentes argentinos no se reproducen imágenes: hay que abrir la fuente.
+- **El carrusel de ejemplos resueltos muestra proyectos publicados en Behance por sus autores**, con fines educativos. Para acreditarlos como corresponde, completar `autor` y `url` de cada uno en `EJEMPLOS`.
 - **Lo que es criterio de cátedra está marcado como sugerencia** (matriz de datos por pieza, estructura de los videos), para discutir en clase.
 - **Los programas de actividades y los nombres de los espacios son ejemplos inventados**, marcados como tales en pantalla, para que cada grupo los cambie. Dos actividades con la misma hora y distinto espacio se muestran en simultáneo.
 - **La consigna pide el séxtuple.** Mupi, valla y transporte aparecen como los medios que lo acompañan en una campaña real y sirven para poner a prueba el sistema.
