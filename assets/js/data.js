@@ -51,7 +51,23 @@ const FUENTES = {
   trimarchi: { t: "Indie Hoy — TRImarchi DG celebra sus 20 años en Mar del Plata (2022)", u: "https://indiehoy.com/arte/trimarchi-dg-celebra-sus-20-anos-en-mar-del-plata/", g: "Sistemas" },
   sextuple:  { t: "Rental Vía Pública — Séxtuples (medidas del formato)", u: "https://rentalvp.com.ar/sextuples/", g: "Formatos" },
   afichePrint:{ t: "Rotularte — Impresión en papel afiche para vía pública (requisitos de archivo)", u: "https://rotularte.com.ar/producto/impresion-en-papel-tipo-afiche/", g: "Formatos" },
-  ig:        { t: "Tiendanube — Medidas de Instagram 2026", u: "https://www.tiendanube.com/blog/tamano-post-instagram/", g: "Formatos" }
+  ig:        { t: "Tiendanube — Medidas de Instagram 2026", u: "https://www.tiendanube.com/blog/tamano-post-instagram/", g: "Formatos" },
+  gbvp:      { t: "GB Vía Pública — formatos y medidas", u: "https://www.gbviapublica.com.ar/", g: "Formatos" },
+  mupi:      { t: "Moody Media — Mupi publicitario: qué es, tipos y medidas", u: "https://moodymedia.io/es/blog/mupi-publicitario-que-es-tipos-medidas-y-precios/", g: "Formatos" },
+  colectivos:{ t: "NE3 Publicidad — formatos en colectivos", u: "https://www.ne3publicidad.com.ar/colectivos", g: "Formatos" },
+  subteVP:   { t: "Grupo Vía — formatos en el subte (media kit)", u: "https://www.grupovia.com/resources/mediakits/subte.pdf", g: "Formatos" }
+};
+/* Nombre corto con el que se muestra cada link debajo de su sección */
+const FUENTE_CORTA = {
+  tp: "Consigna del TP4", masticar14: "GCBA 2014", masticar18: "Circuito Gastronómico 2018", masticar19: "El Cronista 2019",
+  bamarket: "GCBA 2015", asado: "GCBA 2017", bocas: "El Cronista 2023", foodfest: "La Nación 2025",
+  extremoRS: "Rolling Stone", extremoLP: "La Posta Capital", joj: "Wikipedia · Juegos", joj3x3: "Wikipedia · 3x3",
+  toma: "Street Art Latam", liga3x3: "Marketing Registrado", silentA: "La Nación · sept. 2012", silentB: "La Nación · dic. 2012",
+  clubsilent: "Club Silent", fibasilent: "GCBA · FIBA", bioferiaLN: "La Nación 2026", bioferiaP: "Perfil 2026",
+  rockrecycle: "Lollapalooza AR", espverde: "Infobae 2017", colorba: "La Nación 2017", mos11: "graffitimundo",
+  mos12: "Meeting of Styles", colegiales: "Turismo BA", colegialesM: "Culturismo", ron: "Wikipedia", mugica: "GCBA 2022",
+  lollaSis: "Cátedra Cosgaya", lolla26: "Ámbito 2026", trimarchi: "Indie Hoy", sextuple: "Rental Vía Pública",
+  afichePrint: "Rotularte", ig: "Tiendanube", gbvp: "GB Vía Pública", mupi: "Moody Media", colectivos: "NE3 Publicidad", subteVP: "Grupo Vía"
 };
 
 /* --- Los cuatro temas del TP ---------------------------------------- */
@@ -81,6 +97,26 @@ const TEMAS = [
     preguntas: [
       "¿Qué parte de la marca se mueve con la feria y qué parte queda quieta?",
       "¿Cómo se ve la pieza cuando todavía no se anunció la locación del día?"
+    ],
+    programa: [
+      { dia: "Día 1", lema: "Fuegos del país", sede: "Parada 1 · ej. Plaza Armenia", acts: [
+        ["12:00", "Apertura de puestos y encendido del fuego", "Activación", "P"],
+        ["14:00", "Clase abierta: cocina a las brasas", "Taller", "H"],
+        ["16:30", "Charla: del productor al puesto", "Charla", "H"],
+        ["18:30", "Votá el plato del día desde la app", "Encuesta en vivo", "V"],
+        ["20:00", "Cierre con DJ", "Show", "P"] ] },
+      { dia: "Día 2", lema: "Sabores del mundo", sede: "Parada 2 · ej. Plazoleta Cortázar", acts: [
+        ["12:00", "Recorrido guiado por los puestos", "Recorrido", "P"],
+        ["14:30", "Taller de empanadas de autor, con cupo", "Taller", "P"],
+        ["16:00", "Mesa: street food de América Latina", "Charla", "V"],
+        ["18:00", "Duelo de parrilleros con jurado", "Competencia", "H"],
+        ["20:30", "Música en vivo", "Show", "P"] ] },
+      { dia: "Día 3", lema: "Lo que viene", sede: "Parada 3 · se anuncia el día anterior", acts: [
+        ["12:00", "Mercado de productores", "Activación", "P"],
+        ["13:30", "Taller para chicos: amasar y hornear", "Taller", "P"],
+        ["15:30", "Charla y degustación: maridajes con fuego", "Charla", "P"],
+        ["17:30", "Menú en realidad aumentada: escaneá el puesto", "Activación", "H"],
+        ["19:30", "Premio al plato más votado y cierre", "Show", "H"] ] }
     ],
     referentes: [
       { n: "Buenos Aires Market", d: "Feria itinerante de alimentos saludables que arma cada edición en un barrio distinto.",
@@ -126,6 +162,26 @@ const TEMAS = [
       "¿Cómo se ve la marca desde arriba, pintada en una cancha?",
       "¿Qué distingue a las tres disciplinas sin romper el sistema?"
     ],
+    programa: [
+      { dia: "Día 1", lema: "Clasificatorias", sede: "Polideportivo + plaza", acts: [
+        ["10:00", "Acreditación y entrega de camisetas", "Activación", "P"],
+        ["11:00", "Básquet 3x3: fase de grupos", "Competencia", "H"],
+        ["14:00", "Clínica de skate para principiantes", "Taller", "P"],
+        ["16:00", "Fútbol urbano: clasificatorias", "Competencia", "H"],
+        ["19:00", "Batalla de freestyle", "Show", "P"] ] },
+      { dia: "Día 2", lema: "Eliminatorias", sede: "Polideportivo + skatepark", acts: [
+        ["10:30", "Charla: del barrio a la selección", "Charla", "H"],
+        ["12:00", "Skate: mejor truco", "Competencia", "H"],
+        ["15:00", "Básquet 3x3: cuartos y semifinales", "Competencia", "H"],
+        ["17:00", "Taller: personalizá tus zapatillas", "Taller", "P"],
+        ["19:30", "Elegí la jugada del día desde la app", "Encuesta en vivo", "V"] ] },
+      { dia: "Día 3", lema: "Finales", sede: "Cancha central", acts: [
+        ["11:00", "Mural colectivo sobre la cancha", "Activación", "P"],
+        ["13:00", "Fútbol urbano: finales", "Competencia", "H"],
+        ["15:30", "Concurso de volcadas y triples", "Competencia", "H"],
+        ["17:00", "Básquet 3x3: final", "Competencia", "H"],
+        ["19:00", "Premiación y cierre con DJ", "Show", "P"] ] }
+    ],
     referentes: [
       { n: "Buenos Aires Extremo", d: "Festival gratuito de la Ciudad que junta deporte y cultura urbana. Quinta edición en diciembre de 2025, en el Parque Deportivo Costanera.",
         k: [["+35 mil", "personas"], ["16", "equipos de 3x3"], ["70", "atletas de skate y BMX"]],
@@ -166,6 +222,26 @@ const TEMAS = [
     preguntas: [
       "¿Cómo se muestra el sonido en una pieza que no suena?",
       "¿Qué dato concreto vuelve creíble la palabra «sustentable»?"
+    ],
+    programa: [
+      { dia: "Día 1", lema: "Encendido", sede: "Bosques de Palermo · atardecer y noche", acts: [
+        ["17:00", "Apertura y retiro de auriculares", "Activación", "P"],
+        ["18:00", "Taller: armá una lámpara con material recuperado", "Taller", "P"],
+        ["19:30", "Charla: cómo suena un festival sin parlantes", "Charla", "H"],
+        ["21:00", "Sets en tres canales: elegí tu color", "Show", "P"],
+        ["23:00", "El canal más escuchado de la noche", "Encuesta en vivo", "V"] ] },
+      { dia: "Día 2", lema: "Inmersión", sede: "Bosques de Palermo · atardecer y noche", acts: [
+        ["16:00", "Yoga con auriculares", "Activación", "P"],
+        ["18:00", "Taller de reciclaje creativo", "Taller", "P"],
+        ["19:30", "Charla: luz, color y atmósfera", "Charla", "H"],
+        ["21:00", "Recital silencioso: banda en vivo por auriculares", "Show", "H"],
+        ["23:30", "Recorrido de instalaciones de luz con realidad aumentada", "Recorrido", "H"] ] },
+      { dia: "Día 3", lema: "Apagón", sede: "Bosques de Palermo · atardecer y noche", acts: [
+        ["16:00", "Cine silencioso al aire libre", "Show", "P"],
+        ["18:00", "Punto verde: cuánto se recicló, en pantalla", "Activación", "P"],
+        ["19:00", "Playlist colectiva armada por el público", "Activación", "V"],
+        ["21:00", "Sets de cierre en tres canales", "Show", "H"],
+        ["23:30", "Apagón final y devolución de auriculares", "Activación", "P"] ] }
     ],
     referentes: [
       { n: "Silent Day frente al Planetario", d: "Fiesta silenciosa de Sony Argentina en los Bosques de Palermo, con transmisión por FM a los auriculares (2012).",
@@ -210,6 +286,26 @@ const TEMAS = [
     preguntas: [
       "¿Cómo firma la marca sin tapar la obra?",
       "¿Dónde entran cuatro sponsors sin convertir el muro en un cartel?"
+    ],
+    programa: [
+      { dia: "Día 1", lema: "Primer trazo", sede: "Muros 1 a 3", acts: [
+        ["10:00", "Empieza la pintura en vivo", "Activación", "P"],
+        ["12:00", "Visita guiada a pie por el circuito", "Recorrido", "P"],
+        ["15:00", "Taller de stencil para principiantes", "Taller", "P"],
+        ["17:00", "Charla: del boceto digital a la medianera", "Charla", "H"],
+        ["19:30", "Proyección sobre muro", "Show", "P"] ] },
+      { dia: "Día 2", lema: "En proceso", sede: "Muros 4 a 6", acts: [
+        ["10:00", "Pintura en vivo, con seguimiento por streaming", "Activación", "H"],
+        ["11:30", "Taller de dibujo digital", "Taller", "V"],
+        ["14:00", "Recorrido en bici por el circuito", "Recorrido", "P"],
+        ["16:30", "Mesa: arte urbano y vecinos", "Charla", "H"],
+        ["19:00", "Muros con realidad aumentada: apuntá el celular", "Activación", "H"] ] },
+      { dia: "Día 3", lema: "Muro terminado", sede: "Todo el circuito", acts: [
+        ["11:00", "Taller para chicos: mural colectivo", "Taller", "P"],
+        ["13:00", "Votación del público: tu muro favorito", "Encuesta en vivo", "V"],
+        ["15:00", "Visita guiada con los artistas", "Recorrido", "P"],
+        ["17:30", "Charla de cierre: qué le queda al barrio", "Charla", "H"],
+        ["19:00", "Inauguración de los muros y cierre", "Show", "P"] ] }
     ],
     referentes: [
       { n: "Color BA", d: "Festival de muralismo en La Boca, producido y curado por Tamara Selvood. Segunda edición en marzo de 2017.",
@@ -263,7 +359,7 @@ const MOMENTOS = [
     datos: "Nombre + fecha. Nada más.", piezas: ["marca", "id", "teaser", "ig"] },
   { id: "lanz", t: "Convocatoria", cuando: "Días antes", verbo: "Informar y convencer",
     d: "Aparecen los datos completos y el llamado a la acción. Es donde se gana o se pierde público.",
-    datos: "Qué, cuándo, dónde, cuánto y cómo anotarse.", piezas: ["afiche", "promo", "ig", "web"] },
+    datos: "Qué, cuándo, dónde, cuánto y cómo anotarse.", piezas: ["afiche", "promo", "ig", "web"], calle: ["Mupi", "Valla", "Transporte"] },
   { id: "durante", t: "El evento", cuando: CONFIG.fechas, verbo: "Orientar y hacer participar",
     d: "La gráfica pasa a ser un servicio: ubica, ordena tiempos y acompaña a quien mira desde su casa.",
     datos: "Programa, mapa, horarios, quién habla ahora.", piezas: ["programa", "espera", "overlays", "photo", "merch"] },
@@ -346,6 +442,30 @@ const PIEZAS = [
     debe: ["Marca dentro del encuadre vertical, arriba de las cabezas", "Lugar claro para pararse", "Algo para hacer: posar, sostener, asomarse"],
     error: "Un banner con logos repetidos. Nadie se saca una foto con un fondo de prensa por gusto.",
     prueba: "Dibujá el encuadre 9:16 con dos personas adentro. ¿Entra el nombre del evento?" }
+];
+
+/* --- Vía pública: el sistema puesto a prueba en cuatro medios ---------- */
+const CALLE = [
+  { id: "sextuple", t: "Séxtuple", tag: "El que pide la consigna",
+    medida: "4,31 × 2,15 m", prop: "2:1 · 6 paños",
+    quien: "Autos y peatones, de pasada", tiempo: "3 a 5 s",
+    entra: "Imagen, titular, marca, fecha y lugar",
+    prueba: "La síntesis. ¿El evento se reconoce con tan pocos elementos?", f: ["sextuple", "gbvp"] },
+  { id: "mupi", t: "Mupi", tag: "Vertical, en la vereda",
+    medida: "1,20 × 1,75 m", prop: "Vertical · retroiluminado",
+    quien: "Peatones, de cerca y a veces esperando", tiempo: "Hay más tiempo",
+    entra: "Lo del séxtuple más llamado a la acción y QR",
+    prueba: "El giro a vertical y la luz por detrás. ¿La pieza se rearma o solo se achica? ¿Aguanta de noche?", f: ["mupi", "gbvp"] },
+  { id: "valla", t: "Valla", tag: "Apaisada, de avenida",
+    medida: "8,62 × 2,15 m", prop: "4:1 · 12 paños",
+    quien: "Tránsito de avenida, de lejos", tiempo: "2 a 3 s",
+    entra: "Marca, imagen y fecha",
+    prueba: "La proporción extrema. ¿Qué hace el sistema cuando sobra ancho: estira, repite o arma una secuencia?", f: ["gbvp"] },
+  { id: "bus", t: "Transporte · full glass", tag: "El soporte también se mueve",
+    medida: "Todas las ventanillas del colectivo", prop: "Luneta sola: 2 × 1 m",
+    quien: "Peatones y autos, de cerca y de lejos", tiempo: "2 s",
+    entra: "Marca y fecha. Casi nada más",
+    prueba: "Un soporte interrumpido. Parantes, puertas y marcos cortan la imagen: ¿el sistema resiste los cortes?", f: ["colectivos"] }
 ];
 
 /* --- Datos obligatorios --------------------------------------------- */

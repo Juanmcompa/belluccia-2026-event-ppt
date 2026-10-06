@@ -28,7 +28,7 @@
   </button>
   <div class="temas" id="temas" role="radiogroup" aria-label="Tema del TP"></div>
   <div class="bar__tools">
-    <span class="bar__count" id="contador" aria-live="polite">01 / 15</span>
+    <span class="bar__count" id="contador" aria-live="polite">01 / 16</span>
     <button class="ico" id="btnPrev" aria-label="Anterior">←</button>
     <button class="ico" id="btnNext" aria-label="Siguiente">→</button>
     <button class="ico" id="btnModo" aria-label="Cambiar modo claro u oscuro"><span class="modo-ico" aria-hidden="true"></span></button>
@@ -47,7 +47,7 @@
     <h1 class="mega">Sistema gráfico<br>para un evento</h1>
     <p class="bajada">Qué se espera, cómo se suele mostrar y qué sostiene a un sistema prolijo, utilizable y concreto.</p>
     <div class="portada__temas" id="portadaTemas"></div>
-    <p class="ayuda"><kbd>←</kbd> <kbd>→</kbd> para avanzar · elegí tu tema y toda la presentación se adapta · los números en recuadro llevan a la fuente</p>
+    <p class="ayuda"><kbd>←</kbd> <kbd>→</kbd> para avanzar · elegí tu tema y toda la presentación se adapta · los links con ↗ abren la fuente</p>
   </div>
 </section>
 
@@ -117,11 +117,32 @@
   </div>
 </section>
 
+<!-- ─────────────────────────────────────────────── PROGRAMA DE EJEMPLO -->
+<section class="slide" id="programa" data-t="Programa de ejemplo">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">05 · Qué pasa adentro</p>
+      <h2 id="progTitulo">Un programa posible</h2>
+      <p class="tldr"><b>TL;DR</b> Tres jornadas de ejemplo para imaginar el evento por dentro. De acá salen el programa A2, los posteos y el video de espera.</p>
+    </header>
+    <div class="aviso">
+      <b>Es un ejemplo</b>
+      <span>Las actividades, los horarios y las sedes son inventados para arrancar. Cambien, saquen o sumen lo que su propuesta necesite.</span>
+    </div>
+    <div class="prog__tools">
+      <div class="filtro" id="progFiltro" role="radiogroup" aria-label="Filtrar por modalidad"></div>
+      <p class="prog__cuenta" id="progCuenta"></p>
+    </div>
+    <div class="prog" id="progGrid"></div>
+    <p class="nota">La consigna pide actividades presenciales, virtuales e híbridas, con participación por app, encuestas en vivo y realidad aumentada. El ejemplo mezcla las tres modalidades a propósito. <a data-f="tp"></a></p>
+  </div>
+</section>
+
 <!-- 06 ─────────────────────────────────────────────── REFERENTES -->
 <section class="slide" id="referentes" data-t="Referentes argentinos">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">05 · Referentes argentinos</p>
+      <p class="kicker">06 · Referentes argentinos</p>
       <h2 id="refTitulo">Quién ya lo hizo acá</h2>
       <p class="tldr"><b>TL;DR</b> No se copian: se miran para entender qué resolvieron. Cada tarjeta dice qué mirar.</p>
     </header>
@@ -134,7 +155,7 @@
 <section class="slide" id="sistemas" data-t="Sistemas completos">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">06 · Tres sistemas para estudiar enteros</p>
+      <p class="kicker">07 · Tres sistemas para estudiar enteros</p>
       <h2>Más allá del tema: cómo se arma el conjunto</h2>
       <p class="tldr"><b>TL;DR</b> Sirven para los cuatro temas porque muestran la regla, no el estilo.</p>
     </header>
@@ -146,7 +167,7 @@
 <section class="slide" id="sistema" data-t="Constantes y variables">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">07 · Qué sostiene al sistema</p>
+      <p class="kicker">08 · Qué sostiene al sistema</p>
       <h2>Pocas constantes, variables con reglas</h2>
       <p class="tldr"><b>TL;DR</b> Lo que no cambia hace reconocible al evento. Lo que cambia, cambia siempre de la misma manera.</p>
     </header>
@@ -208,11 +229,28 @@
   </div>
 </section>
 
+<!-- ─────────────────────────────────────────────── VÍA PÚBLICA -->
+<section class="slide" id="calle" data-t="El sistema en la calle">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">09 · El sistema a prueba</p>
+      <h2>Cuatro medios de vía pública, cuatro exigencias</h2>
+      <p class="tldr"><b>TL;DR</b> Antes del evento, la campaña sale a la calle. Cada medio cambia proporción, distancia y tiempo: si el sistema se sostiene acá, se sostiene en cualquier pieza.</p>
+    </header>
+    <figure class="fig">
+      <figcaption>Los cuatro medios, a escala <span class="mono">(1 cuadro = 1 m)</span></figcaption>
+      <div class="fig__scroll" id="calleSvg"></div>
+    </figure>
+    <div class="calle" id="calleGrid"></div>
+    <p class="nota">La consigna pide el séxtuple. Mupi, valla y transporte son los medios que lo acompañan en una campaña real y sirven para comprobar cómo se articulan los elementos según el soporte. Medidas de circuitos comerciales: pueden variar según el proveedor. El mupi figura con su medida estándar; las pantallas transiluminadas locales rondan 1,10 × 1,50 m.</p>
+  </div>
+</section>
+
 <!-- 09 ─────────────────────────────────────────────── LAS 12 PIEZAS -->
 <section class="slide" id="piezas" data-t="Las 12 piezas">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">08 · Las 12 piezas</p>
+      <p class="kicker">10 · Las 12 piezas</p>
       <h2>Qué hace cada una y cómo se comprueba</h2>
       <p class="tldr"><b>TL;DR</b> Cada pieza tiene una función, un formato, un error típico y una prueba rápida. Tocá una.</p>
     </header>
@@ -227,7 +265,7 @@
 <section class="slide" id="escala" data-t="Tamaño y tiempo">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">09 · Tamaño y tiempo</p>
+      <p class="kicker">11 · Tamaño y tiempo</p>
       <h2>La misma marca, de un pulgar a cuatro metros</h2>
       <p class="tldr"><b>TL;DR</b> En pantalla todo mide lo mismo. En la calle, no: diseñá sabiendo el tamaño real y el tiempo real.</p>
     </header>
@@ -247,7 +285,7 @@
 <section class="slide" id="jerarquia" data-t="Información y jerarquía">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">10 · Información y jerarquía</p>
+      <p class="kicker">12 · Información y jerarquía</p>
       <h2>Seis datos, tres niveles de lectura</h2>
       <p class="tldr"><b>TL;DR</b> No todas las piezas llevan todos los datos. Decidir qué queda afuera también es diseñar.</p>
     </header>
@@ -267,7 +305,7 @@
 <section class="slide" id="persuasion" data-t="Persuasión y CTA">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">11 · Persuadir</p>
+      <p class="kicker">13 · Persuadir</p>
       <h2>Primero las ganas, después los datos</h2>
       <p class="tldr"><b>TL;DR</b> El teaser promete, el promocional explica y el llamado a la acción dice exactamente qué hacer.</p>
     </header>
@@ -308,7 +346,7 @@
 <section class="slide" id="espacio" data-t="Espacio, sponsors, merch">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">12 · El sistema sale del plano</p>
+      <p class="kicker">14 · El sistema sale del plano</p>
       <h2>Espacio, sponsors y cosas para llevarse</h2>
       <p class="tldr"><b>TL;DR</b> El photo opportunity se diseña para la cámara del celular, los sponsors tienen su franja y el merchandising usa todo el sistema.</p>
     </header>
@@ -354,7 +392,7 @@
 <section class="slide" id="checklist" data-t="Autoevaluación">
   <div class="wrap">
     <header class="head">
-      <p class="kicker">13 · Antes de entregar</p>
+      <p class="kicker">15 · Antes de entregar</p>
       <h2>Las cinco pautas de evaluación, en forma de checklist</h2>
       <p class="tldr"><b>TL;DR</b> Quince comprobaciones para hacer frente a la entrega. Se guardan en este navegador.</p>
     </header>
@@ -363,19 +401,7 @@
       <div class="score__bar"><i id="scoreBar"></i></div>
       <p class="score__t"><b id="scoreN">0</b> de 15 resueltas <button class="link" id="scoreReset">Reiniciar</button></p>
     </div>
-  </div>
-</section>
-
-<!-- 15 ─────────────────────────────────────────────── FUENTES -->
-<section class="slide" id="fuentes" data-t="Fuentes">
-  <div class="wrap">
-    <header class="head">
-      <p class="kicker">14 · Fuentes</p>
-      <h2>De dónde sale cada dato</h2>
-      <p class="tldr"><b>TL;DR</b> Todo lo que tiene número tiene fuente. Relevamiento hecho en octubre de 2026.</p>
-    </header>
-    <div class="fuentes" id="fuentesLista"></div>
-    <p class="colofon">Tipografías: Archivo y Chivo Mono, de Omnibus-Type, fundidora argentina (licencia SIL OFL). Material de cátedra de uso educativo. Los diagramas son propios; las marcas y eventos citados pertenecen a sus titulares.</p>
+    <p class="colofon">Relevamiento de referentes: octubre de 2026. Los links con ↗ de cada sección abren la nota original. Tipografías: Archivo y Chivo Mono, de Omnibus-Type, fundidora argentina (licencia SIL OFL). Material de cátedra de uso educativo: los diagramas son propios y las marcas y eventos citados pertenecen a sus titulares.</p>
   </div>
 </section>
 

@@ -14,14 +14,12 @@
   };
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  /* ── Fuentes numeradas ─────────────────────────────────── */
-  const fKeys = Object.keys(FUENTES);
-  const fnum = id => {
+  /* ── Links a las fuentes, con nombre, debajo de cada bloque ── */
+  const flink = id => {
     const f = FUENTES[id]; if (!f) return "";
-    const n = fKeys.indexOf(id) + 1;
-    return `<a class="fnum" href="${esc(f.u)}" target="_blank" rel="noopener" title="${esc(f.t)}" aria-label="Fuente ${n}: ${esc(f.t)}">${n}</a>`;
+    return `<a href="${esc(f.u)}" target="_blank" rel="noopener" title="${esc(f.t)}">${esc(FUENTE_CORTA[id] || f.t.split(" — ")[0])} ↗</a>`;
   };
-  const fnums = ids => (ids || []).map(fnum).join("");
+  const srcs = ids => ids && ids.length ? `<p class="src"><span>Fuente${ids.length > 1 ? "s" : ""}</span>${ids.map(flink).join("")}</p>` : "";
 
   /* ── Configuración en el HTML ──────────────────────────── */
   $$("[data-cfg]").forEach(e => { e.textContent = CONFIG[e.dataset.cfg] || ""; });
@@ -49,12 +47,12 @@
     $$(".tema-btn").forEach(b => b.setAttribute("aria-checked", b.dataset.id === tema.id));
     $$(".pt").forEach(b => b.setAttribute("aria-pressed", b.dataset.id === tema.id));
     $$("[data-bind]").forEach(e => { const v = tema[e.dataset.bind] || ""; e.textContent = e.dataset.bind === "tipo" ? v.toLowerCase() : v; });
-    renderTema(); renderRefs(); renderDemoTexto(); renderSponsors();
+    renderTema(); renderPrograma(); renderRefs(); renderDemoTexto(); renderSponsors();
   }
 
   /* ── 03 Patrones y escala ──────────────────────────────── */
   $("#patrones").innerHTML = PATRONES.map(p =>
-    `<article class="patron"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p><p class="ev">${esc(p.ev)} ${fnums(p.f)}</p></article>`).join("");
+    `<article class="patron"><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p><p class="ev">${esc(p.ev)}</p>${srcs(p.f)}</article>`).join("");
   $("#escalaRef").innerHTML = ESCALA_REF.map(([v, u, d, f]) =>
     `<a class="stat" href="${esc(FUENTES[f].u)}" target="_blank" rel="noopener" title="${esc(FUENTES[f].t)}"><b>${esc(v)}</b><span>${esc(u)}</span><small>${esc(d)}</small></a>`).join("");
 
@@ -69,7 +67,8 @@
       `<div><p class="lbl">${esc(m.cuando)} · verbo</p><h3>${esc(m.verbo)}</h3><p>${esc(m.d)}</p>
         <div class="dato"><small>Cuánta información</small>${esc(m.datos)}</div></div>
        <div><p class="lbl" style="margin-bottom:10px">Piezas del TP que trabajan acá</p>
-        <div class="chips">${m.piezas.map(id => { const p = pz(id); return `<a class="chip" href="#piezas" data-pieza="${id}"><i>${p.n}</i>${esc(p.t)}</a>`; }).join("")}</div></div>`;
+        <div class="chips">${m.piezas.map(id => { const p = pz(id); return `<a class="chip" href="#piezas" data-pieza="${id}"><i>${p.n}</i>${esc(p.t)}</a>`; }).join("")}</div>
+        ${m.calle ? `<p class="lbl" style="margin:16px 0 10px">En la calle, junto al séxtuple</p><div class="chips">${m.calle.map(c => `<a class="chip chip--calle" href="#calle"><i>VP</i>${esc(c)}</a>`).join("")}</div>` : ""}</div>`;
     $$("[data-pieza]", $("#momentoPanel")).forEach(a => a.addEventListener("click", () => renderPieza(a.dataset.pieza)));
   }
   $$(".mom").forEach(b => b.addEventListener("click", () => renderMomento(+b.dataset.i)));
@@ -86,13 +85,14 @@
         <p class="big">${esc(tema.clave)}</p>
       </div>
       <div class="fbox fbox--wide">
-        <p class="lbl">Datos de la consigna ${fnum("tp")}</p>
+        <p class="lbl">Datos de la consigna</p>
         <dl class="meta">
           <dt>Lugar</dt><dd>${esc(tema.lugar)}</dd>
           <dt>Fecha</dt><dd>${esc(CONFIG.fechas)}</dd>
           <dt>Desafío</dt><dd>${esc(tema.desafio)}</dd>
           <dt>Sponsors</dt><dd><span class="tags">${tema.sponsors.map(s => `<span class="tag">${esc(s)}</span>`).join("")}</span></dd>
         </dl>
+        ${srcs(["tp"])}
       </div>
       <div class="fbox"><p class="lbl">Qué espera el público</p><ul class="lista">${li(tema.espera)}</ul></div>
       <div class="fbox"><p class="lbl">Cómo se suele mostrar</p><ul class="lista">${li(tema.codigos)}</ul></div>
@@ -103,6 +103,28 @@
       </div>`;
   }
 
+  /* ── Programa de ejemplo ───────────────────────────────── */
+  const MODS = { P: "Presencial", V: "Virtual", H: "Híbrida" };
+  let filtroMod = "T";
+  $("#progFiltro").innerHTML = [["T", "Todas"], ["P", "Presencial"], ["V", "Virtual"], ["H", "Híbrida"]].map(([k, t]) =>
+    `<button role="radio" data-m="${k}" aria-checked="${k === "T"}">${k === "T" ? "" : `<i class="mod mod--${k}"></i>`}${t}</button>`).join("");
+  $$("#progFiltro button").forEach(b => b.addEventListener("click", () => { filtroMod = b.dataset.m; renderPrograma(); }));
+  function renderPrograma() {
+    $("#progTitulo").textContent = `Un programa posible para ${tema.nombre}`;
+    $$("#progFiltro button").forEach(b => b.setAttribute("aria-checked", b.dataset.m === filtroMod));
+    const all = tema.programa.flatMap(d => d.acts), n = k => all.filter(a => a[3] === k).length;
+    $("#progCuenta").textContent = `${all.length} actividades · ${n("P")} presenciales · ${n("V")} virtuales · ${n("H")} híbridas`;
+    $("#progGrid").innerHTML = tema.programa.map(d => `
+      <article class="dia">
+        <header class="dia__head"><span class="dia__n">${esc(d.dia)}</span><h3>${esc(d.lema)}</h3><p>${esc(d.sede)}</p></header>
+        <ol class="dia__acts">${d.acts.map(([h, t, tipo, m]) => `
+          <li class="${filtroMod !== "T" && filtroMod !== m ? "off" : ""}">
+            <time>${h}</time>
+            <div><b>${esc(t)}</b><span class="act__meta"><span class="tag">${esc(tipo)}</span><span class="act__mod"><i class="mod mod--${m}"></i>${MODS[m]}</span></span></div>
+          </li>`).join("")}</ol>
+      </article>`).join("");
+  }
+
   /* ── 06 Referentes ─────────────────────────────────────── */
   function renderRefs() {
     $("#refTitulo").textContent = `Quién ya hizo algo así en Argentina`;
@@ -111,7 +133,7 @@
         <div class="ref__head"><h3>${esc(r.n)}</h3><p>${esc(r.d)}</p></div>
         <div class="ref__k">${r.k.map(([v, l]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>
         <div class="ref__mirar"><span class="lbl">Qué mirar</span>${esc(r.mirar)}</div>
-        <div class="ref__f">${r.f.map(id => `<a href="${esc(FUENTES[id].u)}" target="_blank" rel="noopener">${esc(FUENTES[id].t.split(" — ")[0])} ↗</a>`).join("")}</div>
+        <div class="ref__f">${srcs(r.f)}</div>
       </article>`).join("");
   }
 
@@ -121,12 +143,15 @@
       <h3>${esc(s.n)}</h3><p class="sisub">${esc(s.sub)}</p>
       <ul class="lista">${li(s.puntos)}</ul>
       <p class="lec"><small>Lo que enseña</small>${esc(s.leccion)}</p>
-      <p class="nota">Fuentes ${fnums(s.f)}</p>
+      ${srcs(s.f)}
     </article>`).join("");
 
   /* ── 08 Demo de formatos ───────────────────────────────── */
   const FORMATOS = [
     { id: "sextuple", t: "Séxtuple", s: "2:1 · vía pública", nota: "Se lee en segundos y en movimiento: una imagen, un titular, fecha y lugar. El precio y el botón no entran.", cap: "4,31 × 2,15 m aprox." },
+    { id: "mupi", t: "Mupi", s: "vertical · vereda", nota: "El mismo afiche, girado. El peatón está cerca y tiene tiempo: vuelve el botón y puede sumarse un QR.", cap: "1,20 × 1,75 m" },
+    { id: "valla", t: "Valla", s: "4:1 · avenida", nota: "Sobra ancho y falta tiempo. Quedan la marca, la imagen, una frase y la fecha. Lo demás no llega a leerse.", cap: "8,62 × 2,15 m · dos séxtuples de ancho" },
+    { id: "bus", t: "Full glass", s: "colectivo", nota: "Los parantes cortan la imagen y acá caen justo sobre la marca: hay que prever dónde van. Solo marca y fecha, grandes.", cap: "ventanillas ploteadas de un colectivo" },
     { id: "a2", t: "Programa A2", s: "1:√2 · en mano", nota: "Hay tiempo y cercanía: entran todos los datos. Acá manda el orden, no el impacto.", cap: "420 × 594 mm" },
     { id: "story", t: "Video vertical", s: "9:16 · celular", nota: "Arriba y abajo hay zonas que tapa la interfaz. Lo importante va al centro.", cap: "750 × 1334 px" },
     { id: "post", t: "Posteo", s: "4:5 · feed", nota: "Un posteo, una actividad. Los sponsors y el precio van al texto del posteo, no a la imagen.", cap: "1080 × 1350 px" },
@@ -157,6 +182,49 @@
     $(".l-sponsors", lienzo).innerHTML = tema.sponsors.map(s => `<span>${esc(s)}</span>`).join("");
   }
   setFormato("sextuple");
+
+  /* ── Vía pública: familia a escala y fichas ────────────── */
+  (function calle() {
+    const S = 30, G = 170, W = 1010, H = 222;
+    let g = "";
+    for (let y = G; y >= G - 5 * S; y -= S) g += `<line class="e-grid" x1="0" x2="${W}" y1="${y}" y2="${y}"/>`;
+    for (let x = 10; x < W; x += S) g += `<line class="e-grid" x1="${x}" x2="${x}" y1="${G - 5 * S}" y2="${G}"/>`;
+    const lbl = (x, t, sub) => `<text class="e-lbl" x="${x}" y="${G + 22}">${t}</text><text class="e-sub" x="${x}" y="${G + 38}">${sub}</text>`;
+    g += `<g class="e-ink"><circle cx="20" cy="${G - 46}" r="5"/><path d="M14 ${G}v-30q0-10 6-10t6 10v30z"/></g>`;
+    /* mupi 1,20 × 1,75 */
+    const mx = 58, mw = 1.2 * S, mh = 1.75 * S, my = G - 14 - mh;
+    g += `<path class="e-line" d="M${mx + mw / 2} ${my + mh}V${G}"/><rect class="e-obj" x="${mx}" y="${my}" width="${mw}" height="${mh}"/>
+          <circle class="e-acc" cx="${mx + mw / 2}" cy="${my + 16}" r="9"/><rect class="e-ink" x="${mx + 6}" y="${my + 32}" width="${mw - 12}" height="5"/><rect class="e-ink" x="${mx + 6}" y="${my + 41}" width="${mw - 20}" height="3"/>` + lbl(44, "Mupi", "1,20 × 1,75 m");
+    /* séxtuple 4,31 × 2,15 */
+    const sx = 170, sw = 4.31 * S, sh = 2.15 * S, sy = G - 0.9 * S - sh;
+    g += `<path class="e-line" d="M${sx + 16} ${sy + sh}V${G}M${sx + sw - 16} ${sy + sh}V${G}"/><rect class="e-obj" x="${sx}" y="${sy}" width="${sw}" height="${sh}"/>
+          <circle class="e-acc" cx="${sx + 34}" cy="${sy + sh / 2}" r="22"/><rect class="e-ink" x="${sx + 66}" y="${sy + 16}" width="50" height="8"/><rect class="e-ink" x="${sx + 66}" y="${sy + 29}" width="36" height="8"/><rect class="e-ink" x="${sx + 66}" y="${sy + 46}" width="28" height="4" opacity=".5"/>` + lbl(sx, "Séxtuple", "4,31 × 2,15 m · 2:1");
+    /* valla 8,62 × 2,15 */
+    const vx = 340, vw = 8.62 * S, vy = G - 2.2 * S - sh;
+    g += `<path class="e-line" d="M${vx + 40} ${vy + sh}V${G}M${vx + vw - 40} ${vy + sh}V${G}"/><rect class="e-obj" x="${vx}" y="${vy}" width="${vw}" height="${sh}"/>
+          <path class="wf-d" d="M${vx + vw / 2} ${vy}v${sh}"/>
+          <circle class="e-acc" cx="${vx + 34}" cy="${vy + sh / 2}" r="22"/><circle class="e-acc" cx="${vx + 84}" cy="${vy + sh / 2}" r="22" opacity=".55"/><circle class="e-acc" cx="${vx + 134}" cy="${vy + sh / 2}" r="22" opacity=".3"/>
+          <rect class="e-ink" x="${vx + 168}" y="${vy + 20}" width="72" height="10"/><rect class="e-ink" x="${vx + 168}" y="${vy + 37}" width="44" height="6" opacity=".5"/>` + lbl(vx, "Valla", "8,62 × 2,15 m · 4:1");
+    /* colectivo, aprox. 12 m */
+    const bx = 630, bw = 12 * S, by = G - 96, bh = 86;
+    let pil = ""; for (let i = 1; i < 7; i++) pil += `<line x1="${bx + 16 + i * 47}" x2="${bx + 16 + i * 47}" y1="${by + 10}" y2="${by + 46}" stroke="var(--surface2)" stroke-width="4"/>`;
+    g += `<rect class="e-obj" x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="10"/>
+          <rect class="e-acc" x="${bx + 14}" y="${by + 10}" width="${bw - 28}" height="36" rx="3" style="stroke:none"/>
+          <circle cx="${bx + 40}" cy="${by + 28}" r="11" fill="var(--surface)"/><rect x="${bx + 66}" y="${by + 21}" width="150" height="14" fill="var(--surface)"/><rect x="${bx + 244}" y="${by + 23}" width="84" height="10" fill="var(--surface)" opacity=".7"/>
+          ${pil}
+          <g class="e-ink"><circle cx="${bx + 66}" cy="${G - 10}" r="10"/><circle cx="${bx + bw - 76}" cy="${G - 10}" r="10"/></g>` + lbl(bx, "Colectivo · full glass", "aprox. 12 m de largo");
+    g += `<line class="e-ground" x1="0" x2="${W}" y1="${G}" y2="${G}"/>`;
+    $("#calleSvg").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Comparación a escala de una persona, un mupi, un séxtuple, una valla y un colectivo con full glass">${g}</svg>`;
+    $("#calleGrid").innerHTML = CALLE.map((c, i) => `
+      <article class="medio">
+        <p class="lbl">${esc(c.tag)}</p>
+        <h3>${esc(c.t)}</h3>
+        <p class="medio__m"><b>${esc(c.medida)}</b><span>${esc(c.prop)}</span></p>
+        <dl class="defs defs--s"><dt>Lo ve</dt><dd>${esc(c.quien)}</dd><dt>Tiempo</dt><dd>${esc(c.tiempo)}</dd><dt>Entra</dt><dd>${esc(c.entra)}</dd></dl>
+        <p class="medio__p"><span class="lbl">Qué le exige al sistema</span>${esc(c.prueba)}</p>
+        ${srcs(c.f)}
+      </article>`).join("");
+  })();
 
   /* ── 09 Piezas: esquemas ───────────────────────────────── */
   const svg = (inner, vb = "0 0 320 220") => `<svg viewBox="${vb}" role="img" aria-label="Esquema de la pieza">${inner}</svg>`;
@@ -268,7 +336,7 @@
         </div>
       </div>
       <div class="pieza__txt">
-        <p class="lbl">Pieza ${p.n} de 12 ${fnum("tp")}${fnums(p.f)}</p>
+        <p class="lbl">Pieza ${p.n} de 12</p>
         <h3>${esc(p.t)}</h3>
         <p class="fun">${esc(p.funcion)}</p>
         <div><p class="lbl" style="margin-bottom:8px">Tiene que tener</p><ul class="lista">${li(p.debe)}</ul></div>
@@ -276,6 +344,7 @@
           <div class="err"><span class="lbl">Error típico</span>${esc(p.error)}</div>
           <div class="pru"><span class="lbl">Prueba rápida</span>${esc(p.prueba)}</div>
         </div>
+        ${srcs(["tp"].concat(p.f || []))}
       </div>`;
   }
   $$(".pz").forEach(b => b.addEventListener("click", () => renderPieza(b.dataset.id)));
@@ -315,7 +384,10 @@
     ig: [2, 2, 2, 1, 2, 1], espera: [2, 1, 0, 0, 0, 1], web: [2, 2, 2, 2, 2, 2], overlays: [2, 1, 0, 0, 0, 2], merch: [2, 1, 0, 0, 0, 0], photo: [2, 0, 0, 0, 1, 1] };
   const dot = v => v === 2 ? '<span class="dot dot--si" title="Va siempre"></span><span class="sr">sí</span>' : v === 1 ? '<span class="dot dot--op" title="Según el caso"></span><span class="sr">opcional</span>' : '<span class="dot dot--no" title="No va"></span><span class="sr">no</span>';
   $("#matriz").innerHTML = `<thead><tr><th scope="col" style="text-align:left">Pieza</th>${DATOS.map(d => `<th scope="col" title="${esc(d.d)}">${esc(d.t)}</th>`).join("")}</tr></thead><tbody>` +
-    PIEZAS.map(p => `<tr><th scope="row"><small>${p.n}</small>${esc(p.t)}</th>${M[p.id].map(v => `<td>${dot(v)}</td>`).join("")}</tr>`).join("") + "</tbody>";
+    PIEZAS.map(p => `<tr><th scope="row"><small>${p.n}</small>${esc(p.t)}</th>${M[p.id].map(v => `<td>${dot(v)}</td>`).join("")}</tr>`).join("") +
+    `<tr class="sep"><th scope="row" colspan="7">Vía pública que acompaña al séxtuple</th></tr>` +
+    [["Mupi", [2, 2, 2, 1, 2, 1]], ["Valla", [2, 2, 1, 0, 0, 1]], ["Transporte · full glass", [2, 2, 0, 0, 0, 0]]].map(([t, v]) =>
+      `<tr><th scope="row"><small>VP</small>${t}</th>${v.map(x => `<td>${dot(x)}</td>`).join("")}</tr>`).join("") + "</tbody>";
 
   /* ── 12 Estructura de los videos ───────────────────────── */
   function beats(sel, arr) {
@@ -344,12 +416,6 @@
   $$("#pautas input").forEach(c => c.addEventListener("change", () => { checks[c.dataset.k] = c.checked; store.set("tp4-checks", JSON.stringify(checks)); score(); }));
   $("#scoreReset").addEventListener("click", () => { checks = {}; store.set("tp4-checks", "{}"); $$("#pautas input").forEach(c => { c.checked = false; }); score(); });
   score();
-
-  /* ── 15 Fuentes ────────────────────────────────────────── */
-  const grupos = {};
-  fKeys.forEach((k, i) => { (grupos[FUENTES[k].g] = grupos[FUENTES[k].g] || []).push([i + 1, FUENTES[k]]); });
-  $("#fuentesLista").innerHTML = Object.entries(grupos).map(([g, arr]) =>
-    `<section class="fgrupo"><h3>${esc(g)}</h3><ol>${arr.map(([n, f]) => `<li><span>${n}</span><a href="${esc(f.u)}" target="_blank" rel="noopener">${esc(f.t)}</a></li>`).join("")}</ol></section>`).join("");
 
   /* ── Navegación ────────────────────────────────────────── */
   const slides = $$(".slide");
@@ -388,7 +454,7 @@
     const i = slides.findIndex(s => "#" + s.id === a.getAttribute("href"));
     if (i >= 0 && !a.closest("#indice")) { e.preventDefault(); ir(i); }
   }));
-  document.addEventListener("click", e => { const a = e.target.closest('.chip[href="#piezas"]'); if (a) { e.preventDefault(); ir(slides.findIndex(s => s.id === "piezas")); } });
+  document.addEventListener("click", e => { const a = e.target.closest('.chip[href^="#"]'); if (a) { e.preventDefault(); ir(slides.findIndex(s => "#" + s.id === a.getAttribute("href"))); } });
 
   document.addEventListener("keydown", e => {
     if (e.target.matches("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey) return;
