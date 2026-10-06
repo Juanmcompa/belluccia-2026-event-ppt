@@ -103,26 +103,46 @@
       </div>`;
   }
 
-  /* ── Programa de ejemplo ───────────────────────────────── */
+  /* ── Programa de ejemplo: grilla de horarios por espacio ── */
   const MODS = { P: "Presencial", V: "Virtual", H: "Híbrida" };
-  let filtroMod = "T";
-  $("#progFiltro").innerHTML = [["T", "Todas"], ["P", "Presencial"], ["V", "Virtual"], ["H", "Híbrida"]].map(([k, t]) =>
+  const TIPOS = [["T", "Todo"], ["Charla", "Charlas"], ["Workshop", "Workshops"], ["Taller", "Talleres"], ["O", "Shows y otros"]];
+  const esOtro = t => !["Charla", "Workshop", "Taller"].includes(t);
+  let filtroMod = "T", filtroTipo = "T", progDia = 0;
+  $("#progTipo").innerHTML = TIPOS.map(([k, t]) => `<button role="radio" data-t="${k}" aria-checked="${k === "T"}">${t}</button>`).join("");
+  $("#progFiltro").innerHTML = [["T", "Toda modalidad"], ["P", "Presencial"], ["V", "Virtual"], ["H", "Híbrida"]].map(([k, t]) =>
     `<button role="radio" data-m="${k}" aria-checked="${k === "T"}">${k === "T" ? "" : `<i class="mod mod--${k}"></i>`}${t}</button>`).join("");
+  $$("#progTipo button").forEach(b => b.addEventListener("click", () => { filtroTipo = b.dataset.t; renderPrograma(); }));
   $$("#progFiltro button").forEach(b => b.addEventListener("click", () => { filtroMod = b.dataset.m; renderPrograma(); }));
   function renderPrograma() {
+    const dias = tema.programa, d = dias[progDia] || dias[0], esp = tema.espacios;
     $("#progTitulo").textContent = `Un programa posible para ${tema.nombre}`;
+    $$("#progTipo button").forEach(b => b.setAttribute("aria-checked", b.dataset.t === filtroTipo));
     $$("#progFiltro button").forEach(b => b.setAttribute("aria-checked", b.dataset.m === filtroMod));
-    const all = tema.programa.flatMap(d => d.acts), n = k => all.filter(a => a[3] === k).length;
-    $("#progCuenta").textContent = `${all.length} actividades · ${n("P")} presenciales · ${n("V")} virtuales · ${n("H")} híbridas`;
-    $("#progGrid").innerHTML = tema.programa.map(d => `
-      <article class="dia">
-        <header class="dia__head"><span class="dia__n">${esc(d.dia)}</span><h3>${esc(d.lema)}</h3><p>${esc(d.sede)}</p></header>
-        <ol class="dia__acts">${d.acts.map(([h, t, tipo, m]) => `
-          <li class="${filtroMod !== "T" && filtroMod !== m ? "off" : ""}">
-            <time>${h}</time>
-            <div><b>${esc(t)}</b><span class="act__meta"><span class="tag">${esc(tipo)}</span><span class="act__mod"><i class="mod mod--${m}"></i>${MODS[m]}</span></span></div>
-          </li>`).join("")}</ol>
-      </article>`).join("");
+    $("#progDias").innerHTML = dias.map((x, i) =>
+      `<button role="tab" data-i="${i}" aria-selected="${x === d}"><small>${esc(x.dia)} · ${x.acts.length} actividades</small><b>${esc(x.lema)}</b><span>${esc(x.sede)}</span></button>`).join("");
+    $$("#progDias button").forEach(b => b.addEventListener("click", () => { progDia = +b.dataset.i; renderPrograma(); }));
+
+    const horas = [...new Set(d.acts.map(a => a[0]))].sort();
+    const pasa = a => (filtroMod === "T" || filtroMod === a[4]) && (filtroTipo === "T" || (filtroTipo === "O" ? esOtro(a[3]) : filtroTipo === a[3]));
+    const sim = horas.filter(h => d.acts.filter(a => a[0] === h).length > 1).length;
+    const cuenta = t => d.acts.filter(a => a[3] === t).length;
+    const pl = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+    $("#progCuenta").textContent = `${d.dia}: ${d.acts.length} actividades en ${esp.length} espacios · ${pl(cuenta("Charla"), "charla", "charlas")} · ${pl(cuenta("Workshop"), "workshop", "workshops")} · ${pl(cuenta("Taller"), "taller", "talleres")} · ${pl(sim, "horario", "horarios")} con actividades en simultáneo`;
+
+    const tarjeta = a => `<article class="act${pasa(a) ? "" : " off"}">
+        <p class="act__esp">${esc(esp[a[1]].n)}</p>
+        <span class="act__meta"><span class="tag">${esc(a[3])}</span><span class="act__mod"><i class="mod mod--${a[4]}"></i>${MODS[a[4]]}</span></span>
+        <b>${esc(a[2])}</b>
+        <p>${esc(a[5])}</p>
+      </article>`;
+    $("#progGrid").innerHTML =
+      `<div class="g-esq" aria-hidden="true"></div>` +
+      esp.map((e, i) => `<div class="g-head${i === esp.length - 1 ? " g-head--online" : ""}"><i>${"ABCD"[i]}</i><b>${esc(e.n)}</b><span>${esc(e.d)}</span></div>`).join("") +
+      horas.map(h => {
+        const fila = d.acts.filter(a => a[0] === h);
+        return `<div class="g-hora"><time>${h}</time>${fila.length > 1 ? `<span>${fila.length} a la vez</span>` : ""}</div>` +
+          esp.map((e, i) => { const a = fila.find(x => x[1] === i); return a ? `<div class="g-celda${i === esp.length - 1 ? " g-celda--online" : ""}">${tarjeta(a)}</div>` : `<div class="g-celda g-vacio${i === esp.length - 1 ? " g-celda--online" : ""}" aria-hidden="true"></div>`; }).join("");
+      }).join("");
   }
 
   /* ── 06 Referentes ─────────────────────────────────────── */

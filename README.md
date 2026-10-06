@@ -36,7 +36,8 @@ Todo el contenido está en **`assets/js/data.js`**. No hace falta tocar el HTML 
 |---|---|
 | Fechas del evento, cátedra, año, link a la consigna | `CONFIG` (primeras líneas de `data.js`) |
 | Textos de un tema y sus referentes | `TEMAS` |
-| Programa de ejemplo de cada evento (3 jornadas) | `TEMAS` → `programa` (`P` presencial, `V` virtual, `H` híbrida) |
+| Espacios inventados de cada evento (4 por tema) | `TEMAS` → `espacios` |
+| Programa de ejemplo (3 jornadas, 10 actividades por día) | `TEMAS` → `programa`. Cada actividad: hora, espacio (0 a 3), título, tipo, modalidad (`P`, `V`, `H`) y bajada |
 | Medios de vía pública (séxtuple, mupi, valla, transporte) | `CALLE` |
 | Fichas de las 12 piezas | `PIEZAS` |
 | Una fuente o un link | `FUENTES` (y su nombre corto en `FUENTE_CORTA`) |
@@ -56,7 +57,7 @@ assets/fonts/         Archivo y Chivo Mono (Omnibus-Type, licencia SIL OFL)
 - **Todo dato con número tiene fuente.** Los links con ↗ debajo de cada bloque abren la nota original. Relevamiento: octubre de 2026.
 - **No se reproducen imágenes de terceros.** Los diagramas son propios y esquemáticos; para ver las piezas reales de cada referente hay que abrir la fuente.
 - **Lo que es criterio de cátedra está marcado como sugerencia** (matriz de datos por pieza, estructura de los videos), para discutir en clase.
-- **Los programas de actividades son ejemplos inventados**, marcados como tales en pantalla, para que cada grupo los cambie.
+- **Los programas de actividades y los nombres de los espacios son ejemplos inventados**, marcados como tales en pantalla, para que cada grupo los cambie. Dos actividades con la misma hora y distinto espacio se muestran en simultáneo.
 - **La consigna pide el séxtuple.** Mupi, valla y transporte aparecen como los medios que lo acompañan en una campaña real y sirven para poner a prueba el sistema.
 - Las medidas de vía pública son las de circuitos comerciales y pueden variar según el proveedor.
 

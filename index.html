@@ -123,18 +123,20 @@
     <header class="head">
       <p class="kicker">05 · Qué pasa adentro</p>
       <h2 id="progTitulo">Un programa posible</h2>
-      <p class="tldr"><b>TL;DR</b> Tres jornadas de ejemplo para imaginar el evento por dentro. De acá salen el programa A2, los posteos y el video de espera.</p>
+      <p class="tldr"><b>TL;DR</b> Tres jornadas de ejemplo, con charlas, workshops y talleres que pasan a la vez en espacios distintos. Es la materia prima del programa A2, los posteos y el video de espera.</p>
     </header>
     <div class="aviso">
       <b>Es un ejemplo</b>
-      <span>Las actividades, los horarios y las sedes son inventados para arrancar. Cambien, saquen o sumen lo que su propuesta necesite.</span>
+      <span>Las actividades, los horarios y los nombres de los espacios son inventados para arrancar. Cambien, saquen o sumen lo que su propuesta necesite.</span>
     </div>
+    <div class="dias" id="progDias" role="tablist" aria-label="Día del evento"></div>
     <div class="prog__tools">
+      <div class="filtro" id="progTipo" role="radiogroup" aria-label="Filtrar por tipo de actividad"></div>
       <div class="filtro" id="progFiltro" role="radiogroup" aria-label="Filtrar por modalidad"></div>
-      <p class="prog__cuenta" id="progCuenta"></p>
     </div>
-    <div class="prog" id="progGrid"></div>
-    <p class="nota">La consigna pide actividades presenciales, virtuales e híbridas, con participación por app, encuestas en vivo y realidad aumentada. El ejemplo mezcla las tres modalidades a propósito. <a data-f="tp"></a></p>
+    <p class="prog__cuenta" id="progCuenta" aria-live="polite"></p>
+    <div class="grilla" id="progGrid" role="tabpanel"></div>
+    <p class="nota">La consigna pide actividades presenciales, virtuales e híbridas, con participación por app, encuestas en vivo y realidad aumentada. El ejemplo mezcla las tres modalidades a propósito, y el cuarto espacio reúne lo que pasa solo en línea. <a data-f="tp"></a></p>
   </div>
 </section>
 

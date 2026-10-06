@@ -70,7 +70,10 @@ const FUENTE_CORTA = {
   afichePrint: "Rotularte", ig: "Tiendanube", gbvp: "GB Vía Pública", mupi: "Moody Media", colectivos: "NE3 Publicidad", subteVP: "Grupo Vía"
 };
 
-/* --- Los cuatro temas del TP ---------------------------------------- */
+/* --- Los cuatro temas del TP ----------------------------------------
+   Programa de ejemplo: cada actividad es
+   [hora, espacio (0 a 3, según "espacios"), título, tipo, modalidad, bajada]
+   Modalidad: "P" presencial · "V" virtual · "H" híbrida            */
 const TEMAS = [
   {
     id: "fuego", nombre: "Fuego Nativo", tipo: "Feria Gourmet Móvil", n: "01",
@@ -98,25 +101,46 @@ const TEMAS = [
       "¿Qué parte de la marca se mueve con la feria y qué parte queda quieta?",
       "¿Cómo se ve la pieza cuando todavía no se anunció la locación del día?"
     ],
+    espacios: [
+      { n: "Escenario Chorizo", d: "Escenario principal" },
+      { n: "Fogón Central", d: "Cocina en vivo" },
+      { n: "Mesa Larga", d: "Charlas y degustaciones" },
+      { n: "Canal Brasa", d: "En la app y por streaming" }
+    ],
     programa: [
       { dia: "Día 1", lema: "Fuegos del país", sede: "Parada 1 · ej. Plaza Armenia", acts: [
-        ["12:00", "Apertura de puestos y encendido del fuego", "Activación", "P"],
-        ["14:00", "Clase abierta: cocina a las brasas", "Taller", "H"],
-        ["16:30", "Charla: del productor al puesto", "Charla", "H"],
-        ["18:30", "Votá el plato del día desde la app", "Encuesta en vivo", "V"],
-        ["20:00", "Cierre con DJ", "Show", "P"] ] },
+        ["12:00", 1, "Encendido del fuego", "Activación", "P", "Se prenden las brasas y abren los puestos: el arranque oficial de la feria."],
+        ["12:00", 3, "Mapa en vivo de puestos", "Activación", "V", "La app muestra qué puesto tiene menos fila y qué plato está por agotarse."],
+        ["13:00", 0, "Del productor al puesto", "Charla", "H", "Tres productores cuentan cómo llega un ingrediente desde el campo hasta la feria."],
+        ["13:00", 2, "Chimichurri propio", "Taller", "P", "Cada participante arma su mezcla y se la lleva en un frasco."],
+        ["15:00", 1, "Cocción lenta a las brasas", "Workshop", "P", "Dos horas con cupo para aprender tiempos, distancias y puntos de cocción."],
+        ["15:00", 2, "Cocinar con lo que hay cerca", "Charla", "H", "Una cocinera explica cómo arma su carta con productos de temporada."],
+        ["17:00", 0, "Duelo de choripanes", "Competencia", "H", "Cuatro puestos compiten y el público prueba y vota al ganador."],
+        ["17:00", 3, "Votá el plato del día", "Encuesta en vivo", "V", "Una votación desde la app que se ve en pantalla en tiempo real."],
+        ["19:00", 2, "Salsas y picantes", "Taller", "P", "Una degustación guiada por seis salsas, de la más suave a la más brava."],
+        ["20:00", 0, "Cierre con DJ", "Show", "P", "Música para bailar mientras se apagan los fuegos."] ] },
       { dia: "Día 2", lema: "Sabores del mundo", sede: "Parada 2 · ej. Plazoleta Cortázar", acts: [
-        ["12:00", "Recorrido guiado por los puestos", "Recorrido", "P"],
-        ["14:30", "Taller de empanadas de autor, con cupo", "Taller", "P"],
-        ["16:00", "Mesa: street food de América Latina", "Charla", "V"],
-        ["18:00", "Duelo de parrilleros con jurado", "Competencia", "H"],
-        ["20:30", "Música en vivo", "Show", "P"] ] },
+        ["12:00", 0, "Apertura y recorrido guiado", "Recorrido", "P", "Una vuelta comentada por todos los puestos para elegir por dónde empezar."],
+        ["12:00", 1, "Empanadas de autor", "Taller", "P", "Masa, relleno y repulgue junto a un cocinero invitado."],
+        ["13:30", 2, "Historia del street food porteño", "Charla", "H", "Del carrito de la Costanera al food truck, en media hora."],
+        ["13:30", 3, "Street food de América Latina", "Charla", "V", "Cocineros de tres países conversan por streaming sobre la comida de calle."],
+        ["15:00", 1, "Masas del mundo", "Workshop", "P", "Arepas, baos y tortillas en una sola clase práctica con cupo."],
+        ["15:00", 2, "Armá tu pincho", "Taller", "P", "Los más chicos eligen ingredientes y arman su propia brocheta."],
+        ["17:00", 0, "Duelo de parrilleros", "Competencia", "H", "Dos equipos, una misma pieza de carne y un jurado que decide en vivo."],
+        ["17:00", 2, "Cómo se arma un puesto", "Charla", "P", "Costos, habilitaciones y errores de quienes ya pasaron por eso."],
+        ["18:30", 3, "Receta en realidad aumentada", "Activación", "H", "Se apunta el celular al plato y aparece la receta paso a paso."],
+        ["20:00", 0, "Música en vivo", "Show", "P", "Una banda cierra la segunda parada."] ] },
       { dia: "Día 3", lema: "Lo que viene", sede: "Parada 3 · se anuncia el día anterior", acts: [
-        ["12:00", "Mercado de productores", "Activación", "P"],
-        ["13:30", "Taller para chicos: amasar y hornear", "Taller", "P"],
-        ["15:30", "Charla y degustación: maridajes con fuego", "Charla", "P"],
-        ["17:30", "Menú en realidad aumentada: escaneá el puesto", "Activación", "H"],
-        ["19:30", "Premio al plato más votado y cierre", "Show", "H"] ] }
+        ["12:00", 1, "Amasar y hornear", "Taller", "P", "Pan casero hecho por los chicos, del bollo al horno."],
+        ["12:00", 2, "Mercado de productores", "Activación", "P", "Puestos para llevarse a casa lo que se probó en la feria."],
+        ["13:30", 0, "El futuro de la comida de calle", "Charla", "H", "Qué va a cambiar en lo que se cocina y se come en la vereda."],
+        ["13:30", 1, "Fermentos y encurtidos", "Workshop", "P", "Una clase práctica para preparar pickles y llevarse un frasco."],
+        ["15:30", 2, "Maridajes con fuego", "Charla", "P", "Qué se toma con cada cocción, probando mientras se escucha."],
+        ["15:30", 3, "Elegí la próxima parada", "Encuesta en vivo", "V", "El público vota en qué barrio debería armarse la próxima edición."],
+        ["17:00", 0, "Final: el plato de la feria", "Competencia", "H", "Los tres platos más votados se cocinan frente al público."],
+        ["17:00", 1, "Postres a la parrilla", "Workshop", "P", "Frutas, dulce de leche y brasas, con cupo limitado."],
+        ["19:00", 3, "Menú en realidad aumentada", "Activación", "H", "Cada puesto muestra su plato en 3D antes de pedirlo."],
+        ["19:30", 0, "Premiación y cierre", "Show", "H", "Se entrega el premio al plato más votado y se despide la feria."] ] }
     ],
     referentes: [
       { n: "Buenos Aires Market", d: "Feria itinerante de alimentos saludables que arma cada edición en un barrio distinto.",
@@ -162,25 +186,47 @@ const TEMAS = [
       "¿Cómo se ve la marca desde arriba, pintada en una cancha?",
       "¿Qué distingue a las tres disciplinas sin romper el sistema?"
     ],
+    espacios: [
+      { n: "Cancha Asfalto", d: "Básquet y fútbol" },
+      { n: "Bowl Vereda", d: "Skate" },
+      { n: "Tribuna Cordón", d: "Charlas y talleres" },
+      { n: "Canal Cruce", d: "En la app y por streaming" }
+    ],
     programa: [
-      { dia: "Día 1", lema: "Clasificatorias", sede: "Polideportivo + plaza", acts: [
-        ["10:00", "Acreditación y entrega de camisetas", "Activación", "P"],
-        ["11:00", "Básquet 3x3: fase de grupos", "Competencia", "H"],
-        ["14:00", "Clínica de skate para principiantes", "Taller", "P"],
-        ["16:00", "Fútbol urbano: clasificatorias", "Competencia", "H"],
-        ["19:00", "Batalla de freestyle", "Show", "P"] ] },
-      { dia: "Día 2", lema: "Eliminatorias", sede: "Polideportivo + skatepark", acts: [
-        ["10:30", "Charla: del barrio a la selección", "Charla", "H"],
-        ["12:00", "Skate: mejor truco", "Competencia", "H"],
-        ["15:00", "Básquet 3x3: cuartos y semifinales", "Competencia", "H"],
-        ["17:00", "Taller: personalizá tus zapatillas", "Taller", "P"],
-        ["19:30", "Elegí la jugada del día desde la app", "Encuesta en vivo", "V"] ] },
+      { dia: "Día 1", lema: "Clasificatorias", sede: "Polideportivo y plaza", acts: [
+        ["10:00", 2, "Acreditación y camisetas", "Activación", "P", "Los equipos retiran su indumentaria y conocen el fixture."],
+        ["11:00", 0, "Básquet 3x3: fase de grupos", "Competencia", "H", "Partidos cortos a 21 puntos para definir quién sigue."],
+        ["11:00", 1, "Skate para principiantes", "Taller", "P", "Primeros pasos arriba de la tabla, con protecciones incluidas."],
+        ["13:00", 2, "Cómo se organiza un torneo de barrio", "Charla", "H", "Organizadores cuentan qué hace falta para armar una liga propia."],
+        ["13:00", 3, "Fixture y resultados en vivo", "Activación", "V", "La app actualiza llaves, horarios y marcadores partido a partido."],
+        ["15:00", 0, "Fútbol urbano: clasificatorias", "Competencia", "H", "Equipos de tres jugadores en cancha chica, a eliminación directa."],
+        ["15:00", 2, "Fotografía deportiva con el celular", "Workshop", "P", "Cómo sacar buenas fotos de acción, practicando al borde de la cancha."],
+        ["17:00", 1, "Skate: ronda libre", "Competencia", "P", "Cada rider tiene un minuto para mostrar su mejor línea."],
+        ["17:00", 2, "Personalizá tus zapatillas", "Taller", "P", "Marcadores, plantillas y pintura para intervenir el propio par."],
+        ["19:00", 0, "Batalla de freestyle", "Show", "H", "Improvisación cara a cara, con el público como jurado."] ] },
+      { dia: "Día 2", lema: "Eliminatorias", sede: "Polideportivo y plaza", acts: [
+        ["10:30", 1, "Armá y mantené tu tabla", "Workshop", "P", "Ejes, ruedas y rulemanes: cómo dejar un skate a punto."],
+        ["10:30", 2, "Del barrio a la selección", "Charla", "H", "Un jugador profesional repasa su camino desde la plaza."],
+        ["12:00", 0, "Básquet para chicos", "Taller", "P", "Pases, tiro y juego en equipo para menores de 12 años."],
+        ["12:00", 1, "Skate: mejor truco", "Competencia", "H", "Un solo obstáculo y varios intentos para clavar la mejor maniobra."],
+        ["14:00", 2, "Mujeres en el deporte urbano", "Charla", "H", "Jugadoras y riders hablan de cómo se gana lugar en la cancha."],
+        ["14:00", 3, "Elegí la jugada del día", "Encuesta en vivo", "V", "El público vota entre cinco jugadas y la ganadora sale en pantalla."],
+        ["15:30", 0, "Básquet 3x3: cuartos y semifinales", "Competencia", "H", "Los ocho mejores equipos buscan su lugar en la final."],
+        ["15:30", 2, "Estampá tu remera", "Taller", "P", "Serigrafía en el momento con la gráfica del torneo."],
+        ["18:00", 0, "Fútbol urbano: semifinales", "Competencia", "H", "Cuatro equipos y dos partidos para llegar a la final."],
+        ["18:00", 1, "Graffiti sobre rampa", "Workshop", "P", "Se pinta una rampa del skatepark junto a un artista invitado."],
+        ["20:00", 2, "DJ set de cierre", "Show", "P", "Música para terminar el día en la tribuna."] ] },
       { dia: "Día 3", lema: "Finales", sede: "Cancha central", acts: [
-        ["11:00", "Mural colectivo sobre la cancha", "Activación", "P"],
-        ["13:00", "Fútbol urbano: finales", "Competencia", "H"],
-        ["15:30", "Concurso de volcadas y triples", "Competencia", "H"],
-        ["17:00", "Básquet 3x3: final", "Competencia", "H"],
-        ["19:00", "Premiación y cierre con DJ", "Show", "P"] ] }
+        ["11:00", 0, "Mural colectivo sobre la cancha", "Activación", "P", "Entre todos se pinta el piso de la cancha antes de las finales."],
+        ["11:00", 2, "Marcas, clubes y barrio", "Charla", "H", "Cómo se financia el deporte urbano sin perder identidad."],
+        ["12:30", 1, "Skate: final", "Competencia", "H", "Ocho finalistas y dos pasadas cada uno."],
+        ["12:30", 2, "Primeros auxilios deportivos", "Taller", "P", "Qué hacer ante un esguince o un golpe hasta que llega la ayuda."],
+        ["14:00", 0, "Fútbol urbano: final", "Competencia", "H", "El partido que define al campeón de fútbol del torneo."],
+        ["14:00", 3, "Pronóstico de la final", "Encuesta en vivo", "V", "Antes del salto inicial, el público elige a su campeón desde la app."],
+        ["15:30", 0, "Volcadas y triples", "Competencia", "H", "Un concurso de destreza pura antes de la final de básquet."],
+        ["15:30", 2, "Editá tu video de jugadas", "Workshop", "H", "Montaje rápido en el celular para subir un clip el mismo día."],
+        ["17:00", 0, "Básquet 3x3: final", "Competencia", "H", "Los dos mejores equipos, a 21 puntos o diez minutos."],
+        ["19:00", 0, "Premiación y cierre", "Show", "H", "Entrega de premios con DJ en vivo."] ] }
     ],
     referentes: [
       { n: "Buenos Aires Extremo", d: "Festival gratuito de la Ciudad que junta deporte y cultura urbana. Quinta edición en diciembre de 2025, en el Parque Deportivo Costanera.",
@@ -223,25 +269,46 @@ const TEMAS = [
       "¿Cómo se muestra el sonido en una pieza que no suena?",
       "¿Qué dato concreto vuelve creíble la palabra «sustentable»?"
     ],
+    espacios: [
+      { n: "Escenario Tres Canales", d: "Música por auriculares" },
+      { n: "Rincón Silencio", d: "Charlas y pausa" },
+      { n: "Taller Circular", d: "Reciclado y oficios" },
+      { n: "Canal Cuatro", d: "En la app y por streaming" }
+    ],
     programa: [
-      { dia: "Día 1", lema: "Encendido", sede: "Bosques de Palermo · atardecer y noche", acts: [
-        ["17:00", "Apertura y retiro de auriculares", "Activación", "P"],
-        ["18:00", "Taller: armá una lámpara con material recuperado", "Taller", "P"],
-        ["19:30", "Charla: cómo suena un festival sin parlantes", "Charla", "H"],
-        ["21:00", "Sets en tres canales: elegí tu color", "Show", "P"],
-        ["23:00", "El canal más escuchado de la noche", "Encuesta en vivo", "V"] ] },
-      { dia: "Día 2", lema: "Inmersión", sede: "Bosques de Palermo · atardecer y noche", acts: [
-        ["16:00", "Yoga con auriculares", "Activación", "P"],
-        ["18:00", "Taller de reciclaje creativo", "Taller", "P"],
-        ["19:30", "Charla: luz, color y atmósfera", "Charla", "H"],
-        ["21:00", "Recital silencioso: banda en vivo por auriculares", "Show", "H"],
-        ["23:30", "Recorrido de instalaciones de luz con realidad aumentada", "Recorrido", "H"] ] },
-      { dia: "Día 3", lema: "Apagón", sede: "Bosques de Palermo · atardecer y noche", acts: [
-        ["16:00", "Cine silencioso al aire libre", "Show", "P"],
-        ["18:00", "Punto verde: cuánto se recicló, en pantalla", "Activación", "P"],
-        ["19:00", "Playlist colectiva armada por el público", "Activación", "V"],
-        ["21:00", "Sets de cierre en tres canales", "Show", "H"],
-        ["23:30", "Apagón final y devolución de auriculares", "Activación", "P"] ] }
+      { dia: "Día 1", lema: "Encendido", sede: "Bosques de Palermo · tarde y noche", acts: [
+        ["16:00", 0, "Apertura y retiro de auriculares", "Activación", "P", "Se entrega el auricular y se explica cómo cambiar de canal."],
+        ["16:00", 2, "Lámparas con material recuperado", "Taller", "P", "Botellas y cartón se convierten en luces que quedan colgadas en el bosque."],
+        ["17:30", 1, "Cómo suena un festival sin parlantes", "Charla", "H", "El equipo técnico cuenta cómo viaja la música hasta cada auricular."],
+        ["17:30", 2, "Teñido con tintes naturales", "Workshop", "P", "Yerba, cebolla y remolacha para teñir una remera sin químicos."],
+        ["19:00", 1, "Una ciudad con menos ruido", "Charla", "H", "Qué le hace el ruido al cuerpo y cómo se diseña un evento que no molesta."],
+        ["19:00", 3, "Armá la playlist de apertura", "Activación", "V", "El público suma canciones desde la app y las más votadas suenan primero."],
+        ["20:30", 0, "Sets en tres canales", "Show", "P", "Tres DJ tocan a la vez y cada persona elige a quién escuchar."],
+        ["20:30", 1, "Meditación guiada", "Activación", "P", "Veinte minutos de pausa con auriculares para bajar un cambio."],
+        ["22:30", 3, "El canal más escuchado", "Encuesta en vivo", "V", "La pantalla muestra en vivo qué color va ganando la noche."],
+        ["23:00", 0, "Cierre en un solo canal", "Show", "P", "Los tres DJ se unen y todo el bosque escucha lo mismo."] ] },
+      { dia: "Día 2", lema: "Inmersión", sede: "Bosques de Palermo · tarde y noche", acts: [
+        ["16:00", 1, "Yoga con auriculares", "Activación", "P", "Una clase al aire libre con la voz de la profesora directo al oído."],
+        ["16:00", 2, "Reciclaje creativo", "Taller", "P", "Objetos nuevos a partir de lo que el festival descarta."],
+        ["17:30", 1, "Luz, color y atmósfera", "Charla", "H", "Cómo se diseña la iluminación de un espacio abierto."],
+        ["17:30", 2, "Sintetizadores caseros", "Workshop", "P", "Se arma un instrumento simple con componentes reutilizados."],
+        ["19:00", 1, "Cuánto contamina un festival", "Charla", "H", "Los números de energía, residuos y traslados, y qué se puede bajar."],
+        ["19:00", 2, "Instrumentos con descartes", "Taller", "P", "Los chicos hacen maracas, tambores y sonajeros con envases."],
+        ["20:30", 0, "Recital silencioso", "Show", "H", "Una banda toca en vivo y solo se la escucha por auriculares."],
+        ["21:00", 3, "Sesión para escuchar desde casa", "Show", "V", "Un set exclusivo para quienes siguen el festival a distancia."],
+        ["22:30", 0, "Luces con realidad aumentada", "Recorrido", "H", "El celular revela capas ocultas en cada instalación del bosque."],
+        ["23:30", 0, "Trasnoche en tres canales", "Show", "P", "Último tramo de la noche, otra vez con tres DJ en simultáneo."] ] },
+      { dia: "Día 3", lema: "Apagón", sede: "Bosques de Palermo · tarde y noche", acts: [
+        ["16:00", 0, "Cine silencioso", "Show", "P", "Una película proyectada entre los árboles, con el sonido en los auriculares."],
+        ["16:00", 2, "Compost en casa", "Taller", "P", "Cómo empezar una compostera en un balcón."],
+        ["17:30", 1, "Diseñar con lo que sobra", "Charla", "H", "Diseñadores muestran productos hechos con material recuperado."],
+        ["17:30", 2, "Estampado con tintas al agua", "Workshop", "P", "Cada participante estampa su bolsa con tintas de bajo impacto."],
+        ["19:00", 1, "Qué dejó el festival", "Charla", "H", "Un balance abierto entre organizadores y público."],
+        ["19:00", 3, "Playlist colectiva", "Activación", "V", "La lista final se arma con los temas que eligió la gente en tres días."],
+        ["20:00", 2, "Punto verde: cuánto se recicló", "Activación", "P", "Se pesa lo recuperado y el número aparece en pantalla."],
+        ["21:00", 0, "Sets de cierre", "Show", "H", "La última noche en tres canales, también por streaming."],
+        ["23:00", 3, "Votá el momento del festival", "Encuesta en vivo", "V", "El público elige lo mejor de las tres jornadas desde la app."],
+        ["23:30", 0, "Apagón final", "Show", "P", "Se apagan las luces de a una y se devuelven los auriculares."] ] }
     ],
     referentes: [
       { n: "Silent Day frente al Planetario", d: "Fiesta silenciosa de Sony Argentina en los Bosques de Palermo, con transmisión por FM a los auriculares (2012).",
@@ -287,25 +354,46 @@ const TEMAS = [
       "¿Cómo firma la marca sin tapar la obra?",
       "¿Dónde entran cuatro sponsors sin convertir el muro en un cartel?"
     ],
+    espacios: [
+      { n: "Muro Mayor", d: "La medianera principal" },
+      { n: "Escenario Andamio", d: "Charlas" },
+      { n: "Taller Aerosol", d: "Talleres y workshops" },
+      { n: "Muro Virtual", d: "En la app y por streaming" }
+    ],
     programa: [
-      { dia: "Día 1", lema: "Primer trazo", sede: "Muros 1 a 3", acts: [
-        ["10:00", "Empieza la pintura en vivo", "Activación", "P"],
-        ["12:00", "Visita guiada a pie por el circuito", "Recorrido", "P"],
-        ["15:00", "Taller de stencil para principiantes", "Taller", "P"],
-        ["17:00", "Charla: del boceto digital a la medianera", "Charla", "H"],
-        ["19:30", "Proyección sobre muro", "Show", "P"] ] },
-      { dia: "Día 2", lema: "En proceso", sede: "Muros 4 a 6", acts: [
-        ["10:00", "Pintura en vivo, con seguimiento por streaming", "Activación", "H"],
-        ["11:30", "Taller de dibujo digital", "Taller", "V"],
-        ["14:00", "Recorrido en bici por el circuito", "Recorrido", "P"],
-        ["16:30", "Mesa: arte urbano y vecinos", "Charla", "H"],
-        ["19:00", "Muros con realidad aumentada: apuntá el celular", "Activación", "H"] ] },
+      { dia: "Día 1", lema: "Primer trazo", sede: "Circuito de medianeras · muros 1 a 3", acts: [
+        ["10:00", 0, "Primer trazo", "Activación", "P", "Los artistas marcan la cuadrícula y empiezan a pintar frente al público."],
+        ["10:00", 3, "Muros en directo", "Activación", "V", "Una cámara fija transmite el avance de cada medianera durante todo el día."],
+        ["11:30", 1, "Cómo se pinta una medianera", "Charla", "H", "Grúas, permisos, bocetos y cuántos litros de pintura hacen falta."],
+        ["11:30", 2, "Stencil para principiantes", "Taller", "P", "Se corta una plantilla propia y se la prueba sobre papel."],
+        ["14:00", 0, "Visita guiada a pie", "Recorrido", "P", "Un recorrido de una hora por los muros, con paradas para preguntar."],
+        ["14:00", 2, "Letras y caligrafía urbana", "Workshop", "P", "Del abecedario básico a una firma propia, con marcadores."],
+        ["16:00", 1, "Del boceto digital a la pared", "Charla", "H", "Un artista muestra cómo escala un dibujo de la tableta a veinte metros."],
+        ["16:00", 2, "Mural en miniatura", "Taller", "P", "Los chicos pintan una pared de cartón que después se exhibe."],
+        ["18:00", 3, "Elegí el color del próximo muro", "Encuesta en vivo", "V", "El público vota la paleta que va a usar uno de los artistas."],
+        ["19:30", 0, "Proyección sobre muro", "Show", "P", "Animaciones proyectadas sobre la medianera cuando cae el sol."] ] },
+      { dia: "Día 2", lema: "En proceso", sede: "Circuito de medianeras · muros 4 a 6", acts: [
+        ["10:00", 0, "Pintura en vivo", "Activación", "H", "Segundo día de trabajo en altura, con relato por streaming."],
+        ["10:00", 2, "Pegatinas y paste up", "Workshop", "P", "Diseño, impresión y pegado de afiches en un muro de práctica."],
+        ["11:30", 1, "Arte urbano y vecinos", "Charla", "H", "Artistas y vecinos discuten quién decide qué se pinta en el barrio."],
+        ["11:30", 3, "Dibujo digital", "Taller", "V", "Una clase en línea para dibujar con tableta desde casa."],
+        ["14:00", 0, "Recorrido en bici", "Recorrido", "P", "El circuito completo sobre dos ruedas, con guía."],
+        ["14:00", 2, "Aerosol: degradés y líneas", "Taller", "P", "Técnica básica de lata sobre paneles de práctica."],
+        ["16:00", 1, "Vivir del arte urbano", "Charla", "H", "Encargos, marcas y festivales: cómo se sostiene el oficio."],
+        ["16:00", 2, "Mural colaborativo", "Workshop", "P", "Un panel de diez metros pintado entre todos los inscriptos."],
+        ["18:00", 0, "Muros con realidad aumentada", "Activación", "H", "Al apuntar el celular, la obra se mueve y cuenta su historia."],
+        ["19:30", 1, "Batalla de bocetos", "Competencia", "H", "Dos ilustradores dibujan en vivo sobre un tema que elige el público."] ] },
       { dia: "Día 3", lema: "Muro terminado", sede: "Todo el circuito", acts: [
-        ["11:00", "Taller para chicos: mural colectivo", "Taller", "P"],
-        ["13:00", "Votación del público: tu muro favorito", "Encuesta en vivo", "V"],
-        ["15:00", "Visita guiada con los artistas", "Recorrido", "P"],
-        ["17:30", "Charla de cierre: qué le queda al barrio", "Charla", "H"],
-        ["19:00", "Inauguración de los muros y cierre", "Show", "P"] ] }
+        ["10:30", 1, "Restaurar y cuidar un mural", "Charla", "H", "Qué pasa con la obra cuando termina el festival."],
+        ["10:30", 2, "Mural colectivo para chicos", "Taller", "P", "Un muro bajo reservado para que pinten los más chicos."],
+        ["12:00", 0, "Últimos retoques", "Activación", "H", "Los artistas terminan los detalles y firman las obras."],
+        ["12:00", 3, "Votá tu muro favorito", "Encuesta en vivo", "V", "Una votación abierta que define el premio del público."],
+        ["14:00", 0, "Visita guiada con los artistas", "Recorrido", "P", "Cada autor explica su muro en el lugar."],
+        ["14:00", 2, "Serigrafía de afiches", "Workshop", "P", "Cada participante imprime y se lleva el afiche del festival."],
+        ["16:00", 1, "Qué le queda al barrio", "Charla", "H", "Un balance de cierre con vecinos, artistas y organizadores."],
+        ["16:00", 2, "Fanzines", "Taller", "P", "Se arma una publicación con dibujos hechos durante el festival."],
+        ["18:00", 3, "Galería virtual", "Activación", "V", "Todos los muros, fotografiados y recorribles desde la app."],
+        ["19:00", 0, "Inauguración de los muros", "Show", "H", "Se descubren las obras terminadas y se entrega el premio del público."] ] }
     ],
     referentes: [
       { n: "Color BA", d: "Festival de muralismo en La Boca, producido y curado por Tamara Selvood. Segunda edición en marzo de 2017.",
