@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="es-AR" data-tema="fuego">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistema gráfico para eventos · TP4 · Diseño Gráfico 3</title>
+<meta name="description" content="Qué se espera de un evento, cómo se suele mostrar y qué sostiene a un sistema gráfico prolijo. Material de cátedra para el TP4.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23151513%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%278%27 fill=%27%23d2420f%27/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script>
+  // Aplica modo y tema guardados antes de pintar, para evitar parpadeo.
+  (function () {
+    try {
+      var m = localStorage.getItem("tp4-modo"); if (m) document.documentElement.dataset.modo = m;
+      var t = localStorage.getItem("tp4-tema"); if (t) document.documentElement.dataset.tema = t;
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<a class="skip" href="#portada">Ir al contenido</a>
+
+<header class="bar">
+  <button class="bar__menu" id="btnIndice" aria-expanded="false" aria-controls="indice">
+    <span class="bar__burger" aria-hidden="true"></span><span class="bar__menutxt">Índice</span>
+  </button>
+  <div class="temas" id="temas" role="radiogroup" aria-label="Tema del TP"></div>
+  <div class="bar__tools">
+    <span class="bar__count" id="contador" aria-live="polite">01 / 15</span>
+    <button class="ico" id="btnPrev" aria-label="Anterior">←</button>
+    <button class="ico" id="btnNext" aria-label="Siguiente">→</button>
+    <button class="ico" id="btnModo" aria-label="Cambiar modo claro u oscuro"><span class="modo-ico" aria-hidden="true"></span></button>
+  </div>
+  <div class="bar__progress"><i id="progreso"></i></div>
+</header>
+
+<nav class="indice" id="indice" aria-label="Índice" hidden></nav>
+
+<main id="deck">
+
+<!-- 01 ─────────────────────────────────────────────── PORTADA -->
+<section class="slide slide--portada" id="portada" data-t="Portada">
+  <div class="wrap">
+    <p class="kicker"><span data-cfg="tp"></span> · <span data-cfg="materia"></span> · <span data-cfg="catedra"></span> · <span data-cfg="facultad"></span> <span data-cfg="anio"></span></p>
+    <h1 class="mega">Sistema gráfico<br>para un evento</h1>
+    <p class="bajada">Qué se espera, cómo se suele mostrar y qué sostiene a un sistema prolijo, utilizable y concreto.</p>
+    <div class="portada__temas" id="portadaTemas"></div>
+    <p class="ayuda"><kbd>←</kbd> <kbd>→</kbd> para avanzar · elegí tu tema y toda la presentación se adapta · los números en recuadro llevan a la fuente</p>
+  </div>
+</section>
+
+<!-- 02 ─────────────────────────────────────────────── EL PEDIDO -->
+<section class="slide" id="pedido" data-t="El pedido">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">01 · El pedido</p>
+      <h2>Te piden un sistema, no doce piezas</h2>
+      <p class="tldr"><b>TL;DR</b> Un festival masivo en Buenos Aires necesita que todo lo que comunica se reconozca como una sola cosa.</p>
+    </header>
+    <div class="trio">
+      <article class="verbo"><span class="verbo__n">1</span><h3>Identificar</h3><p>Que se sepa de qué evento es cada pieza, aunque no se lea el nombre.</p></article>
+      <article class="verbo"><span class="verbo__n">2</span><h3>Informar</h3><p>Motivos, precios, fechas y lugares, claros y siempre iguales.</p></article>
+      <article class="verbo"><span class="verbo__n">3</span><h3>Persuadir</h3><p>Que el público quiera ir, en persona o desde su casa.</p></article>
+    </div>
+    <div class="flujo" aria-label="Del pedido a las piezas">
+      <div class="flujo__box"><small>Cliente</small><b>Festival masivo</b><span>Entrada accesible</span></div>
+      <i class="flujo__arrow" aria-hidden="true"></i>
+      <div class="flujo__box"><small>Formato</small><b>Presencial, virtual e híbrido</b><span>Charlas, talleres, actividades</span></div>
+      <i class="flujo__arrow" aria-hidden="true"></i>
+      <div class="flujo__box"><small>Objetivo</small><b>Participación activa</b><span>Apps, encuestas en vivo, realidad aumentada</span></div>
+      <i class="flujo__arrow" aria-hidden="true"></i>
+      <div class="flujo__box flujo__box--on"><small>Entrega</small><b>1 sistema · 12 piezas</b><span data-cfg="fechas"></span></div>
+    </div>
+    <p class="nota">Fuente: consigna del TP4. <a data-f="tp"></a></p>
+  </div>
+</section>
+
+<!-- 03 ─────────────────────────────────────────────── QUÉ SE ESPERA -->
+<section class="slide" id="espera" data-t="Qué se espera">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">02 · Qué se espera de un evento así</p>
+      <h2>El público ya fue a otros eventos</h2>
+      <p class="tldr"><b>TL;DR</b> Seis cosas se repiten en los referentes argentinos. Si tu sistema no las resuelve, se nota la falta.</p>
+    </header>
+    <div class="patrones" id="patrones"></div>
+    <h3 class="sub">La escala de los referentes</h3>
+    <div class="stats" id="escalaRef"></div>
+    <p class="nota">Cada cifra corresponde a una edición y a una medición distinta: sirven para dimensionar, no para comparar entre sí.</p>
+  </div>
+</section>
+
+<!-- 04 ─────────────────────────────────────────────── MOMENTOS -->
+<section class="slide" id="momentos" data-t="Cuatro momentos">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">03 · Cómo se suele mostrar</p>
+      <h2>Un evento se comunica en cuatro momentos</h2>
+      <p class="tldr"><b>TL;DR</b> Cada pieza del TP trabaja en un momento distinto y por eso lleva una cantidad distinta de información.</p>
+    </header>
+    <div class="momentos" id="momentosTabs" role="tablist"></div>
+    <div class="momento" id="momentoPanel" role="tabpanel"></div>
+  </div>
+</section>
+
+<!-- 05 ─────────────────────────────────────────────── TU TEMA -->
+<section class="slide" id="tema" data-t="Tu tema">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">04 · Los cuatro temas</p>
+      <h2 id="temaTitulo">Tema</h2>
+      <p class="tldr" id="temaTldr"></p>
+    </header>
+    <div class="ficha" id="temaFicha"></div>
+  </div>
+</section>
+
+<!-- 06 ─────────────────────────────────────────────── REFERENTES -->
+<section class="slide" id="referentes" data-t="Referentes argentinos">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">05 · Referentes argentinos</p>
+      <h2 id="refTitulo">Quién ya lo hizo acá</h2>
+      <p class="tldr"><b>TL;DR</b> No se copian: se miran para entender qué resolvieron. Cada tarjeta dice qué mirar.</p>
+    </header>
+    <div class="refs" id="refs"></div>
+    <p class="nota">No reproducimos imágenes de terceros. Abrí la fuente de cada tarjeta y buscá el perfil oficial del evento para ver las piezas reales.</p>
+  </div>
+</section>
+
+<!-- 07 ─────────────────────────────────────────────── SISTEMAS COMPLETOS -->
+<section class="slide" id="sistemas" data-t="Sistemas completos">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">06 · Tres sistemas para estudiar enteros</p>
+      <h2>Más allá del tema: cómo se arma el conjunto</h2>
+      <p class="tldr"><b>TL;DR</b> Sirven para los cuatro temas porque muestran la regla, no el estilo.</p>
+    </header>
+    <div class="sistemas" id="sistemasGrid"></div>
+  </div>
+</section>
+
+<!-- 08 ─────────────────────────────────────────────── EL SISTEMA -->
+<section class="slide" id="sistema" data-t="Constantes y variables">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">07 · Qué sostiene al sistema</p>
+      <h2>Pocas constantes, variables con reglas</h2>
+      <p class="tldr"><b>TL;DR</b> Lo que no cambia hace reconocible al evento. Lo que cambia, cambia siempre de la misma manera.</p>
+    </header>
+    <div class="cv">
+      <div class="cv__col">
+        <h3>Constantes</h3>
+        <ul class="lista">
+          <li><b>Marca</b> y sus versiones</li>
+          <li><b>Dos familias tipográficas</b>, con roles fijos</li>
+          <li><b>Paleta</b> con proporciones definidas</li>
+          <li><b>Retícula</b> y márgenes</li>
+          <li><b>Un recurso propio</b>: ilustración, trama, foto tratada</li>
+          <li><b>Un gesto de movimiento</b></li>
+        </ul>
+      </div>
+      <div class="cv__col">
+        <h3>Variables</h3>
+        <ul class="lista">
+          <li><b>Formato</b> y proporción</li>
+          <li><b>Cantidad de información</b></li>
+          <li><b>Distancia y tiempo</b> de lectura</li>
+          <li><b>Contenido</b>: actividad, expositor, sede</li>
+          <li><b>Soporte</b>: papel, pantalla, tela, espacio</li>
+          <li><b>Presencia de sponsors</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="demo" id="demo">
+      <div class="demo__side">
+        <h3>Probá el sistema</h3>
+        <p class="demo__p">El mismo contenido, reacomodado para cada formato. Mirá qué entra, qué se achica y qué se va.</p>
+        <div class="seg" id="demoFormatos" role="radiogroup" aria-label="Formato"></div>
+        <div class="toggles">
+          <label class="tog"><input type="checkbox" id="tgReticula"><span>Ver retícula</span></label>
+          <label class="tog"><input type="checkbox" id="tgNiveles"><span>Ver niveles de lectura</span></label>
+          <label class="tog tog--warn"><input type="checkbox" id="tgRomper"><span>Romper el sistema</span></label>
+        </div>
+        <p class="demo__nota" id="demoNota"></p>
+      </div>
+      <div class="demo__stage">
+        <div class="lienzo" id="lienzo" data-fmt="sextuple">
+          <div class="lz">
+          <div class="l-img" data-nv="1"><span>IMAGEN</span></div>
+          <div class="l-marca" data-nv="1" data-dato="que"></div>
+          <div class="l-titular" data-nv="1" data-dato="que">Una idea, en pocas palabras</div>
+          <div class="l-fecha" data-nv="2" data-dato="cuando"></div>
+          <div class="l-lugar" data-nv="2" data-dato="donde"></div>
+          <div class="l-precio" data-nv="3" data-dato="cuanto">Entrada accesible</div>
+          <div class="l-cta" data-nv="2" data-dato="como">Anotate →</div>
+          <div class="l-sponsors" data-nv="3" data-dato="quien"></div>
+          <div class="l-grid" aria-hidden="true"></div>
+          </div>
+        </div>
+        <p class="demo__cap" id="demoCap"></p>
+      </div>
+    </div>
+    <p class="nota">Maqueta neutra a propósito: muestra la regla, no una propuesta de diseño.</p>
+  </div>
+</section>
+
+<!-- 09 ─────────────────────────────────────────────── LAS 12 PIEZAS -->
+<section class="slide" id="piezas" data-t="Las 12 piezas">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">08 · Las 12 piezas</p>
+      <h2>Qué hace cada una y cómo se comprueba</h2>
+      <p class="tldr"><b>TL;DR</b> Cada pieza tiene una función, un formato, un error típico y una prueba rápida. Tocá una.</p>
+    </header>
+    <div class="piezas">
+      <div class="piezas__lista" id="piezasLista" role="tablist" aria-label="Piezas"></div>
+      <article class="pieza" id="piezaPanel" role="tabpanel" aria-live="polite"></article>
+    </div>
+  </div>
+</section>
+
+<!-- 10 ─────────────────────────────────────────────── ESCALA -->
+<section class="slide" id="escala" data-t="Tamaño y tiempo">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">09 · Tamaño y tiempo</p>
+      <h2>La misma marca, de un pulgar a cuatro metros</h2>
+      <p class="tldr"><b>TL;DR</b> En pantalla todo mide lo mismo. En la calle, no: diseñá sabiendo el tamaño real y el tiempo real.</p>
+    </header>
+    <figure class="fig">
+      <figcaption>Tamaño real, a escala <span class="mono">(1 cuadro = 1 m)</span></figcaption>
+      <div class="fig__scroll" id="escalaSvg"></div>
+    </figure>
+    <figure class="fig">
+      <figcaption>Duración de las piezas en movimiento, en segundos</figcaption>
+      <div class="dur" id="duraciones"></div>
+    </figure>
+    <p class="nota">Medidas de la consigna. Séxtuple: medida de circuito comercial, puede variar según el proveedor. <a data-f="sextuple"></a></p>
+  </div>
+</section>
+
+<!-- 11 ─────────────────────────────────────────────── JERARQUÍA -->
+<section class="slide" id="jerarquia" data-t="Información y jerarquía">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">10 · Información y jerarquía</p>
+      <h2>Seis datos, tres niveles de lectura</h2>
+      <p class="tldr"><b>TL;DR</b> No todas las piezas llevan todos los datos. Decidir qué queda afuera también es diseñar.</p>
+    </header>
+    <div class="niveles">
+      <article class="nivel"><span class="nivel__n">1</span><h3>Se ve</h3><p class="nivel__t">1 segundo · de lejos</p><p>Imagen, marca, titular. Si esto falla, nadie llega a lo demás.</p></article>
+      <article class="nivel"><span class="nivel__n">2</span><h3>Se lee</h3><p class="nivel__t">3 a 5 segundos</p><p>Fecha, lugar, llamado a la acción.</p></article>
+      <article class="nivel"><span class="nivel__n">3</span><h3>Se consulta</h3><p class="nivel__t">Con tiempo, de cerca</p><p>Precio, programa, web, sponsors, legales.</p></article>
+    </div>
+    <h3 class="sub">Qué dato lleva cada pieza</h3>
+    <div class="matriz__scroll"><table class="matriz" id="matriz"></table></div>
+    <p class="leyenda"><span class="dot dot--si"></span> Va siempre <span class="dot dot--op"></span> Según el caso <span class="dot dot--no"></span> No va</p>
+    <p class="nota">Lectura sugerida a partir de la consigna, para discutir en clase.</p>
+  </div>
+</section>
+
+<!-- 12 ─────────────────────────────────────────────── PERSUASIÓN -->
+<section class="slide" id="persuasion" data-t="Persuasión y CTA">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">11 · Persuadir</p>
+      <h2>Primero las ganas, después los datos</h2>
+      <p class="tldr"><b>TL;DR</b> El teaser promete, el promocional explica y el llamado a la acción dice exactamente qué hacer.</p>
+    </header>
+    <div class="vs">
+      <article class="vs__col">
+        <h3>Teaser <span class="mono">15–20 s</span></h3>
+        <dl class="defs">
+          <dt>Objetivo</dt><dd>Expectativa</dd>
+          <dt>Información</dt><dd>Nombre y fecha, nada más</dd>
+          <dt>Tono</dt><dd>Clima, pista, misterio</dd>
+          <dt>Cierre</dt><dd>ID animado</dd>
+        </dl>
+        <div class="beats" id="beatsTeaser"></div>
+      </article>
+      <article class="vs__col">
+        <h3>Promocional <span class="mono">45–60 s</span></h3>
+        <dl class="defs">
+          <dt>Objetivo</dt><dd>Que decidan ir</dd>
+          <dt>Información</dt><dd>Activaciones y datos completos</dd>
+          <dt>Tono</dt><dd>Claro, con ritmo, subtitulado</dd>
+          <dt>Cierre</dt><dd>CTA + ID animado</dd>
+        </dl>
+        <div class="beats" id="beatsPromo"></div>
+      </article>
+    </div>
+    <h3 class="sub">Anatomía de un llamado a la acción</h3>
+    <div class="cta-anat">
+      <div class="cta-anat__p"><b>Anotate</b><small>Verbo en imperativo, uno solo</small></div>
+      <div class="cta-anat__p"><b>gratis</b><small>Qué gano o qué me cuesta</small></div>
+      <div class="cta-anat__p"><b>hasta el 10/11</b><small>Por qué ahora</small></div>
+      <div class="cta-anat__p"><b>evento.com.ar</b><small>Dónde: un solo destino, o QR</small></div>
+    </div>
+    <p class="nota">Estructuras sugeridas. Las duraciones salen de la consigna; los cortes internos son una guía.</p>
+  </div>
+</section>
+
+<!-- 13 ─────────────────────────────────────────────── ESPACIO Y SPONSORS -->
+<section class="slide" id="espacio" data-t="Espacio, sponsors, merch">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">12 · El sistema sale del plano</p>
+      <h2>Espacio, sponsors y cosas para llevarse</h2>
+      <p class="tldr"><b>TL;DR</b> El photo opportunity se diseña para la cámara del celular, los sponsors tienen su franja y el merchandising usa todo el sistema.</p>
+    </header>
+    <div class="tres">
+      <article class="card">
+        <h3>Photo opportunity</h3>
+        <div id="photoSvg" class="card__fig"></div>
+        <ul class="lista lista--s">
+          <li>Mínimo <b>4 × 4 m</b></li>
+          <li>La marca entra en el encuadre vertical</li>
+          <li>Se entiende dónde pararse</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Sponsors de <span data-bind="nombre"></span></h3>
+        <div class="spon" id="sponBox"></div>
+        <ul class="lista lista--s">
+          <li>Una franja propia, siempre en el mismo lugar</li>
+          <li>Mismo peso visual para los cuatro</li>
+          <li>En un color cuando el fondo es complejo</li>
+          <li>Área de resguardo alrededor de cada uno</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Merchandising: 2 + 8</h3>
+        <div class="merch">
+          <span class="merch__i merch__i--on">Remera</span><span class="merch__i merch__i--on">Tote bag</span>
+          <span class="merch__i">3</span><span class="merch__i">4</span><span class="merch__i">5</span><span class="merch__i">6</span><span class="merch__i">7</span><span class="merch__i">8</span><span class="merch__i">9</span><span class="merch__i">10</span>
+        </div>
+        <ul class="lista lista--s">
+          <li>Dos obligatorios, ocho a elección</li>
+          <li>Que tengan sentido para <b data-bind="tipo"></b></li>
+          <li>Patrones y misceláneas, no solo el logo</li>
+          <li>Pensar tintas y técnica de impresión</li>
+        </ul>
+      </article>
+    </div>
+    <p class="nota">Sponsors y requisitos según la consigna. <a data-f="tp"></a></p>
+  </div>
+</section>
+
+<!-- 14 ─────────────────────────────────────────────── AUTOEVALUACIÓN -->
+<section class="slide" id="checklist" data-t="Autoevaluación">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">13 · Antes de entregar</p>
+      <h2>Las cinco pautas de evaluación, en forma de checklist</h2>
+      <p class="tldr"><b>TL;DR</b> Quince comprobaciones para hacer frente a la entrega. Se guardan en este navegador.</p>
+    </header>
+    <div class="pautas" id="pautas"></div>
+    <div class="score">
+      <div class="score__bar"><i id="scoreBar"></i></div>
+      <p class="score__t"><b id="scoreN">0</b> de 15 resueltas <button class="link" id="scoreReset">Reiniciar</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- 15 ─────────────────────────────────────────────── FUENTES -->
+<section class="slide" id="fuentes" data-t="Fuentes">
+  <div class="wrap">
+    <header class="head">
+      <p class="kicker">14 · Fuentes</p>
+      <h2>De dónde sale cada dato</h2>
+      <p class="tldr"><b>TL;DR</b> Todo lo que tiene número tiene fuente. Relevamiento hecho en octubre de 2026.</p>
+    </header>
+    <div class="fuentes" id="fuentesLista"></div>
+    <p class="colofon">Tipografías: Archivo y Chivo Mono, de Omnibus-Type, fundidora argentina (licencia SIL OFL). Material de cátedra de uso educativo. Los diagramas son propios; las marcas y eventos citados pertenecen a sus titulares.</p>
+  </div>
+</section>
+
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
