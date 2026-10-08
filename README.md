@@ -9,6 +9,26 @@ Acompaña el TP4 (sistema de identificación y comunicación para un evento) y r
 
 Los cuatro temas: Fuego Nativo, Cruce Urbano, Ritmo Blanco y Trazo Oculto.
 
+## Dos archivos, dos usos
+
+- **`index.html`**: la presentación web completa, para recorrer y consultar (referentes, fuentes, fichas, checklist).
+- **`clase.html`**: la versión en slides para dar la clase. 30 slides en 16:9, con pasos animados, demos interactivas y notas para el docente. Se enlaza desde la portada de `index.html`.
+
+### Atajos de `clase.html`
+
+| Acción | Tecla |
+|---|---|
+| Siguiente paso o slide | `→`, `Espacio`, `AvPág` (puntero de presentación) |
+| Paso o slide anterior | `←`, `RePág` |
+| Índice de slides | `I` |
+| Notas para el docente | `N` |
+| Cambiar de tema | `1` `2` `3` `4` |
+| Pantalla completa | `F` |
+| Pantalla en negro | `B` |
+| Ir a una slide | `clase.html#12` |
+
+Los textos de cada slide están en `clase.html`; los datos compartidos (temas, programa, piezas, ejemplos) salen de `assets/js/data.js`, así que un cambio ahí se ve en las dos presentaciones.
+
 ## Cómo verla
 
 Abrí `index.html` en el navegador. No necesita instalación, servidor ni conexión: las tipografías están incluidas.
@@ -47,9 +67,12 @@ Todo el contenido está en **`assets/js/data.js`**. No hace falta tocar el HTML 
 
 ```
 index.html            Estructura de las 17 pantallas
+clase.html            Presentación de clase en slides (30)
 assets/css/styles.css Estilos
 assets/js/data.js     Contenido (editar acá)
-assets/js/app.js      Navegación e interacciones
+assets/js/app.js      Navegación e interacciones de index.html
+assets/js/clase.js    Motor de slides y demos de clase.html
+assets/css/clase.css  Estilos de clase.html
 assets/fonts/         Archivo y Chivo Mono (Omnibus-Type, licencia SIL OFL)
 assets/img/ejemplos/  Imágenes del carrusel, optimizadas para web
 ```

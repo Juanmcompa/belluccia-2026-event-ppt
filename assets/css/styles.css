@@ -649,3 +649,7 @@ a.stat:hover { background: var(--surface2); }
 .visor img { max-width: 94vw; max-height: 86vh; width: auto; height: auto; display: block; border-radius: 3px; }
 .visor__t { position: fixed; left: 0; right: 0; bottom: 14px; text-align: center; color: #f3f1ea; font-size: 14px; padding: 0 60px; }
 .visor__x { position: fixed; top: 14px; right: 16px; width: 44px; height: 44px; border-radius: 50%; background: #f3f1ea; color: #151513; font-size: 18px; display: grid; place-items: center; }
+
+/* Enlace a la presentación de clase */
+.btn-clase { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--bg); text-decoration: none; border-radius: 99px; padding: 10px 18px; font-weight: 700; font-stretch: 88%; }
+.btn-clase:hover { background: var(--accent); color: var(--on-accent); }

@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="es-AR" data-tema="fuego">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clase · Sistema gráfico para un evento · TP4</title>
+<meta name="description" content="Presentación de clase del TP4 de Diseño Gráfico 3: los conceptos de un sistema gráfico para eventos, con demos interactivas.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23151513%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%278%27 fill=%27%23d2420f%27/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/clase.css">
+<script>
+  (function () {
+    try {
+      var m = localStorage.getItem("tp4-modo"); if (m) document.documentElement.dataset.modo = m;
+      var t = new URLSearchParams(location.search).get("tema") || localStorage.getItem("tp4-tema");
+      if (t) document.documentElement.dataset.tema = t;
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<div class="vista">
+<main class="deck" id="deck" aria-live="polite">
+
+<!-- ═════════════════════════════════════ APERTURA -->
+<section class="s s--portada" id="portada" data-t="Portada"
+  data-notas="Presentar el TP4. Cada grupo elige su tema: las teclas 1 a 4 (o las tarjetas) cambian el color de toda la presentación y los ejemplos que usan el nombre del evento.">
+  <p class="k in"><b data-cfg="tp"></b> · <span data-cfg="materia"></span> · <span data-cfg="catedra"></span> · <span data-cfg="facultad"></span> <span data-cfg="anio"></span></p>
+  <h1 class="t1 in" style="--d:1">Sistema gráfico<br>para un evento</h1>
+  <p class="lead in" style="--d:2">Qué se espera de un evento, cómo se comunica y qué hace que doce piezas se reconozcan como una sola cosa.</p>
+  <div class="portada__temas in" style="--d:3" id="portadaTemas"></div>
+</section>
+
+<section class="s" id="pregunta" data-t="La pregunta de hoy"
+  data-notas="Preguntar al aula antes de avanzar: ¿qué tendrían que tener en común estas doce piezas para que parezcan del mismo evento? Recién después avanzar: las piezas se ordenan solas.">
+  <p class="k in">La pregunta de hoy</p>
+  <h2 class="t2 in" style="--d:1">¿Qué hace que doce piezas parezcan<br>un solo evento?</h2>
+  <div class="doce caos in" style="--d:2" id="doce"></div>
+  <p class="lead f" data-accion="ordenar">No es el logo pegado en todas. Es un conjunto de <b>reglas que se repiten</b>: tipografía, color, retícula, un recurso propio y un modo de moverse.</p>
+</section>
+
+<!-- ═════════════════════════════════════ BLOQUE 1 -->
+<section class="s s--div" id="b1" data-t="01 · El evento" data-div
+  data-notas="Primer bloque: antes de diseñar hay que entender qué se le promete al público y en qué momentos se le habla.">
+  <span class="div__n">01</span>
+  <p class="k in">Bloque 1</p>
+  <h2 class="div__t in" style="--d:1">El evento</h2>
+  <p class="div__p in" style="--d:2">Antes de diseñar, entender qué se promete, cuándo se comunica y qué pasa adentro.</p>
+  <div class="div__lista in" style="--d:3"><span>La consigna</span><span>Los cuatro temas</span><span>La promesa</span><span>Los momentos</span><span>El programa</span></div>
+</section>
+
+<section class="s" id="consigna" data-t="La consigna"
+  data-notas="Repasar el pedido del cliente. Remarcar que la entrega es un sistema: la primera presentación muestra pocas piezas, pero tienen que alcanzar para entender las reglas.">
+  <p class="k in">La consigna</p>
+  <h2 class="t2 in" style="--d:1">Un festival masivo, cuatro temas, doce piezas</h2>
+  <div class="datos-c in" style="--d:2">
+    <div><small>Fechas</small><b data-cfg="fechas"></b></div>
+    <div><small>Entrada</small><b>Accesible</b></div>
+    <div><small>Formato</small><b>Presencial, virtual e híbrido</b></div>
+    <div><small>Participación</small><b>Apps, encuestas en vivo y realidad aumentada</b></div>
+  </div>
+  <div class="piezas12 f" id="piezas12"></div>
+  <p class="p f">El objetivo: <b>identificar</b> el evento, <b>informar</b> motivos, precios y fechas, y <b>persuadir</b> para que el público vaya, en persona o desde su casa.</p>
+</section>
+
+<section class="s" id="temas" data-t="Los cuatro temas"
+  data-notas="Tocar cada tarjeta para abrir la clave del tema: es el problema de diseño más importante de cada uno. Ejemplo: en Fuego Nativo la locación cambia todos los días.">
+  <p class="k in">Los cuatro temas</p>
+  <h2 class="t2 in" style="--d:1">Cuatro eventos, cuatro problemas distintos</h2>
+  <p class="p in" style="--d:2">Tocá cada tarjeta: debajo aparece el problema central de ese tema.</p>
+  <div class="temas4 in" style="--d:3" id="temas4"></div>
+</section>
+
+<section class="s" id="c01" data-t="Concepto 01 · La promesa"
+  data-notas="Los seis patrones salen del relevamiento de ferias, torneos y festivales argentinos (Masticar, Buenos Aires Market, Buenos Aires Extremo, Bioferia, Color BA, Lollapalooza). Preguntar: ¿cuál de los seis falta más seguido en las piezas que ven en la calle?">
+  <div class="c2">
+    <div class="col">
+      <p class="k in">Concepto <b>01</b></p>
+      <h2 class="t2 in" style="--d:1">Un evento es una promesa</h2>
+      <p class="p in" style="--d:2">El público llega con expectativas armadas por otros eventos. En los referentes argentinos se repiten seis cosas que la comunicación tiene que resolver.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Si la comunicación no responde lo básico (cuánto sale, dónde es, cómo funciona) la duda le gana al interés. Nadie va a un evento que no entiende.</p></div>
+    </div>
+    <div class="demo"><div class="patr" id="patr"></div></div>
+  </div>
+</section>
+
+<section class="s" id="c02" data-t="Concepto 02 · Cuatro momentos"
+  data-notas="Avanzar columna por columna. Las barras muestran cuántos de los seis datos obligatorios lleva cada momento: el teaser casi nada, la convocatoria todo.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>02</b></p>
+      <h2 class="t2 in" style="--d:1">Cuatro momentos, cuatro trabajos</h2>
+      <p class="p in" style="--d:2">La comunicación empieza semanas antes y termina después del evento. En cada momento la pieza hace un trabajo distinto y lleva una cantidad distinta de información.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Pedirle a un teaser que informe, o a un programa que intrigue, es pedirle a la pieza un trabajo que no es el suyo.</p></div>
+    </div>
+    <div class="demo">
+      <div class="mom4" id="mom4"></div>
+      <p class="leyenda-datos"><i></i>Cada bloque es uno de los seis datos: qué, cuándo, dónde, cuánto, cómo y quiénes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c03" data-t="Concepto 03 · El programa"
+  data-notas="El programa de ejemplo está en la presentación web, con los tres días y filtros. Recordar que todo es inventado y modificable. Señalar los horarios con actividades en simultáneo.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>03</b></p>
+      <h2 class="t2 in" style="--d:1">El programa es lo que pasa adentro</h2>
+      <p class="p in" style="--d:2">Charlas, workshops, talleres y shows que ocurren a la vez en espacios distintos. Inventarlo es parte del trabajo: sin actividades, no hay qué comunicar.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Es la pieza más usada durante el evento y la fuente de casi todas las demás: el A2, los posteos, el video de espera y los overlays salen de acá.</p></div>
+    </div>
+    <div class="demo">
+      <p class="mono chico in" style="--d:2" id="pgTitulo"></p>
+      <div class="pg in" style="--d:3" id="pg"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════ BLOQUE 2 -->
+<section class="s s--div" id="b2" data-t="02 · El sistema" data-div
+  data-notas="Segundo bloque: las reglas. Es el corazón del TP y lo que más pesa en la evaluación (coherencia sistémica).">
+  <span class="div__n">02</span>
+  <p class="k in">Bloque 2</p>
+  <h2 class="div__t in" style="--d:1">El sistema</h2>
+  <p class="div__p in" style="--d:2">Las reglas que hacen que todo se reconozca, aunque cambie el formato.</p>
+  <div class="div__lista in" style="--d:3"><span>Constantes y variables</span><span>Coherencia</span><span>Identificador</span></div>
+</section>
+
+<section class="s" id="c04" data-t="Concepto 04 · Constantes y variables"
+  data-notas="La demo recorre los formatos sola. Pausar en uno y preguntar qué cambió y qué quedó igual. La maqueta es neutra a propósito: muestra la regla, no una propuesta.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>04</b></p>
+      <h2 class="t2 in" style="--d:1">Pocas constantes, variables con reglas</h2>
+      <p class="p in" style="--d:2"><b>Constantes:</b> marca, dos familias tipográficas, paleta, retícula, un recurso propio y un gesto de movimiento. <b>Variables:</b> formato, cantidad de información, distancia y soporte.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Doce piezas, muchos formatos y varias manos. Sin reglas, cada pieza se rediseña desde cero y el evento se fragmenta. Con reglas, se reconoce antes de leer el nombre.</p></div>
+    </div>
+    <div class="demo">
+      <div class="morph-stage in" style="--d:2"><div class="lienzo" id="morph" data-fmt="sextuple"></div></div>
+      <p class="morph-cap" id="morphCap"></p>
+      <div class="morph-ctrl"><button class="btn" id="morphPlay" aria-pressed="true">❚❚ Pausa</button><div class="seg" id="morphSeg"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c05" data-t="Concepto 05 · Coherencia"
+  data-notas="Tocar «Romper el sistema»: mismos datos y mismas posiciones, pero cada pieza con otra voz. Preguntar si siguen pareciendo del mismo evento.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>05</b></p>
+      <h2 class="t2 in" style="--d:1">Cada pieza suma o resta</h2>
+      <p class="p in" style="--d:2">El reconocimiento se construye por repetición: el público ve una pieza en la calle, otra en el celular y otra en el evento. Si cada una habla con otra voz, no se suman.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Una pieza que rompe el sistema no solo se ve mal: le resta fuerza a todas las demás.</p></div>
+      <button class="btn btn--acc in" style="--d:4; justify-self:start" id="romper" aria-pressed="false">Romper el sistema</button>
+    </div>
+    <div class="demo"><div class="lienzos3 in" style="--d:2" id="tres"></div></div>
+  </div>
+</section>
+
+<section class="s" id="c06" data-t="Concepto 06 · Identificador"
+  data-notas="Mover el control de tamaño. A partir de cierto tamaño la versión principal ya no se lee y aparece la necesidad de una versión reducida. Probar las marcas de los grupos a 110 px.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>06</b></p>
+      <h2 class="t2 in" style="--d:1">Una marca, de 110 píxeles a 4 metros</h2>
+      <p class="p in" style="--d:2">El identificador es la única pieza que aparece en todas las demás. Por eso necesita versiones: principal, reducida, en un color y en negativo.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Si la marca solo funciona grande, el evento desaparece justo donde más se ve: el avatar, la credencial, el sticker, la esquina del streaming.</p></div>
+    </div>
+    <div class="demo escmarca">
+      <div class="escmarca__vista in" style="--d:2">
+        <div><span class="mk" id="mkP"></span><small>Versión principal</small></div>
+        <div><span class="mk-red" id="mkR"></span><small>Versión reducida</small></div>
+      </div>
+      <p class="escmarca__uso" id="mkUso"></p>
+      <input type="range" id="mkRango" min="12" max="420" value="110" aria-label="Tamaño de la marca en píxeles">
+      <div class="escmarca__regla"><span>16 px · favicon</span><span>110 px · avatar</span><span>afiche</span><span>4 m · photo op</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════ BLOQUE 3 -->
+<section class="s s--div" id="b3" data-t="03 · Leer y actuar" data-div
+  data-notas="Tercer bloque: cómo se lee una pieza y qué la vuelve útil. Acá se juega el rendimiento comunicacional.">
+  <span class="div__n">03</span>
+  <p class="k in">Bloque 3</p>
+  <h2 class="div__t in" style="--d:1">Leer y actuar</h2>
+  <p class="div__p in" style="--d:2">Cómo se lee una pieza y qué hace que alguien termine yendo al evento.</p>
+  <div class="div__lista in" style="--d:3"><span>Jerarquía</span><span>Datos</span><span>Llamado a la acción</span><span>Teaser y promocional</span><span>Movimiento</span></div>
+</section>
+
+<section class="s" id="c07" data-t="Concepto 07 · Tres segundos"
+  data-notas="Hacer el test con el aula: primero «Sin jerarquía», 3 segundos, y preguntar qué recuerdan. Después «Con jerarquía». La diferencia suele ser la fecha y el nombre.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>07</b></p>
+      <h2 class="t2 in" style="--d:1">Tres segundos para ganar o perder</h2>
+      <p class="p in" style="--d:2">En la calle y en el feed nadie lee: escanea. Una pieza tiene tres niveles de lectura.</p>
+      <div class="niv in" style="--d:3"><div><b>Se ve</b><span>1 s · imagen, marca, titular</span></div><div><b>Se lee</b><span>3 a 5 s · fecha, lugar, acción</span></div><div><b>Se consulta</b><span>con tiempo · precio, sponsors</span></div></div>
+      <div class="porque in" style="--d:4"><span>Por qué importa</span><p>Si el primer nivel no captura en un segundo, el resto de la información nunca llega, por buena que sea.</p></div>
+    </div>
+    <div class="demo t3s">
+      <div class="seg" id="t3sVar"><button aria-pressed="true" data-v="mal">Sin jerarquía</button><button aria-pressed="false" data-v="bien">Con jerarquía</button></div>
+      <div class="t3s__escena">
+        <div class="afi afi--mal oculto" id="t3sAfi"></div>
+        <div class="t3s__cuenta" id="t3sCuenta"></div>
+        <div class="t3s__preg" id="t3sPreg"></div>
+      </div>
+      <div class="fila"><button class="btn btn--acc" id="t3sGo">Mirar 3 segundos</button><button class="btn" id="t3sVer">Mostrar</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c08" data-t="Concepto 08 · Datos obligatorios"
+  data-notas="Sacar datos de a uno y leer la consecuencia. Cerrar con: no todas las piezas llevan los seis (la matriz está en la presentación web), pero ninguna puede perder los que le tocan.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>08</b></p>
+      <h2 class="t2 in" style="--d:1">Sin datos, no hay evento</h2>
+      <p class="p in" style="--d:2">Qué, cuándo, dónde, cuánto, cómo y quiénes. No todas las piezas llevan los seis, pero cada uno que falta tiene una consecuencia.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Una pieza hermosa sin fecha no convoca a nadie. Los datos son la parte de la pieza que convierte el interés en asistencia.</p></div>
+    </div>
+    <div class="demo dat">
+      <div class="afi" id="datAfi"></div>
+      <div class="dat__chips"><div id="datChips" class="dat__chips"></div><p class="dat__msg ok" id="datMsg"></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c09" data-t="Concepto 09 · Llamado a la acción"
+  data-notas="Armar el llamado a la acción parte por parte, desde «Más info». Pedir a los grupos que escriban el CTA de su evento con las cuatro partes.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>09</b></p>
+      <h2 class="t2 in" style="--d:1">Decir exactamente qué hacer</h2>
+      <p class="p in" style="--d:2">Un llamado a la acción tiene cuatro partes: un verbo, un beneficio, un motivo para hacerlo ahora y un único destino.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>La persuasión necesita una salida. Si la pieza no dice qué hacer, cómo y hasta cuándo, el interés se evapora antes de convertirse en una entrada.</p></div>
+    </div>
+    <div class="demo">
+      <div class="cta-prev in" style="--d:2"><div class="cta-prev__btn" id="ctaBtn"></div></div>
+      <div class="cta-partes" id="ctaPartes"></div>
+      <div class="medidor" id="ctaMed"><i></i><i></i><i></i><i></i></div>
+      <p class="medidor-t" id="ctaTxt"></p>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c10" data-t="Concepto 10 · Teaser y promocional"
+  data-notas="Reproducir: los dos videos corren acelerados (el teaser en 5 segundos, el promocional en 15). Señalar dónde aparece cada dato y que los dos cierran con el ID.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>10</b></p>
+      <h2 class="t2 in" style="--d:1">Primero las ganas, después los datos</h2>
+      <p class="p in" style="--d:2">El <b>teaser</b> (15 a 20 s) promete sin revelar. El <b>promocional</b> (45 a 60 s) explica actividades y datos. Los dos cierran con el ID animado.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Atención e información son dos trabajos distintos. Un teaser con horarios ya no intriga; un promocional sin datos no convoca.</p></div>
+    </div>
+    <div class="demo">
+      <div class="lt" id="ltTeaser"></div>
+      <div class="lt" id="ltPromo"></div>
+      <p class="lt__ahora" id="ltAhora"></p>
+      <div class="fila"><button class="btn btn--acc" id="ltPlay">▶ Reproducir</button><button class="btn" id="ltReset">Reiniciar</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c11" data-t="Concepto 11 · Movimiento"
+  data-notas="El ID de la derecha es un ejemplo neutro de 5 segundos: aparece, se arma y queda quieto. Esa última imagen tiene que poder usarse como marca fija.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>11</b></p>
+      <h2 class="t2 in" style="--d:1">El tiempo también es formato</h2>
+      <p class="p in" style="--d:2">En las piezas animadas la duración está pedida. Y el ID animado define cómo se mueve todo el sistema: termina en la marca quieta y se entiende sin sonido.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>El movimiento también es identidad. Si cada video se anima distinto, el sistema se rompe en el tiempo aunque se sostenga en el plano.</p></div>
+    </div>
+    <div class="demo">
+      <div class="dur" id="dur"></div>
+      <div class="idanim" id="idanim"><div class="idanim__m"><i class="idanim__c"></i><span class="idanim__w" id="idW"></span></div><i class="idanim__p"></i><span class="idanim__t">ID animado · 5 s en loop</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════ BLOQUE 4 -->
+<section class="s s--div" id="b4" data-t="04 · Formatos y espacio" data-div
+  data-notas="Cuarto bloque: el sistema sale de la pantalla. Escala, vía pública, redes, espacio y sponsors.">
+  <span class="div__n">04</span>
+  <p class="k in">Bloque 4</p>
+  <h2 class="div__t in" style="--d:1">Formatos y espacio</h2>
+  <p class="div__p in" style="--d:2">El sistema sale a la calle, al celular y al lugar del evento.</p>
+  <div class="div__lista in" style="--d:3"><span>Escala real</span><span>Vía pública</span><span>Redes</span><span>Photo opportunity</span><span>Sponsors</span></div>
+</section>
+
+<section class="s" id="c12" data-t="Concepto 12 · Escala real"
+  data-notas="Avanzar objeto por objeto. Recordar que en la computadora todo se diseña al mismo tamaño de pantalla; conviene imprimir o mirar las piezas a escala antes de cerrarlas.">
+  <p class="k in">Concepto <b>12</b></p>
+  <h2 class="t2 in" style="--d:1">En la calle, nada mide lo mismo</h2>
+  <div class="esc in" style="--d:2" id="esc"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+    <p class="p in" style="--d:3">A la misma escala, una cuadrícula de 1 metro: una persona con el programa A2, un séxtuple, una valla, el photo opportunity y un colectivo.</p>
+    <div class="porque in" style="--d:4"><span>Por qué importa</span><p>En la pantalla todo mide lo mismo. Una letra que se lee perfecto en el monitor desaparece en una valla vista desde un auto.</p></div>
+  </div>
+</section>
+
+<section class="s" id="c13" data-t="Concepto 13 · Vía pública"
+  data-notas="La consigna pide el séxtuple. Mupi, valla y transporte son los medios que lo acompañan en una campaña real. Cada uno pone a prueba algo distinto del sistema.">
+  <p class="k in">Concepto <b>13</b></p>
+  <h2 class="t2 in" style="--d:1">Cuatro medios, cuatro exigencias</h2>
+  <div class="calle4" id="calle4"></div>
+  <div class="porque f"><span>Por qué importa</span><p>Cada medio cambia proporción, distancia y tiempo de lectura. Es la prueba más dura: si los elementos se articulan bien acá, el sistema se sostiene en todas las piezas.</p></div>
+</section>
+
+<section class="s" id="c14" data-t="Concepto 14 · Redes"
+  data-notas="Alternar entre posteos sueltos y grilla con sistema. La grilla del perfil recorta en 3:4: hay que verla completa antes de cerrar cada posteo.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>14</b></p>
+      <h2 class="t2 in" style="--d:1">El perfil se ve como grilla</h2>
+      <p class="p in" style="--d:2">Antes de abrir un posteo, la gente ve el perfil: avatar, tres publicaciones fijadas y la grilla. Cada posteo cuenta una actividad, un expositor o un taller.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Si las piezas no se piensan juntas, el perfil parece de varios eventos distintos y se pierde la confianza.</p></div>
+      <button class="btn btn--acc in" style="--d:4; justify-self:start" id="igBtn" aria-pressed="false">Aplicar el sistema</button>
+    </div>
+    <div class="demo"><div class="ig caos in" style="--d:2" id="ig"></div></div>
+  </div>
+</section>
+
+<section class="s" id="c15" data-t="Concepto 15 · Photo opportunity"
+  data-notas="Mover el encuadre del celular por la pared. Si la marca queda afuera, la foto circula sin el nombre del evento. Pensar la altura: la marca va arriba de las cabezas.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>15</b></p>
+      <h2 class="t2 in" style="--d:1">La pieza que difunde el público</h2>
+      <p class="p in" style="--d:2">Un espacio de al menos 4 × 4 m pensado para la foto. Se diseña para la cámara del celular, en vertical y con dos personas adelante.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Es la única pieza que el público comparte por su cuenta. Si la marca no entra en la foto, esa difusión gratuita se pierde.</p></div>
+    </div>
+    <div class="demo foto">
+      <div class="foto__muro in" style="--d:2" id="fotoMuro">
+        <div class="foto__pared"></div>
+        <div class="foto__marca" id="fotoMarca"><i></i><b id="fotoNombre"></b></div>
+        <div class="foto__gente"><span></span><span></span></div>
+        <div class="foto__cam" id="fotoCam"></div>
+      </div>
+      <input type="range" id="fotoRango" min="0" max="100" value="22" aria-label="Mover el encuadre del celular">
+      <p class="foto__estado" id="fotoEstado"><i></i><span></span></p>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="c16" data-t="Concepto 16 · Sponsors"
+  data-notas="Tocar «Sin reglas» y después volver a la franja. Los sponsors son los de la consigna para el tema elegido.">
+  <div class="c2 c2--ancho">
+    <div class="col">
+      <p class="k in">Concepto <b>16</b></p>
+      <h2 class="t2 in" style="--d:1">Sponsors con reglas</h2>
+      <p class="p in" style="--d:2">Cuatro marcas por evento. Van en una franja propia, siempre en el mismo lugar, con el mismo peso visual y en un color cuando el fondo es complejo.</p>
+      <div class="porque in" style="--d:3"><span>Por qué importa</span><p>Los sponsors pagan por estar y el evento necesita que estén sin adueñarse de la pieza. Una regla clara protege a los dos.</p></div>
+      <button class="btn in" style="--d:4; justify-self:start" id="spoBtn" aria-pressed="false">Sin reglas</button>
+    </div>
+    <div class="demo"><div class="spo in" style="--d:2" id="spo"><div class="spo__zona"><div class="spo__evento" id="spoEv"></div><div class="spo__franja" id="spoFr"></div></div></div></div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════ BLOQUE 5 -->
+<section class="s s--div" id="b5" data-t="05 · Para mirar y entregar" data-div
+  data-notas="Último bloque: ejemplos, referentes, clichés y las pautas con las que se evalúa.">
+  <span class="div__n">05</span>
+  <p class="k in">Bloque 5</p>
+  <h2 class="div__t in" style="--d:1">Para mirar y para entregar</h2>
+  <p class="div__p in" style="--d:2">Ejemplos resueltos, referentes argentinos, clichés a evitar y cómo se evalúa.</p>
+  <div class="div__lista in" style="--d:3"><span>Ejemplos</span><span>Referentes</span><span>Clichés</span><span>Pautas</span></div>
+</section>
+
+<section class="s" id="ejemplos" data-t="Ejemplos resueltos"
+  data-notas="Recorrer con las flechas del carrusel. Para cada imagen, leer «qué mirar». Los dos Music & Beats son el mismo tema resuelto con sistemas distintos: buen momento para compararlos.">
+  <p class="k in">Ejemplos resueltos</p>
+  <div class="ej in" style="--d:1">
+    <div class="ej__img" id="ejImg"><button class="ej__nav ej__nav--a" id="ejA" aria-label="Imagen anterior">←</button><button class="ej__nav ej__nav--s" id="ejS" aria-label="Imagen siguiente">→</button><span class="ej__n" id="ejN"></span></div>
+    <div class="ej__info" id="ejInfo"></div>
+  </div>
+</section>
+
+<section class="s" id="referentes" data-t="Referentes argentinos"
+  data-notas="Los referentes cambian según el tema elegido. Las fuentes de cada cifra están en la presentación web.">
+  <p class="k in">Referentes argentinos</p>
+  <h2 class="t2 in" style="--d:1" id="refT"></h2>
+  <p class="p in" style="--d:2">Para mirar qué resolvieron, no para copiar cómo se ven.</p>
+  <div class="refs3" id="refs3"></div>
+</section>
+
+<section class="s" id="cliches" data-t="Clichés a evitar"
+  data-notas="Leer el cliché de cada tema y pedir a los grupos que digan cuál es el primer recurso que se les ocurrió. Si coincide con el cliché, es una señal para buscar otro camino.">
+  <p class="k in">Clichés a evitar</p>
+  <h2 class="t2 in" style="--d:1">Lo primero que se le ocurre a todos</h2>
+  <div class="cli4" id="cli4"></div>
+</section>
+
+<section class="s" id="pautas" data-t="Cómo se evalúa"
+  data-notas="Las cinco pautas de la consigna. El checklist completo, con quince comprobaciones que se guardan en el navegador, está en la presentación web.">
+  <p class="k in">Antes de entregar</p>
+  <h2 class="t2 in" style="--d:1">Las cinco pautas de evaluación</h2>
+  <div class="pau" id="pau"></div>
+</section>
+
+<section class="s s--cierre" id="cierre" data-t="Cierre"
+  data-notas="Cerrar con la idea central y la tarea: definir las reglas del sistema antes de diseñar las doce piezas.">
+  <p class="k in">Para llevarse</p>
+  <p class="cierre__frase in" style="--d:1">Un sistema no es un estilo: <em>es una regla.</em></p>
+  <p class="lead in" style="--d:2">Definan primero las reglas: marca, tipografía, color, retícula, recurso y movimiento. Las doce piezas salen de ahí.</p>
+  <p class="p in" style="--d:3">Todo el material, con referentes, fuentes y el checklist: <a href="index.html">presentación web del TP</a>.</p>
+</section>
+
+<div class="deck__pie"><span><span data-cfg="materia"></span> · <span data-cfg="catedra"></span> · <span data-cfg="tp"></span></span><span id="pieN"></span></div>
+<div class="deck__barra" id="barra"></div>
+</main>
+</div>
+
+<nav class="ui" id="ui" aria-label="Controles de la presentación">
+  <button id="uAnt" aria-label="Anterior (←)">←</button>
+  <span class="ui__n" id="uN" aria-live="polite"></span>
+  <button id="uSig" aria-label="Siguiente (→)">→</button>
+  <span class="ui__sep"></span>
+  <button id="uIdx" aria-label="Índice (I)">☰</button>
+  <button id="uNotas" aria-label="Notas para el docente (N)">✎</button>
+  <span class="ui__sep"></span>
+  <span id="uTemas" style="display:flex;gap:6px;padding:0 4px"></span>
+  <span class="ui__sep"></span>
+  <button id="uModo" aria-label="Modo claro u oscuro (D)">◐</button>
+  <button id="uFull" aria-label="Pantalla completa (F)">⛶</button>
+  <button id="uAyuda" aria-label="Atajos de teclado (?)">?</button>
+</nav>
+
+<aside class="notas" id="notas" aria-label="Notas para el docente"><b id="notasT"></b><p id="notasP"></p></aside>
+
+<div class="capa" id="indice" role="dialog" aria-label="Índice de slides">
+  <button class="capa__x" data-cerrar aria-label="Cerrar">✕</button>
+  <h2>Índice</h2>
+  <div class="indice-grid" id="indiceGrid"></div>
+</div>
+
+<div class="capa" id="ayuda" role="dialog" aria-label="Atajos de teclado">
+  <button class="capa__x" data-cerrar aria-label="Cerrar">✕</button>
+  <h2>Atajos</h2>
+  <div class="teclas">
+    <span><kbd>→</kbd><kbd>Espacio</kbd><kbd>AvPág</kbd></span><span>Siguiente paso o slide (funciona con puntero de presentación)</span>
+    <span><kbd>←</kbd><kbd>RePág</kbd></span><span>Paso o slide anterior</span>
+    <span><kbd>Inicio</kbd><kbd>Fin</kbd></span><span>Primera o última slide</span>
+    <span><kbd>I</kbd></span><span>Índice</span>
+    <span><kbd>N</kbd></span><span>Notas para el docente</span>
+    <span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd></span><span>Cambiar de tema</span>
+    <span><kbd>F</kbd></span><span>Pantalla completa</span>
+    <span><kbd>D</kbd></span><span>Modo claro u oscuro</span>
+    <span><kbd>B</kbd></span><span>Pantalla en negro</span>
+    <span><kbd>Esc</kbd></span><span>Cerrar</span>
+  </div>
+</div>
+<div class="negro" id="negro"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/clase.js"></script>
+</body>
+</html>
