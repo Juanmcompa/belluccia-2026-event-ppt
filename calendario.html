@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es-AR" data-tema="fuego">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendario de entregas · TP4 · Diseño Gráfico 3</title>
+<meta name="description" content="Qué traer a cada clase para llegar a la entrega del TP4 sin apuro: clases, feriados, pre-entrega y entrega.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23151513%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%278%27 fill=%27%23d2420f%27/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/calendario.css">
+<script>
+  (function () {
+    try {
+      var m = localStorage.getItem("tp4-modo"); if (m) document.documentElement.dataset.modo = m;
+      var t = localStorage.getItem("tp4-tema"); if (t) document.documentElement.dataset.tema = t;
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<header class="top">
+  <a class="top__home" href="index.html">← Presentación del TP</a>
+  <nav class="top__nav" aria-label="Secciones">
+    <a href="#calendario">Calendario</a><a href="#clases">Clase por clase</a><a href="#piezas">Piezas en el tiempo</a><a href="#feriadosS">Feriados</a>
+  </nav>
+  <div class="top__tools">
+    <a class="top__link" href="clase.html">Clase en slides</a>
+    <button class="ico" id="btnModo" aria-label="Cambiar modo claro u oscuro"><span class="modo-ico" aria-hidden="true"></span></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="intro">
+    <p class="kicker"><span data-cfg="tp"></span> · <span data-cfg="materia"></span> · <span data-cfg="catedra"></span> · <span data-cfg="facultad"></span></p>
+    <h1>Calendario de entregas</h1>
+    <p class="lead">Qué traer a cada clase para llegar a la entrega sin apuro. Cursada de lunes a jueves, de 19 a 23 h, con los feriados de octubre y noviembre descontados.</p>
+    <div class="stats" id="stats"></div>
+    <p class="alerta" id="alerta" hidden></p>
+    <div class="fases" id="fases" aria-label="Fases del trabajo"></div>
+    <p class="nota" id="fasesLeyenda"></p>
+  </section>
+
+  <section class="cal" id="calendario">
+    <div class="cal__meses">
+      <div class="cal__head">
+        <h2>Calendario</h2>
+        <p class="leyenda">
+          <span><i class="ly ly--clase"></i>Clase</span>
+          <span><i class="ly ly--pre"></i>Pre-entrega</span>
+          <span><i class="ly ly--ent"></i>Entrega</span>
+          <span><i class="ly ly--fer"></i>Feriado sin clase</span>
+          <span><i class="ly ly--aviso"></i>Feriado en provincia, con clase</span>
+          <span><i class="ly ly--hoy"></i>Hoy</span>
+        </p>
+      </div>
+      <div id="meses"></div>
+    </div>
+    <aside class="detalle" id="detalle" aria-live="polite"></aside>
+  </section>
+
+  <section class="sec" id="clases">
+    <header class="sec__head">
+      <h2>Clase por clase</h2>
+      <p>Lo que hay que traer a cada encuentro. Las comprobaciones que marques en el detalle se guardan en este navegador.</p>
+      <div class="acciones">
+        <button class="btn" id="btnIcs">Agregar a mi calendario (.ics)</button>
+        <button class="btn btn--sec" id="btnPrint">Imprimir</button>
+      </div>
+    </header>
+    <ol class="agenda" id="agenda"></ol>
+  </section>
+
+  <section class="sec" id="piezas">
+    <header class="sec__head">
+      <h2>Piezas en el tiempo</h2>
+      <p>En qué clase se trabaja cada una de las doce piezas. Todas se vuelven a ver juntas en la pre-entrega y en la entrega.</p>
+    </header>
+    <div class="pt__scroll"><div class="pt" id="piezasT"></div></div>
+    <p class="leyenda"><span><i class="pt__dot"></i>Se trabaja en clase</span><span><i class="pt__dot pt__dot--hito"></i>Pre-entrega y entrega</span><span><i class="pt__dot pt__dot--aj"></i>Ajustes finales</span></p>
+  </section>
+
+  <section class="sec" id="feriadosS">
+    <header class="sec__head">
+      <h2>Feriados en el medio</h2>
+      <p>FADU está en la Ciudad de Buenos Aires: rigen los feriados nacionales y los de CABA. Conviene confirmar con la facultad si se suma algún asueto.</p>
+    </header>
+    <ul class="feriados" id="feriados"></ul>
+  </section>
+
+  <details class="sec ajustes" id="ajustes">
+    <summary>Ajustar el calendario</summary>
+    <p class="nota">Para otra comisión o si cambia una fecha. El plan se recalcula solo y queda guardado en este navegador.</p>
+    <div class="aj">
+      <fieldset><legend>Días de cursada</legend><div class="aj__dias" id="ajDias"></div></fieldset>
+      <label>Primera clase del TP<input type="date" id="ajInicio"></label>
+      <label>Entrega<input type="date" id="ajEntrega"></label>
+      <label>Clases entre pre-entrega y entrega<input type="number" id="ajPrevias" min="1" max="4"></label>
+      <button class="btn btn--sec" id="ajReset" type="button">Volver al original</button>
+    </div>
+  </details>
+
+  <p class="colofon">Plan sugerido por la cátedra a partir de la consigna del TP4. Los hitos se reparten según el esfuerzo de cada pieza; si cambia la cursada, el reparto se recalcula.</p>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/calendario.js"></script>
+</body>
+</html>
