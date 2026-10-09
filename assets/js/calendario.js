@@ -7,7 +7,7 @@
 const CAL = {
   inicio: "2026-10-08",          // primera clase del TP (presentación)
   entrega: "2026-11-16",         // entrega final
-  dias: [1, 2, 3, 4],            // días de cursada: 1 lunes … 4 jueves
+  dias: [1, 4],                  // días de cursada: 1 lunes, 4 jueves (0 domingo … 6 sábado)
   previas: 2,                    // la pre-entrega es N clases antes de la entrega
   horario: ["19:00", "23:00"]
 };
@@ -74,14 +74,14 @@ const HITOS = [
     traer: "Frente del A2 con grilla de días, horarios y espacios, mapa, destacados y QR. Impreso a tamaño real o al 50 %.",
     clase: "Corrección sobre papel: se marcan los pliegues.",
     listo: ["Se encuentra una actividad en menos de 10 segundos", "Mapa y QR presentes", "Los pliegues no cortan títulos"] },
-  { fase: 3, peso: 1, t: "Séxtuple final y aficheta", piezas: ["afiche", "programa"],
-    traer: "Séxtuple corregido y dorso decorativo del A2.",
-    clase: "Se comparan las dos piezas juntas.",
-    listo: ["El séxtuple pasa el test de 3 segundos", "El dorso funciona como póster por sí solo"] },
   { fase: 3, peso: 0.8, t: "Landing web", piezas: ["web"],
     traer: "Primera pantalla del sitio en desktop y en mobile, como mockup.",
     clase: "Revisión de la jerarquía en los dos tamaños.",
     listo: ["Marca, fecha, lugar y botón sin scrollear", "Mobile diagramado, no achicado"] },
+  { fase: 3, peso: 1, t: "Séxtuple final y aficheta", piezas: ["afiche", "programa"],
+    traer: "Séxtuple corregido y dorso decorativo del A2.",
+    clase: "Se comparan las dos piezas juntas.",
+    listo: ["El séxtuple pasa el test de 3 segundos", "El dorso funciona como póster por sí solo"] },
   { fase: 4, peso: 1, t: "ID animado", piezas: ["id"],
     traer: "Storyboard y primera animación del identificador, de 5 segundos como máximo.",
     clase: "Se define el gesto de movimiento de todo el sistema.",
@@ -116,8 +116,35 @@ const HITOS = [
     listo: ["Están las 12 piezas", "Fecha, lugar y precio iguales en todas", "Ningún color ni tipografía fuera del sistema"] }
 ];
 
-/* Pares que pueden compartir clase si faltan días (índices de HITOS), en orden de prioridad */
-const JUNTAR = [[0, 1], [5, 6], [15, 16], [9, 10], [13, 14]];
+/* Hitos que no conviene traer en la misma clase: el segundo necesita la corrección del primero */
+const SEPARAR = [["Bocetos de marca", "Marca y versiones"], ["Guiones de teaser y promocional", "Teaser animado"], ["Séxtuple: bocetos", "Séxtuple final y aficheta"]];
+
+/* Agrupa los hitos en n clases consecutivas: minimiza la carga de la clase más pesada
+   y, a igualdad, reparte lo más parejo posible. */
+function particionar(n) {
+  const H = HITOS, m = H.length, pre = [0];
+  H.forEach(h => pre.push(pre[pre.length - 1] + h.peso));
+  const prohibido = (i, j) => SEPARAR.some(([a, b]) => { const ia = H.findIndex(h => h.t === a), ib = H.findIndex(h => h.t === b); return ia >= i && ib < j; });
+  const costo = (i, j) => prohibido(i, j) ? Infinity : pre[j] - pre[i];
+  const memo = new Map();
+  function mejor(i, k) {
+    if (k === 1) { const c = costo(i, m); return [c, c * c, [m]]; }
+    const key = i + "," + k; if (memo.has(key)) return memo.get(key);
+    let res = [Infinity, Infinity, null];
+    for (let j = i + 1; j <= m - k + 1; j++) {
+      const c = costo(i, j); if (c === Infinity) continue;
+      const [mx, sq, cortes] = mejor(j, k - 1); if (!cortes) continue;
+      const cand = [Math.max(c, mx), c * c + sq, [j].concat(cortes)];
+      if (cand[0] < res[0] - 1e-9 || (Math.abs(cand[0] - res[0]) < 1e-9 && cand[1] < res[1])) res = cand;
+    }
+    memo.set(key, res); return res;
+  }
+  const r = mejor(0, n);
+  if (!r[2]) return [H.slice()];
+  const grupos = []; let i = 0;
+  r[2].forEach(j => { grupos.push(H.slice(i, j)); i = j; });
+  return grupos;
+}
 
 const ESPECIALES = {
   presentacion: { t: "Presentación del TP", fase: 1,
@@ -164,7 +191,7 @@ const ESPECIALES = {
 
   /* ── Estado: configuración ajustable por el usuario ────── */
   let cfg = Object.assign({}, CAL);
-  try { const g = JSON.parse(store.get("tp4-cal") || "null"); if (g && g.v === 1) cfg = Object.assign(cfg, g.cfg); } catch (e) {}
+  try { const g = JSON.parse(store.get("tp4-cal") || "null"); if (g && g.v === 2) cfg = Object.assign(cfg, g.cfg); } catch (e) {}
 
   /* ── El plan: sesiones y reparto de hitos ──────────────── */
   function planificar() {
@@ -183,21 +210,15 @@ const ESPECIALES = {
     for (let k = iPre + 1; k < iEnt; k++) ses[k].tipo = "ajuste";
     const trabajo = ses.slice(1, iPre);
     trabajo.forEach(s => { s.tipo = "trabajo"; });
-    /* Reparto: un hito por clase. Si faltan clases, se juntan primero los pares
-       que conviven bien; si sobran, se agrega una clase de avance tras los hitos más pesados. */
-    let grupos = HITOS.map(h => [h]);
-    const peso = g => g.reduce((a, h) => a + h.peso, 0);
+    /* Reparto: si hay menos clases que hitos, se agrupan hitos consecutivos de modo que
+       ninguna clase quede demasiado cargada (partición equilibrada) y sin juntar pares
+       que necesitan una corrección en el medio (ver SEPARAR). Si sobran clases, se agrega
+       una clase de avance después de los hitos más pesados. */
     const N = trabajo.length;
-    while (N && grupos.length > N) {
-      let k = -1;
-      for (const [a, b2] of JUNTAR) {
-        const i = grupos.findIndex(g => g.includes(HITOS[a])), j = grupos.findIndex(g => g.includes(HITOS[b2]));
-        if (i >= 0 && j === i + 1) { k = i; break; }
-      }
-      if (k < 0) { let min = Infinity; for (let i = 0; i < grupos.length - 1; i++) { const w = peso(grupos[i]) + peso(grupos[i + 1]); if (w < min) { min = w; k = i; } } }
-      grupos.splice(k, 2, grupos[k].concat(grupos[k + 1]));
-    }
+    let grupos = HITOS.map(h => [h]);
+    if (N && N < HITOS.length) grupos = particionar(N);
     let extra = N - grupos.length;
+    const peso = g => g.reduce((a, h) => a + h.peso, 0);
     const pesados = grupos.map((g, i) => [peso(g), i]).sort((x, y) => y[0] - x[0]).slice(0, Math.max(0, extra)).map(x => x[1]).sort((x, y) => y - x);
     pesados.forEach(i => grupos.splice(i + 1, 0, { sigue: grupos[i][grupos[i].length - 1] }));
     for (; extra > pesados.length; extra--) grupos.push({ sigue: grupos[grupos.length - 1].sigue || grupos[grupos.length - 1][0] });
@@ -210,14 +231,14 @@ const ESPECIALES = {
     if (s.tipo === "trabajo") {
       if (s.hitos.length) return {
         t: s.hitos.map(h => h.t).join(" + "), fase: s.hitos[0].fase,
-        traer: s.hitos.map(h => h.traer), clase: s.hitos.map(h => h.clase).join(" "),
+        traer: s.hitos.map(h => ({ t: h.t, x: h.traer })), clase: s.hitos.map(h => h.clase).join(" "),
         listo: s.hitos.flatMap(h => h.listo), piezas: [...new Set(s.hitos.flatMap(h => h.piezas))]
       };
       const h = s.sigue || HITOS[0];
-      return { t: "Avance: " + h.t, fase: h.fase, traer: ["Avance corregido de " + h.t.toLowerCase() + "."], clase: "Corrección en mesa del avance.", listo: h.listo, piezas: h.piezas };
+      return { t: "Avance: " + h.t, fase: h.fase, traer: [{ t: h.t, x: "Avance corregido de " + h.t.toLowerCase() + "." }], clase: "Corrección en mesa del avance.", listo: h.listo, piezas: h.piezas };
     }
     const e = ESPECIALES[s.tipo];
-    return { t: e.t, fase: e.fase, traer: [e.traer], clase: e.clase, listo: e.listo, piezas: e.piezas || [] };
+    return { t: e.t, fase: e.fase, traer: [{ t: e.t, x: e.traer }], clase: e.clase, listo: e.listo, piezas: e.piezas || [] };
   }
 
   let plan = planificar(), sel = null;
@@ -238,7 +259,7 @@ const ESPECIALES = {
       [quedan, "clases que quedan", prox ? `próxima: ${corto(prox.d)}` : "terminó la cursada"]
     ].map(([v, l, s], k) => `<div class="stat${k === 2 || k === 3 ? " stat--hito" : ""}"><b>${v}</b><span>${l}</span><small>${esc(s)}</small></div>`).join("");
     const alerta = $("#alerta");
-    if (plan.trabajo < 8) { alerta.hidden = false; alerta.textContent = `Con ${plan.trabajo} clases de trabajo antes de la pre-entrega, varias clases juntan dos o más hitos. Conviene adelantar trabajo fuera de clase.`; }
+    if (plan.trabajo < 8) { alerta.hidden = false; alerta.textContent = `Son ${plan.trabajo} clases de trabajo antes de la pre-entrega, así que cada clase junta varias entregas. La clase es para corregir: el avance se hace entre una clase y la siguiente.`; }
     else alerta.hidden = true;
   }
 
@@ -303,7 +324,7 @@ const ESPECIALES = {
       <p class="det__k"><span>${s.tipo === "entrega" ? "Entrega" : s.tipo === "pre" ? "Pre-entrega" : `Clase ${s.n} de ${plan.ses.length - 1}`}</span><span class="det__fase"><i></i>${esc(fz.t)}</span></p>
       <h3>${esc(c.t)}</h3>
       ${f ? `<p class="det__aviso">${esc(f.t)}: ${esc(f.a)}. Avisar con tiempo a quien viaja desde provincia.</p>` : ""}
-      <div class="det__b"><span class="lbl">Traer a clase</span>${c.traer.map(t => `<p>${esc(t)}</p>`).join("")}</div>
+      <div class="det__b"><span class="lbl">Traer a clase${c.traer.length > 1 ? ` · ${c.traer.length} entregas` : ""}</span>${c.traer.map(t => `<p>${c.traer.length > 1 ? `<b>${esc(t.t)}.</b> ` : ""}${esc(t.x)}</p>`).join("")}</div>
       <div class="det__b"><span class="lbl">En clase</span><p>${esc(c.clase)}</p></div>
       <div class="det__b"><span class="lbl">Está listo si…</span>${c.listo.map((t, j) => { const id = s.f + "-" + j; return `<label class="chk"><input type="checkbox" data-k="${id}" ${ch[id] ? "checked" : ""}><span>${esc(t)}</span></label>`; }).join("")}</div>
       ${c.piezas.length ? `<div class="det__b"><span class="lbl">Piezas del TP</span><div class="chips">${c.piezas.map(id => `<span class="chip"><i>${pz(id).n}</i>${esc(pz(id).t)}</span>`).join("")}</div></div>` : ""}
@@ -330,7 +351,7 @@ const ESPECIALES = {
       html += `<li class="ag__it ag--${s.tipo}${s.f < hoyIso ? " ag--pasada" : ""}${s.f === hoyIso ? " ag--hoy" : ""}" data-f="${s.f}" style="--c:${faseColor(c.fase)}">
         <button>
           <span class="ag__fecha"><b>${s.d.getDate()}/${s.d.getMonth() + 1}</b>${DIAS_C[s.d.getDay()]}</span>
-          <span class="ag__txt"><small>${s.tipo === "entrega" ? "Entrega final" : s.tipo === "pre" ? "Pre-entrega" : "Clase " + s.n}${s.f === hoyIso ? " · hoy" : ""}</small><b>${esc(c.t)}</b><span>${esc(c.traer[0])}</span></span>
+          <span class="ag__txt"><small>${s.tipo === "entrega" ? "Entrega final" : s.tipo === "pre" ? "Pre-entrega" : "Clase " + s.n}${s.f === hoyIso ? " · hoy" : ""}</small><b>${esc(c.t)}</b>${c.traer.length > 1 ? `<ul class="ag__lista">${c.traer.map(t => `<li><b>${esc(t.t)}.</b> ${esc(t.x)}</li>`).join("")}</ul>` : `<span>${esc(c.traer[0].x)}</span>`}</span>
           <span class="ag__ok" title="Comprobaciones hechas">${hechos}/${c.listo.length}</span>
         </button></li>`;
     });
@@ -373,7 +394,7 @@ const ESPECIALES = {
     const ini = $("#ajInicio").value, ent = $("#ajEntrega").value;
     if (!ini || !ent || ini >= ent) return;
     cfg = { inicio: ini, entrega: ent, dias, previas: Math.max(1, Math.min(4, +$("#ajPrevias").value || 2)) };
-    store.set("tp4-cal", JSON.stringify({ v: 1, cfg }));
+    store.set("tp4-cal", JSON.stringify({ v: 2, cfg }));
     todo();
   }
   $("#ajustes").addEventListener("change", leerAjustes);
@@ -390,7 +411,7 @@ const ESPECIALES = {
     plan.ses.forEach(s => {
       const c = contenido(s);
       const titulo = s.tipo === "entrega" ? "TP4 · ENTREGA FINAL" : s.tipo === "pre" ? "TP4 · PRE-ENTREGA" : `TP4 · Clase ${s.n}: ${c.t}`;
-      const desc = `Traer: ${c.traer.join(" ")}\nEn clase: ${c.clase}\nListo si: ${c.listo.join(" / ")}`;
+      const desc = `Traer: ${c.traer.map(t => (c.traer.length > 1 ? t.t + ": " : "") + t.x).join("\n")}\nEn clase: ${c.clase}\nListo si: ${c.listo.join(" / ")}`;
       L.push("BEGIN:VEVENT", `UID:tp4-${s.f}@belluccia-2026`, `DTSTAMP:${stamp}`, `DTSTART:${utc(s.d, CAL.horario[0])}`, `DTEND:${utc(s.d, CAL.horario[1])}`,
         plegar(`SUMMARY:${txt(titulo)}`), plegar(`DESCRIPTION:${txt(desc)}`), "LOCATION:FADU UBA", "END:VEVENT");
     });

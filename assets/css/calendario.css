@@ -264,3 +264,8 @@ h2 { font-size: clamp(30px, 4vw, 48px); line-height: 1; font-weight: 800; font-s
   .dia { min-height: 80px; break-inside: avoid; }
   .ag__it { break-inside: avoid; }
 }
+.ag__lista { display: grid; gap: 4px; margin-top: 4px; }
+.ag__lista li { font-size: 14.5px; color: var(--ink2); line-height: 1.4; padding-left: 14px; position: relative; }
+.ag__lista li::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 2px; background: var(--c); }
+.ag__lista b { color: var(--ink); font-weight: 700; font-stretch: 88%; }
+.ag--entrega .ag__lista li, .ag--entrega .ag__lista b { color: inherit; }
