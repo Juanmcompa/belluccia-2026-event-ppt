@@ -13,6 +13,7 @@ Los cuatro temas: Fuego Nativo, Cruce Urbano, Ritmo Blanco y Trazo Oculto.
 
 - **`index.html`**: la presentación web completa, para recorrer y consultar (referentes, fuentes, fichas, checklist).
 - **`calendario.html`**: el calendario de entregas. Cursada lunes y jueves. Qué traer a cada clase hasta la pre-entrega (jue 5/11) y la entrega (lun 16/11), con los feriados descontados, checklist por clase y exportación a Google Calendar u otro calendario (.ics). Las fechas, los feriados y los hitos se editan al principio de `assets/js/calendario.js`.
+- **`entrega.html`**: cómo se entrega. El cubo de tres paneles de 50 × 70 cm sobre una base de 50 × 50 cm, en 3D y con recorrido paso a paso; qué va en cada panel con medidas y plantillas 1:1 en SVG; tote, aficheta y remera; materiales, prueba de estabilidad, checklist y dudas frecuentes. Las zonas y los textos se editan al principio de `assets/js/entrega.js`.
 - **`clase.html`**: la versión en slides para dar la clase. 30 slides en 16:9, con pasos animados, demos interactivas y notas para el docente. Se enlaza desde la portada de `index.html`.
 
 ### Atajos de `clase.html`
@@ -70,6 +71,7 @@ Todo el contenido está en **`assets/js/data.js`**. No hace falta tocar el HTML 
 index.html            Estructura de las 17 pantallas
 clase.html            Presentación de clase en slides (30)
 calendario.html       Calendario de entregas
+entrega.html          Cómo se entrega (cubo 3D, paneles, checklist)
 assets/css/styles.css Estilos
 assets/js/data.js     Contenido (editar acá)
 assets/js/app.js      Navegación e interacciones de index.html
@@ -77,6 +79,8 @@ assets/js/clase.js    Motor de slides y demos de clase.html
 assets/css/clase.css  Estilos de clase.html
 assets/js/calendario.js   Fechas, feriados, hitos y lógica del calendario
 assets/css/calendario.css Estilos de calendario.html
+assets/js/entrega.js      Zonas de los paneles, objetos, recorrido 3D y checklist
+assets/css/entrega.css    Estilos de entrega.html
 assets/fonts/         Archivo y Chivo Mono (Omnibus-Type, licencia SIL OFL)
 assets/img/ejemplos/  Imágenes del carrusel, optimizadas para web
 ```

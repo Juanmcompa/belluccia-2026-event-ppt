@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es-AR" data-tema="fuego">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo se entrega · TP4 · Diseño Gráfico 3</title>
+<meta name="description" content="La entrega del TP4: tres paneles de 50 × 70 cm armados en cubo sobre una base de 50 × 50 cm, más tote, aficheta y remera. En 3D, con medidas y checklist.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23151513%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%278%27 fill=%27%23d2420f%27/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/entrega.css">
+<script>
+  (function () {
+    try {
+      var m = localStorage.getItem("tp4-modo"); if (m) document.documentElement.dataset.modo = m;
+      var t = localStorage.getItem("tp4-tema"); if (t) document.documentElement.dataset.tema = t;
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+
+<header class="top">
+  <a class="top__home" href="index.html">← Presentación del TP</a>
+  <nav class="top__nav" aria-label="Secciones">
+    <a href="#cubo">El cubo en 3D</a><a href="#paneles">Qué va en cada panel</a><a href="#objetos">Objetos</a><a href="#armado">Materiales y armado</a><a href="#checklist">Checklist</a><a href="#dudas">Dudas</a>
+  </nav>
+  <div class="top__tools">
+    <a class="top__link" href="calendario.html">Calendario</a>
+    <button class="ico" id="btnModo" aria-label="Cambiar modo claro u oscuro"><span class="modo-ico" aria-hidden="true"></span></button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="intro">
+    <p class="kicker"><span data-cfg="tp"></span> · <span data-cfg="materia"></span> · <span data-cfg="catedra"></span> · <span data-cfg="facultad"></span></p>
+    <h1>Cómo se entrega</h1>
+    <p class="lead">Tres paneles de 50 × 70 cm armados en forma de cubo sobre una base de 50 × 50 cm. Sobre la base van la tote y la aficheta. La remera viene aparte, en su percha.</p>
+    <div class="stats" id="stats"></div>
+    <p class="alerta"><b>Estabilidad.</b> El cubo se entrega armado, se tiene que parar solo y tiene que aguantar otra entrega apoyada encima. Las entregas que no se mantengan estables sufren en la nota.</p>
+  </section>
+
+  <!-- ── 3D ─────────────────────────────────────────────── -->
+  <section class="sec" id="cubo">
+    <header class="sec__head">
+      <h2>El cubo en 3D</h2>
+      <p>Arrastrá para girarlo. Seguí el recorrido paso a paso o tocá cualquier zona de un panel para ver qué va ahí.</p>
+    </header>
+    <div class="visor">
+      <div class="esc" id="esc" tabindex="0" aria-label="Modelo 3D de la entrega. Arrastrá o usá las flechas del teclado para girarlo.">
+        <div class="cam" id="cam"><div class="mundo" id="mundo"></div></div>
+        <div class="esc__hud">
+          <div class="esc__vistas" role="group" aria-label="Vistas">
+            <button data-vista="general" class="chip">General</button>
+            <button data-vista="p1" class="chip">Panel 1</button>
+            <button data-vista="p2" class="chip">Panel 2</button>
+            <button data-vista="p3" class="chip">Panel 3</button>
+            <button data-vista="arriba" class="chip">Desde arriba</button>
+          </div>
+          <div class="esc__tools">
+            <label class="tg"><input type="checkbox" id="tgCotas" checked><span>Medidas</span></label>
+            <label class="tg"><input type="checkbox" id="tgDespiece"><span>Despiece</span></label>
+            <label class="tg"><input type="checkbox" id="tgApilar"><span>Apilar</span></label>
+            <button class="ico ico--b" id="zMenos" aria-label="Alejar">−</button>
+            <button class="ico ico--b" id="zMas" aria-label="Acercar">+</button>
+          </div>
+        </div>
+        <p class="esc__ayuda" aria-hidden="true">Arrastrá para girar</p>
+      </div>
+
+      <aside class="tour" id="tour" aria-live="polite">
+        <div class="tour__head">
+          <span class="lbl">Recorrido</span>
+          <span class="tour__n" id="tourN"></span>
+        </div>
+        <h3 id="tourT"></h3>
+        <div class="tour__x" id="tourX"></div>
+        <div class="tour__nav">
+          <button class="btn btn--sec" id="tourPrev">← Anterior</button>
+          <button class="btn" id="tourNext">Siguiente →</button>
+        </div>
+        <ol class="tour__dots" id="tourDots"></ol>
+        <div class="zona-det" id="zonaDet" hidden></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ── Paneles ─────────────────────────────────────────── -->
+  <section class="sec" id="paneles">
+    <header class="sec__head">
+      <h2>Qué va en cada panel</h2>
+      <p>Los tres paneles, a escala y vistos de frente desde adentro del cubo. Las medidas son en centímetros. Cada plantilla se descarga a tamaño real (SVG de 50 × 70 cm) para diagramar encima.</p>
+    </header>
+    <div class="paneles" id="panelesG"></div>
+  </section>
+
+  <!-- ── Objetos ─────────────────────────────────────────── -->
+  <section class="sec" id="objetos">
+    <header class="sec__head">
+      <h2>Objetos: tote, aficheta y remera</h2>
+      <p>Se entregan los objetos reales, producidos con el sistema. La tote y la aficheta van sobre la base del cubo. La remera va a un espacio aparte que arma la cátedra.</p>
+    </header>
+    <div class="objetos" id="objetosG"></div>
+  </section>
+
+  <!-- ── Armado ──────────────────────────────────────────── -->
+  <section class="sec" id="armado">
+    <header class="sec__head">
+      <h2>Materiales y armado</h2>
+      <p>Lo que se pide y cómo resolverlo. Los requisitos son de la cátedra; las recomendaciones son una forma probada de llegar a ellos.</p>
+    </header>
+    <div class="armado" id="armadoG"></div>
+    <div class="prueba">
+      <h3>La prueba antes de traerlo</h3>
+      <ol class="prueba__pasos" id="prueba"></ol>
+    </div>
+  </section>
+
+  <!-- ── Checklist ───────────────────────────────────────── -->
+  <section class="sec" id="checklist">
+    <header class="sec__head">
+      <h2>Checklist de entrega</h2>
+      <p>Para revisar antes de salir de casa. Lo que marques queda guardado en este navegador.</p>
+      <div class="progreso"><div class="progreso__barra"><i id="chkBarra"></i></div><span id="chkN"></span><button class="btn btn--sec btn--s" id="chkReset">Desmarcar todo</button></div>
+    </header>
+    <div class="chk" id="chk"></div>
+  </section>
+
+  <!-- ── Dudas ───────────────────────────────────────────── -->
+  <section class="sec" id="dudas">
+    <header class="sec__head">
+      <h2>Dudas frecuentes</h2>
+    </header>
+    <div class="dudas" id="dudasG"></div>
+  </section>
+
+  <p class="colofon">Esquema de paneles de la cátedra. Las zonas y medidas salen del archivo de paneles; el modelo 3D es una guía de armado, no un diseño.</p>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/entrega.js"></script>
+</body>
+</html>
