@@ -12,7 +12,7 @@ Los cuatro temas: Fuego Nativo, Cruce Urbano, Ritmo Blanco y Trazo Oculto.
 ## Dos archivos, dos usos
 
 - **`index.html`**: la presentación web completa, para recorrer y consultar (referentes, fuentes, fichas, checklist).
-- **`calendario.html`**: el calendario de entregas. Cursada lunes y jueves. Qué traer a cada clase hasta la pre-entrega (jue 5/11) y la entrega (lun 16/11), con los feriados descontados, checklist por clase y exportación a Google Calendar u otro calendario (.ics). Las fechas, los feriados y los hitos se editan al principio de `assets/js/calendario.js`.
+- **`calendario.html`**: el calendario de entregas. Cursada lunes y jueves. Qué traer a cada clase hasta la pre-entrega (lun 16/11), la última corrección (jue 19/11) y la entrega (jue 26/11, hasta las 20 h), más la devolución de notas (jue 3/12), con los feriados descontados, checklist por clase y exportación a Google Calendar u otro calendario (.ics). Las fechas, los feriados y los hitos se editan al principio de `assets/js/calendario.js`.
 - **`entrega.html`**: cómo se entrega. El cubo de tres paneles de 50 × 70 cm sobre una base de 50 × 50 cm, en 3D y con recorrido paso a paso; qué va en cada panel con medidas y plantillas 1:1 en SVG; tote, aficheta y remera; materiales, prueba de estabilidad, checklist y dudas frecuentes. Las zonas y los textos se editan al principio de `assets/js/entrega.js`.
 - **`clase.html`**: la versión en slides para dar la clase. 30 slides en 16:9, con pasos animados, demos interactivas y notas para el docente. Se enlaza desde la portada de `index.html`.
 

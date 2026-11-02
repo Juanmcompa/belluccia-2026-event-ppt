@@ -7,9 +7,15 @@
 
 /* ── Datos de la entrega: editar acá ───────────────────────── */
 const ENTREGA = {
-  fecha: "Lunes 16 de noviembre",
-  fechaCorta: "16/11",
-  horario: "en el horario de clase, de 19 a 23 h",
+  fecha: "Jueves 26 de noviembre",
+  fechaCorta: "26/11",
+  pre: "Lunes 16 de noviembre",
+  preCorta: "16/11",
+  ultima: "Jueves 19 de noviembre",
+  ultimaCorta: "19/11",
+  horario: "hasta las 20 h",
+  notas: "Jueves 3 de diciembre",
+  notasCorta: "3/12",
   panel: [50, 70],   // cm
   base: [50, 50],    // cm
   espesor: 0.5       // cm, foamboard de 5 mm (solo para dibujar)
@@ -80,36 +86,33 @@ const OBJETOS = [
 
 const PASOS = [
   { t: "La entrega completa", v: "general", ver: "todo",
-    x: "Un cubo abierto al frente: tres paneles de 50 × 70 cm parados sobre una base de 50 × 50 cm. Sobre la base van la tote y la aficheta. Al lado, la remera en su percha, en el espacio de remeras." },
+    x: "Un cubo abierto al frente: tres paneles de 50 × 70 cm parados sobre una base de 50 × 50 cm. Sobre la base van la tote y la aficheta." },
   { t: "La base · 50 × 50 cm", v: "base", ver: ["base"],
     x: "Es el piso del cubo: sostiene los tres paneles y es donde se apoyan la tote y la aficheta. Del mismo material que los paneles." },
   { t: "Panel 1 · Fondo", v: "p1", ver: ["base", "p1"],
     x: "El panel de enfrente. Lleva un solo elemento: el afiche, a tamaño A2." },
   { t: "Paneles 2 y 3 · Laterales", v: "tresCuartos", ver: ["base", "p1", "p2", "p3"],
-    x: "Cierran el cubo a los costados. Todo el contenido mira hacia adentro del cubo; las caras de afuera quedan lisas." },
+    x: "Cierran el cubo a los costados. Todo el contenido mira hacia adentro del cubo; las caras de afuera quedan lisas. La distribución de las piezas es fija; el color, las misceláneas, las líneas y los fondos de cada panel son de cada grupo." },
   { t: "Panel 2 · Izquierda", v: "p2", ver: ["base", "p1", "p2", "p3"],
     x: "Marca y vía pública: QR, marca a color, marca pluma, el afiche de vía pública y sus aplicaciones en séxtuple, mupi y full glass." },
   { t: "Panel 3 · Derecha", v: "p3", ver: ["base", "p1", "p2", "p3"],
     x: "Redes y piezas digitales: Instagram, photo opportunity, sitio web, merch y overlays de streaming." },
   { t: "Sobre la base: tote y aficheta", v: "arriba", ver: ["base", "p1", "p2", "p3", "objs"],
     x: "Se apoyan sobre la base, dentro de los 50 × 50 cm. Cómo acomodarlas lo decide cada grupo." },
-  { t: "La remera va aparte", v: "remera", ver: "todo",
-    x: "Las remeras no van en la base: hay un espacio especial para ellas. Cada remera llega colgada en su percha, la más barata que encuentren." },
   { t: "Prueba de apilado", v: "apilado", ver: "todo", apilar: true,
     x: "El cubo se entrega armado y tiene que aguantar otra entrega encima sin ceder ni inclinarse. Si no se mantiene estable, sufre la nota." }
 ];
 
 /* Vistas de cámara: giro, inclinación, acercamiento y punto al que mira (cm) */
 const VISTAS = {
-  general:     { yaw: -26, pitch: -20, zoom: .84, t: [17, 44, 0] },
+  general:     { yaw: -28, pitch: -18, zoom: 1, t: [0, 38, 0] },
   tresCuartos: { yaw: -36, pitch: -14, zoom: 1, t: [0, 36, 0] },
   base:        { yaw: -28, pitch: -38, zoom: 1.25, t: [0, 6, 0] },
   p1:          { yaw: 0, pitch: -4, zoom: 1.28, t: [0, 36, -25] },
-  p2:          { yaw: -90, pitch: -4, zoom: 1.28, t: [-25, 36, 0], tapa: ["p3", "remera"] },
+  p2:          { yaw: -90, pitch: -4, zoom: 1.28, t: [-25, 36, 0], tapa: ["p3"] },
   p3:          { yaw: 90, pitch: -4, zoom: 1.28, t: [25, 36, 0], tapa: ["p2"] },
   arriba:      { yaw: -12, pitch: -66, zoom: 1.4, t: [0, 4, 4] },
-  remera:      { yaw: -14, pitch: -8, zoom: 1.05, t: [62, 62, 0] },
-  despiece:    { yaw: -32, pitch: -22, zoom: .78, t: [0, 40, 0], tapa: ["remera"] },
+  despiece:    { yaw: -32, pitch: -22, zoom: .78, t: [0, 40, 0] },
   apilado:     { yaw: -34, pitch: -12, zoom: .62, t: [0, 72, 0] }
 };
 
@@ -129,11 +132,11 @@ const VISTAS = {
 
   /* ── Resumen ───────────────────────────────────────────── */
   $("#stats").innerHTML = [
-    ["hito", ENTREGA.fechaCorta, "Entrega", ENTREGA.fecha.toLowerCase() + ", 19 h"],
-    ["", "3", "Paneles", "de 50 × 70 cm, en cubo"],
-    ["", "50×50", "Base", "cm, del mismo material"],
-    ["", String(ZONAS.length), "Zonas", "piezas pegadas en los paneles"],
-    ["", "3", "Objetos", "tote y aficheta en la base; la remera, aparte"]
+    ["", ENTREGA.preCorta, "Pre-entrega", ENTREGA.pre.toLowerCase() + ", hasta las 20 h; vuelven a las 22 h. Obligatoria"],
+    ["", ENTREGA.ultimaCorta, "Última corrección", ENTREGA.ultima.toLowerCase() + ", por turnos"],
+    ["hito", ENTREGA.fechaCorta, "Entrega", ENTREGA.fecha.toLowerCase() + ", " + ENTREGA.horario + ". Entregan y se van"],
+    ["", "3", "Paneles", `de 50 × 70 cm sobre base de 50 × 50, con ${ZONAS.length} zonas`],
+    ["", ENTREGA.notasCorta, "Actas y notas", ENTREGA.notas.toLowerCase() + ": actas y devolución de notas"]
   ].map(([c, b, s, m]) => `<div class="stat${c ? " stat--" + c : ""}"><b>${b}</b><span>${s}</span><small>${m}</small></div>`).join("");
 
   /* ── Dibujos (SVG) ─────────────────────────────────────── */
@@ -224,18 +227,6 @@ const VISTAS = {
   tote.dataset.o = "tote"; afi.dataset.o = "aficheta";
   G.objs.append(tote, afi);
 
-  /* Espacio de remeras, aparte */
-  G.remera = grupo("remeraG");
-  const RX = 66;
-  G.remera.appendChild(cara(56, 34, `${lugar(RX, .02, 0)} rotateX(90deg)`, "f--zona", `<span>Espacio de remeras</span>`));
-  [[RX - 26, 0], [RX + 26, 0]].forEach(([x, z]) => { const b = caja(1.2, 100, 1.2, "barra"); b.style.transform = lugar(x, 50, z); G.remera.appendChild(b); });
-  const barra = caja(53.2, 1.2, 1.2, "barra"); barra.style.transform = lugar(RX, 100.6, 0); G.remera.appendChild(barra);
-  const remF = cara(52, 59, `${lugar(RX, 100 - 29.5, 0)}`, "f--obj f--remera", SVG.remera("frente"));
-  const remB = cara(52, 59, `${lugar(RX, 100 - 29.5, 0)} rotateY(180deg)`, "f--obj f--remera", SVG.remera("espalda"));
-  remF.dataset.o = remB.dataset.o = "remera";
-  G.remera.append(remF, remB);
-  G.remera.appendChild(cara(52, 6, `${lugar(RX, 108, 0)}`, "f--rot", `<span>Remera · aparte, con percha</span>`));
-
   /* Cotas */
   G.cotas = grupo("cotas"); G.cotasAlto = grupo("cotas"); G.cotasFondo = grupo("cotas");
   const cota = (g, w, txt, tr) => g.appendChild(cara(w, 5, tr, "f--cota", `<i></i><span>${txt}</span><i></i>`));
@@ -254,7 +245,7 @@ const VISTAS = {
   G.ghost.appendChild(cara(60, 6, lugar(0, TB + 76, 25.5), "f--rot f--rot-acc", `<span>Otra entrega apoyada encima</span>`));
 
   /* Posición de cada grupo según estado (despiece, apilado, visibilidad) */
-  const est = { ver: new Set(["base", "p1", "p2", "p3", "objs", "remera"]), despiece: false, apilar: false, tapa: null, cotas: true };
+  const est = { ver: new Set(["base", "p1", "p2", "p3", "objs"]), despiece: false, apilar: false, tapa: null, cotas: true };
   function ubicar() {
     const d = est.despiece ? 1 : 0, sube = k => est.ver.has(k) ? 0 : 34;
     G.base.style.transform = lugar(0, TB / 2 + sube("base"), 0);
@@ -262,10 +253,9 @@ const VISTAS = {
     G.p2.style.transform = lugar(-25 + T / 2 - 18 * d, TB + 35 + sube("p2"), .25) + " scaleZ(.99)";
     G.p3.style.transform = lugar(25 - T / 2 + 18 * d, TB + 35 + sube("p3"), .25) + " scaleZ(.99)";
     G.objs.style.transform = lugar(0, 14 * d + sube("objs"), 0);
-    G.remera.style.transform = lugar(0, sube("remera"), 0);
     G.ghost.style.transform = lugar(0, (TB + 70) + (est.apilar ? 0 : 60), 0);
-    ["base", "p1", "p2", "p3", "objs", "remera"].forEach(k => G[k].classList.toggle("off", !est.ver.has(k)));
-    ["p2", "p3", "remera"].forEach(k => G[k].classList.toggle("tapa", !!est.tapa && est.tapa.includes(k)));
+    ["base", "p1", "p2", "p3", "objs"].forEach(k => G[k].classList.toggle("off", !est.ver.has(k)));
+    ["p2", "p3"].forEach(k => G[k].classList.toggle("tapa", !!est.tapa && est.tapa.includes(k)));
     G.ghost.classList.toggle("off", !est.apilar);
     const sinCotas = !est.cotas || est.despiece || est.apilar;
     G.cotas.classList.toggle("off", sinCotas);
@@ -329,17 +319,17 @@ const VISTAS = {
   $("#zMas").addEventListener("click", () => zoom(1.2));
   $("#zMenos").addEventListener("click", () => zoom(1 / 1.2));
   $$(".esc__vistas .chip").forEach(b => b.addEventListener("click", () => {
-    est.ver = new Set(["base", "p1", "p2", "p3", "objs", "remera"]); est.apilar = false;
+    est.ver = new Set(["base", "p1", "p2", "p3", "objs"]); est.apilar = false;
     irA(b.dataset.vista);
   }));
   $("#tgCotas").addEventListener("change", e => { est.cotas = e.target.checked; ubicar(); });
   $("#tgDespiece").addEventListener("change", e => {
     est.despiece = e.target.checked;
-    if (est.despiece) { est.apilar = false; est.ver = new Set(["base", "p1", "p2", "p3", "objs", "remera"]); irA("despiece"); } else irA("tresCuartos");
+    if (est.despiece) { est.apilar = false; est.ver = new Set(["base", "p1", "p2", "p3", "objs"]); irA("despiece"); } else irA("tresCuartos");
   });
   $("#tgApilar").addEventListener("change", e => {
     est.apilar = e.target.checked;
-    if (est.apilar) { est.despiece = false; est.ver = new Set(["base", "p1", "p2", "p3", "objs", "remera"]); irA("apilado"); } else ubicar();
+    if (est.apilar) { est.despiece = false; est.ver = new Set(["base", "p1", "p2", "p3", "objs"]); irA("apilado"); } else ubicar();
   });
 
   /* ── Recorrido ─────────────────────────────────────────── */
@@ -348,7 +338,7 @@ const VISTAS = {
   function irPaso(i) {
     paso = Math.max(0, Math.min(PASOS.length - 1, i));
     const p = PASOS[paso];
-    est.ver = new Set(p.ver === "todo" ? ["base", "p1", "p2", "p3", "objs", "remera"] : p.ver);
+    est.ver = new Set(p.ver === "todo" ? ["base", "p1", "p2", "p3", "objs"] : p.ver);
     est.apilar = !!p.apilar; est.despiece = false;
     irA(p.v);
     $("#tourN").textContent = `${paso + 1} / ${PASOS.length}`;
@@ -373,7 +363,7 @@ const VISTAS = {
     d.innerHTML = `<div class="zona-det__h"><span class="lbl">Panel ${z.panel.n} · ${esc(z.panel.t)}</span><button class="ico" data-cerrar aria-label="Cerrar">×</button></div>
       <h4>${esc(z.t)}</h4><p class="zona-det__m">${medida(z)}</p><p>${esc(z.x)}</p><p class="zona-det__tip"><b>Consejo.</b> ${esc(z.tip)}</p>`;
     if (mover) {
-      est.ver = new Set(["base", "p1", "p2", "p3", "objs", "remera"]); est.apilar = false; est.despiece = false;
+      est.ver = new Set(["base", "p1", "p2", "p3", "objs"]); est.apilar = false; est.despiece = false;
       if (cam.vista !== z.panel.id) irA(z.panel.id); else ubicar();
     }
   }
@@ -412,7 +402,7 @@ const VISTAS = {
   <title>TP4 · Panel ${p.n} · ${p.t} · 50 × 70 cm</title>
   <rect x="0" y="0" width="${W}" height="${H}" fill="#fff" stroke="#000" stroke-width="1"/>
   ${zonas}
-  <text x="${W - 20}" y="${H - 14}" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#999">TP4 · Panel ${p.n} · ${p.t} · 50 × 70 cm · escala 1:1</text>
+  <text x="${W - 20}" y="${H - 14}" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#999">TP4 · Panel ${p.n} · ${p.t} · 50 × 70 cm · escala 1:1 · Fija la distribución; color, misceláneas, líneas y fondos son libres</text>
 </svg>`;
     }
     return `<svg viewBox="-150 -120 ${W + 170} ${H + 140}" class="elev" role="img" aria-label="Panel ${p.n}, ${esc(p.t)}, 50 por 70 centímetros">
@@ -432,7 +422,7 @@ const VISTAS = {
   $("#panelesG").addEventListener("click", e => {
     const z = e.target.closest("[data-z]"); if (z && !e.target.closest(".pan__zonas p")) { selZona(z.dataset.z, false); }
     const v = e.target.closest("[data-ver]");
-    if (v) { est.ver = new Set(["base", "p1", "p2", "p3", "objs", "remera"]); est.apilar = false; est.despiece = false; irA(v.dataset.ver); $("#cubo").scrollIntoView({ behavior: "smooth" }); }
+    if (v) { est.ver = new Set(["base", "p1", "p2", "p3", "objs"]); est.apilar = false; est.despiece = false; irA(v.dataset.ver); $("#cubo").scrollIntoView({ behavior: "smooth" }); }
     const t = e.target.closest("[data-plantilla]");
     if (t) {
       const p = P[t.dataset.plantilla];
@@ -472,6 +462,7 @@ const VISTAS = {
   const REQ = [
     ["Medidas", "Tres paneles de 50 × 70 cm y una base de 50 × 50 cm."],
     ["Material", "Foamboard o cualquier material que aguante el armado y sea apilable."],
+    ["Diseño del panel", "La distribución de las piezas es fija. Color, misceláneas, líneas y fondos de cada panel los decide cada grupo, con el sistema del evento."],
     ["Forma", "Se entrega armado, en forma de cubo: fondo y dos laterales sobre la base, abierto al frente."],
     ["Estabilidad", "Se para solo y aguanta otra entrega apoyada encima. Si no se mantiene estable, sufre la nota."],
     ["Objetos", "Tote y aficheta sobre la base. La remera, aparte y en percha (la más barata que encuentren)."]
@@ -501,7 +492,7 @@ const VISTAS = {
     { t: "Estructura", items: [["e1", "Tres paneles de 50 × 70 cm"], ["e2", "Base de 50 × 50 cm"], ["e3", "Armado en cubo, con los paneles a escuadra"], ["e4", "Se para solo, sin inclinarse"], ["e5", "Aguanta otra entrega encima"], ["e6", "Bordes superiores parejos, sin nada que sobresalga"]] },
     ...PANELES.map(p => ({ t: `Panel ${p.n} · ${p.t}`, items: p.zonas.map(z => [z.id, `${z.t} · ${medida(z)}`]) })),
     { t: "Objetos", items: [["o1", "Tote estampada, sobre la base"], ["o2", "Aficheta impresa de los dos lados, doblada, sobre la base"], ["o3", "Remera estampada, colgada en su percha"]] },
-    { t: "Antes de salir", items: [["a1", "El QR impreso abre el Instagram del evento"], ["a2", "Las piezas y los videos están publicados en ese Instagram"]] }
+    { t: "Antes de salir", items: [["a0", "Llegar con todo antes de las 20 h"], ["a1", "El QR impreso abre el Instagram del evento"], ["a2", "Las piezas y los videos están publicados en ese Instagram"]] }
   ];
   let checks = {};
   try { checks = JSON.parse(store.get("tp4-entrega-checks") || "{}") || {}; } catch (e) {}
@@ -528,8 +519,13 @@ const VISTAS = {
      6. DUDAS
      ══════════════════════════════════════════════════════ */
   const DUDAS = [
-    ["¿Cuándo se entrega?", `${ENTREGA.fecha}, ${ENTREGA.horario}.`],
+    ["¿Cuándo se entrega?", `${ENTREGA.fecha}, ${ENTREGA.horario}. Antes hay pre-entrega el ${ENTREGA.pre.toLowerCase()} y la última corrección el ${ENTREGA.ultima.toLowerCase()}.`],
+    ["¿Hay que quedarse a presentar?", `No. La entrega se recibe ${ENTREGA.horario}: cada grupo deja el cubo, la tote, la aficheta y la remera, y se va a su casa.`],
+    ["¿La pre-entrega es obligatoria?", `Sí. Es el ${ENTREGA.pre.toLowerCase()}, con todo lo de la entrega, hasta las 20 h; vuelven a las 22 h para la devolución. No entregar es desaprobado.`],
+    ["¿Cómo es la última corrección?", `Es el ${ENTREGA.ultima.toLowerCase()}, por turnos: cada grupo pasa en su horario.`],
+    ["¿Cuándo están las notas?", `${ENTREGA.notas}: actas y devolución de notas.`],
     ["¿De qué material hago los paneles?", "Foamboard o cualquier material que aguante el armado y sea apilable. Si se comba o se dobla con peso encima, no sirve."],
+    ["¿Los paneles tienen que ser blancos?", "No. Lo único fijo es la distribución de las piezas. Todo lo demás es personalizable: color, misceláneas, líneas, fondos. El panel tiene que verse como parte del sistema del evento."],
     ["¿Qué quiere decir que sea apilable?", "Que el cubo, armado, aguanta otra entrega apoyada encima sin ceder ni inclinarse. Por eso los bordes superiores tienen que quedar parejos."],
     ["¿Qué pasa si el cubo no se mantiene estable?", "Sufre la nota. Hacé la prueba de la sección Materiales y armado antes de traerlo."],
     ["¿El contenido de los paneles mira hacia afuera o hacia adentro?", "Hacia adentro. El cubo se mira desde el lado abierto: al fondo el panel 1, a la izquierda el 2 y a la derecha el 3. Las caras de afuera quedan lisas."],

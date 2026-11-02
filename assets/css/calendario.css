@@ -269,3 +269,5 @@ h2 { font-size: clamp(30px, 4vw, 48px); line-height: 1; font-weight: 800; font-s
 .ag__lista li::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 2px; background: var(--c); }
 .ag__lista b { color: var(--ink); font-weight: 700; font-stretch: 88%; }
 .ag--entrega .ag__lista li, .ag--entrega .ag__lista b { color: inherit; }
+.dia--notas, .ag--notas button { border-style: dashed; border-color: var(--ink2); }
+.ly--notas { background: var(--surface); border: 2px dashed var(--ink2); }

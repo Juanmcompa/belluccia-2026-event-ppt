@@ -154,7 +154,7 @@ h3 { font-size: 22px; line-height: 1.1; font-weight: 800; font-stretch: 75%; }
 .panel .f--left:not(.f--cont) { --sh: .12; }
 
 .f--piso { background: var(--piso); background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: calc(var(--u) * 10) calc(var(--u) * 10); background-position: center; -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%); mask-image: radial-gradient(closest-side, #000 30%, transparent 100%); backface-visibility: visible; }
-.f--piso::after, .f--sombra::after, .f--plano::after, .f--remera::after, .f--cota::after, .f--rot::after, .f--zona::after, .f--obj::after { display: none; }
+.f--piso::after, .f--sombra::after, .f--plano::after, .f--cota::after, .f--rot::after, .f--obj::after { display: none; }
 .f--sombra { background: radial-gradient(closest-side, var(--sombra), transparent); backface-visibility: visible; }
 
 /* Zonas de los paneles */
@@ -172,12 +172,9 @@ h3 { font-size: 22px; line-height: 1.1; font-weight: 800; font-stretch: 75%; }
 .f__base { position: absolute; left: calc(var(--u) * 1.5); bottom: calc(var(--u) * 1.5); font: 700 calc(var(--u) * 1.6) var(--mono); text-transform: uppercase; letter-spacing: .06em; color: #7b776c; }
 
 /* Objetos */
-.f--obj, .f--plano, .f--remera, .f--zona, .f--cota, .f--rot { background: transparent; }
+.f--obj, .f--plano, .f--cota, .f--rot { background: transparent; }
 .f--plano { backface-visibility: visible; }
 .f--obj svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.f--zona { border: calc(var(--u) * .25) dashed var(--ink3); display: grid; place-items: end start; padding: calc(var(--u) * 1.2); backface-visibility: visible; }
-.f--zona span { font: 700 calc(var(--u) * 1.8) var(--mono); text-transform: uppercase; color: var(--ink2); }
-.barra .f { background: #8d8a82; }
 .f--rot, .f--cota { display: flex; align-items: center; justify-content: center; backface-visibility: visible; pointer-events: none; }
 .f--rot span { font: 700 calc(var(--u) * 2) var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); white-space: nowrap; background: var(--surface); padding: calc(var(--u) * .5) calc(var(--u) * 1); border-radius: calc(var(--u) * .6); border: 1px solid var(--line2); }
 .f--rot-acc span { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
@@ -259,6 +256,12 @@ h3 { font-size: 22px; line-height: 1.1; font-weight: 800; font-stretch: 75%; }
 }
 
 /* ── Paneles 2D ───────────────────────────────────────────── */
+.libre { display: grid; grid-template-columns: 1fr 1.6fr; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.libre__col { padding: 14px 18px; display: grid; gap: 4px; align-content: start; }
+.libre__col p { font-size: 16px; }
+.libre__col--acc { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border-left: 4px solid var(--accent); }
+.libre__col--acc .lbl { color: var(--accent); }
+@media (max-width: 700px) { .libre { grid-template-columns: 1fr; } .libre__col--acc { border-left: 0; border-top: 4px solid var(--accent); } }
 .paneles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .pan { display: grid; gap: 14px; align-content: start; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; scroll-margin-top: 70px; }
 .pan__h { display: flex; gap: 12px; align-items: center; }
@@ -357,4 +360,3 @@ h3 { font-size: 22px; line-height: 1.1; font-weight: 800; font-stretch: 75%; }
   .duda p { display: block; }
   body { font-size: 12px; }
 }
-.remeraG.tapa .f { opacity: 0; }

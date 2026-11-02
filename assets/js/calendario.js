@@ -6,10 +6,38 @@
 /* --- Configuración: cambiá estas fechas si cambia la cursada --- */
 const CAL = {
   inicio: "2026-10-08",          // primera clase del TP (presentación)
-  entrega: "2026-11-16",         // entrega final
+  entrega: "2026-11-26",         // entrega final
   dias: [1, 4],                  // días de cursada: 1 lunes, 4 jueves (0 domingo … 6 sábado)
   previas: 2,                    // la pre-entrega es N clases antes de la entrega
-  horario: ["19:00", "23:00"]
+  horario: ["19:00", "23:00"],
+  horarioEntrega: ["19:00", "20:00"], // la entrega se recibe hasta las 20 h
+  notas: "2026-12-03",           // devolución de notas con las actas (después de la entrega)
+  /* Clases ya dictadas: lo que se pidió en cada una queda fijo aunque cambien las fechas
+     de entrega. Los hitos que no figuran acá se reparten en las clases que quedan. */
+  fijo: {
+    "2026-10-15": ["Tema, público y referentes", "Concepto y programa", "Bocetos de marca"],
+    "2026-10-19": ["Marca y versiones", "Kit del sistema", "Séxtuple: bocetos"],
+    "2026-10-22": ["Perfil de Instagram", "Programa A2: frente", "Landing web"],
+    "2026-10-26": ["Séxtuple final y aficheta", "ID animado", "Guiones de teaser y promocional"],
+    "2026-10-29": ["Teaser animado", "Promocional animado", "Video de espera y overlays"]
+  },
+  /* Clases definidas por la cátedra: reemplazan el reparto automático en esa fecha */
+  clases: {
+    "2026-11-02": { t: "Motion", fase: 5, piezas: ["id", "teaser", "promo", "espera", "overlays"],
+      traer: [{ t: "Piezas animadas", x: "ID animado, teaser, promocional, video de espera y overlays, exportados en su formato para verlos en clase." }],
+      clase: "Clase de motion: corrección de las piezas animadas.",
+      listo: ["ID animado exportado", "Teaser y promocional exportados en 750 × 1334", "Video de espera y overlays en 1920 × 1080"] },
+    "2026-11-05": { t: "Motion", fase: 5, piezas: ["id", "teaser", "promo", "espera", "overlays"],
+      traer: [{ t: "Piezas animadas corregidas", x: "Las piezas animadas con las correcciones de la clase anterior." }],
+      clase: "Segunda clase de motion: ajustes de las piezas animadas.",
+      listo: ["Correcciones del 2/11 aplicadas", "Cada video cierra con el ID", "Se entienden sin sonido"] },
+    "2026-11-12": { t: "Corrección por temas", fase: 6, piezas: ["marca", "afiche", "programa", "id", "teaser", "promo", "ig", "espera", "web", "overlays", "merch", "photo"],
+      traer: [{ t: "Sistema completo", x: "Las doce piezas, incluidos el merchandising y la photo opportunity." },
+              { t: "Paneles", x: "Los tres paneles diagramados sobre la plantilla de 50 × 70 cm." }],
+      clase: "Corrección por temas: los grupos de un mismo tema se corrigen juntos.",
+      listo: ["Están las 12 piezas", "Los 3 paneles diagramados en la plantilla", "Fecha, lugar y precio iguales en todas las piezas"] }
+  },
+  horarioPre: "se entrega hasta las 20 h; vuelven a las 22 h"
 };
 
 /* --- Feriados entre octubre y diciembre de 2026 ------------------------
@@ -121,8 +149,8 @@ const SEPARAR = [["Bocetos de marca", "Marca y versiones"], ["Guiones de teaser 
 
 /* Agrupa los hitos en n clases consecutivas: minimiza la carga de la clase más pesada
    y, a igualdad, reparte lo más parejo posible. */
-function particionar(n) {
-  const H = HITOS, m = H.length, pre = [0];
+function particionar(n, H = HITOS) {
+  const m = H.length, pre = [0];
   H.forEach(h => pre.push(pre[pre.length - 1] + h.peso));
   const prohibido = (i, j) => SEPARAR.some(([a, b]) => { const ia = H.findIndex(h => h.t === a), ib = H.findIndex(h => h.t === b); return ia >= i && ib < j; });
   const costo = (i, j) => prohibido(i, j) ? Infinity : pre[j] - pre[i];
@@ -152,17 +180,21 @@ const ESPECIALES = {
     clase: "Presentación de la consigna y de los cuatro temas, con la clase en slides. Cada grupo elige tema.",
     listo: ["Tema elegido", "Grupo armado"] },
   pre: { t: "Pre-entrega", fase: 6, piezas: ["marca", "afiche", "programa", "id", "teaser", "promo", "ig", "espera", "web", "overlays", "merch", "photo"],
-    traer: "Todo lo de la entrega, completo y presentado como si fuera la entrega final: las doce piezas, en sus formatos y duraciones.",
-    clase: "Última corrección. Lo que se marca hoy es lo único que se cambia antes de entregar.",
-    listo: ["Las 12 piezas completas", "Videos exportados en su formato y duración", "Merchandising: remera, tote bag y 8 más", "Presentación armada"] },
-  ajuste: { t: "Ajustes finales", fase: 6, piezas: ["marca", "afiche", "programa", "id", "teaser", "promo", "ig", "espera", "web", "overlays", "merch", "photo"],
+    traer: "Todo lo de la entrega, completo, como si fuera la entrega final: el cubo con los tres paneles, la tote, la aficheta y la remera, y las piezas animadas publicadas. Se entrega hasta las 20 h. No entregar es desaprobado.",
+    clase: "Se entrega hasta las 20 h y se vuelve a las 22 h para la devolución. Lo que se marca se trae resuelto a la última corrección.",
+    listo: ["Entregado antes de las 20 h", "Las 12 piezas completas", "Videos exportados en su formato y duración", "Cubo armado y estable"] },
+  ajuste: { t: "Última corrección", fase: 6, piezas: ["marca", "afiche", "programa", "id", "teaser", "promo", "ig", "espera", "web", "overlays", "merch", "photo"],
     traer: "Las piezas con las correcciones de la pre-entrega.",
-    clase: "Últimos ajustes, revisión de archivos y armado final de la presentación.",
+    clase: "Última corrección, por turnos: cada grupo pasa en su horario. Se revisan las piezas corregidas y el armado de los paneles.",
     listo: ["Correcciones de la pre-entrega aplicadas", "Archivos exportados y nombrados", "Presentación en el orden de la consigna"] },
   entrega: { t: "Entrega final", fase: 6, piezas: ["marca", "afiche", "programa", "id", "teaser", "promo", "ig", "espera", "web", "overlays", "merch", "photo"],
-    traer: "Las doce piezas finales en la presentación.",
-    clase: "Entrega y presentación del sistema.",
-    listo: ["Identificación eficaz", "Coherencia sistémica", "Adecuación estilística", "Rendimiento comunicacional", "Ajuste a la consigna"] }
+    traer: "El cubo de tres paneles de 50 × 70 cm sobre la base de 50 × 50 cm, con la tote y la aficheta sobre la base, y la remera aparte en su percha. Las piezas animadas, publicadas en el Instagram del evento (el QR del panel 2 lleva ahí).",
+    clase: "Se recibe hasta las 20 h: cada grupo deja su entrega y se va. No hay presentación ni corrección en clase.",
+    listo: ["Identificación eficaz", "Coherencia sistémica", "Adecuación estilística", "Rendimiento comunicacional", "Ajuste a la consigna"] },
+  notas: { t: "Actas y devolución de notas", fase: 6, piezas: [],
+    traer: "Nada. Se firman las actas y se devuelven las notas del TP.",
+    clase: "Actas y devolución de notas.",
+    listo: [] }
 };
 
 (function () {
@@ -191,7 +223,7 @@ const ESPECIALES = {
 
   /* ── Estado: configuración ajustable por el usuario ────── */
   let cfg = Object.assign({}, CAL);
-  try { const g = JSON.parse(store.get("tp4-cal") || "null"); if (g && g.v === 2) cfg = Object.assign(cfg, g.cfg); } catch (e) {}
+  try { const g = JSON.parse(store.get("tp4-cal") || "null"); if (g && g.v === 3) cfg = Object.assign(cfg, g.cfg); } catch (e) {}
 
   /* ── El plan: sesiones y reparto de hitos ──────────────── */
   function planificar() {
@@ -214,20 +246,29 @@ const ESPECIALES = {
        ninguna clase quede demasiado cargada (partición equilibrada) y sin juntar pares
        que necesitan una corrección en el medio (ver SEPARAR). Si sobran clases, se agrega
        una clase de avance después de los hitos más pesados. */
-    const N = trabajo.length;
-    let grupos = HITOS.map(h => [h]);
-    if (N && N < HITOS.length) grupos = particionar(N);
+    const fijo = CAL.fijo || {}, porT = t => HITOS.find(h => h.t === t);
+    trabajo.forEach(s => { if (fijo[s.f]) s.hitos = fijo[s.f].map(porT).filter(Boolean); });
+    const def = CAL.clases || {};
+    const usados = new Set(trabajo.flatMap(s => s.hitos));
+    const libres = trabajo.filter(s => !s.hitos.length && !def[s.f]), pool = HITOS.filter(h => !usados.has(h));
+    const N = libres.length;
+    let grupos = pool.map(h => [h]);
+    if (N && N < pool.length) grupos = particionar(N, pool);
     let extra = N - grupos.length;
     const peso = g => g.reduce((a, h) => a + h.peso, 0);
     const pesados = grupos.map((g, i) => [peso(g), i]).sort((x, y) => y[0] - x[0]).slice(0, Math.max(0, extra)).map(x => x[1]).sort((x, y) => y - x);
     pesados.forEach(i => grupos.splice(i + 1, 0, { sigue: grupos[i][grupos[i].length - 1] }));
-    for (; extra > pesados.length; extra--) grupos.push({ sigue: grupos[grupos.length - 1].sigue || grupos[grupos.length - 1][0] });
-    trabajo.forEach((s, k) => { const g = grupos[k]; if (!g) return; if (Array.isArray(g)) s.hitos = g; else s.sigue = g.sigue; });
+    const ultimo = trabajo.filter(s => s.hitos.length).pop();
+    for (; extra > pesados.length; extra--) { const u = grupos[grupos.length - 1]; grupos.push({ sigue: u ? (u.sigue || u[u.length - 1]) : (ultimo ? ultimo.hitos[ultimo.hitos.length - 1] : HITOS[HITOS.length - 1]) }); }
+    libres.forEach((s, k) => { const g = grupos[k]; if (!g) return; if (Array.isArray(g)) s.hitos = g; else s.sigue = g.sigue; });
+    if (CAL.notas && CAL.notas > cfg.entrega) { const d = deIso(CAL.notas); ses.push({ f: CAL.notas, d, n: ses.length + 1, tipo: "notas", hitos: [] }); }
     return { ses, iPre, iEnt, trabajo: trabajo.length };
   }
 
   /* Contenido de una sesión */
   function contenido(s) {
+    const def = (CAL.clases || {})[s.f];
+    if (def) return Object.assign({ piezas: [], listo: [] }, def);
     if (s.tipo === "trabajo") {
       if (s.hitos.length) return {
         t: s.hitos.map(h => h.t).join(" + "), fase: s.hitos[0].fase,
@@ -242,20 +283,23 @@ const ESPECIALES = {
   }
 
   let plan = planificar(), sel = null;
+  const hor = s => s.tipo === "entrega" ? CAL.horarioEntrega : CAL.horario;
+  const horTxt = s => s.tipo === "entrega" ? `hasta las ${hor(s)[1].replace(":00", "")} h` : s.tipo === "pre" && CAL.horarioPre ? CAL.horarioPre : s.tipo === "ajuste" ? `${hor(s)[0]} a ${hor(s)[1]} h, por turnos` : `${hor(s)[0]} a ${hor(s)[1]} h`;
+  const etiqueta = (s, larga) => s.tipo === "entrega" ? (larga ? "Entrega final" : "Entrega") : s.tipo === "pre" ? "Pre-entrega" : s.tipo === "notas" ? "Actas" : "Clase " + s.n;
   const faseColor = f => `var(--fase${f})`;
 
   /* ── Render: resumen ───────────────────────────────────── */
   function renderResumen() {
     const { ses, iPre, iEnt } = plan;
-    const ini = deIso(cfg.inicio), fin = deIso(cfg.entrega);
+    const ini = deIso(cfg.inicio), finE = deIso(cfg.entrega);
     const bloq = FERIADOS.filter(f => f.bloquea && f.f >= cfg.inicio && f.f <= cfg.entrega && cfg.dias.includes(deIso(f.f).getDay()));
-    const quedan = ses.filter(s => s.f >= hoyIso && s.tipo !== "entrega").length;
+    const quedan = ses.filter(s => s.f >= hoyIso && s.tipo !== "entrega" && s.tipo !== "notas").length;
     const prox = ses.find(s => s.f >= hoyIso);
     $("#stats").innerHTML = [
-      [ses.length - 1, "clases antes de entregar", `de ${corto(ini)} a ${corto(fin)}`],
+      [iEnt, "clases antes de entregar", `de ${corto(ini)} a ${corto(finE)}`],
       [bloq.length, "feriados en días de clase", bloq.map(f => corto(deIso(f.f))).join(" · ") || "ninguno"],
       [corto(ses[iPre].d), "pre-entrega", `${cfg.previas} clases antes`],
-      [corto(ses[iEnt].d), "entrega final", `${CAL.horario[0]} a ${CAL.horario[1]} h`],
+      [corto(ses[iEnt].d), "entrega final", `${horTxt(ses[iEnt])}${ses[iEnt + 1] ? ` · notas: ${corto(ses[iEnt + 1].d)}` : ""}`],
       [quedan, "clases que quedan", prox ? `próxima: ${corto(prox.d)}` : "terminó la cursada"]
     ].map(([v, l, s], k) => `<div class="stat${k === 2 || k === 3 ? " stat--hito" : ""}"><b>${v}</b><span>${l}</span><small>${esc(s)}</small></div>`).join("");
     const alerta = $("#alerta");
@@ -265,7 +309,7 @@ const ESPECIALES = {
 
   /* ── Render: barra de fases ────────────────────────────── */
   function renderFases() {
-    const cuenta = FASES.map(f => plan.ses.filter(s => contenido(s).fase === f.id).length);
+    const cuenta = FASES.map(f => plan.ses.filter(s => s.tipo !== "notas" && contenido(s).fase === f.id).length);
     const tot = cuenta.reduce((a, b) => a + b, 0);
     $("#fases").innerHTML = FASES.map((f, k) => cuenta[k] ? `<div class="fase" style="flex:${cuenta[k]};--c:${faseColor(f.id)}" title="${esc(f.t)}: ${cuenta[k]} clases"><i></i><b>${esc(f.t)}</b><span>${cuenta[k]} ${cuenta[k] === 1 ? "clase" : "clases"}</span></div>` : "").join("");
     $("#fasesLeyenda").textContent = `${tot} encuentros, de la presentación a la entrega. Las fases van de claro a oscuro a medida que se acerca la entrega.`;
@@ -273,7 +317,7 @@ const ESPECIALES = {
 
   /* ── Render: meses ─────────────────────────────────────── */
   function renderMeses() {
-    const ini = deIso(cfg.inicio), fin = deIso(cfg.entrega);
+    const ini = deIso(cfg.inicio), fin = deIso(plan.ses[plan.ses.length - 1].f);
     const porFecha = Object.fromEntries(plan.ses.map(s => [s.f, s]));
     let html = "";
     for (let m = new Date(ini.getFullYear(), ini.getMonth(), 1); m <= fin; m = new Date(m.getFullYear(), m.getMonth() + 1, 1)) {
@@ -282,7 +326,7 @@ const ESPECIALES = {
       for (let k = 0; k < off; k++) celdas += `<div class="dia dia--vacio" aria-hidden="true"></div>`;
       for (let dd = 1; dd <= dim; dd++) {
         const d = new Date(m.getFullYear(), m.getMonth(), dd), s = iso(d), ses = porFecha[s], f = feriado(s);
-        const fuera = s < cfg.inicio || s > cfg.entrega, finde = d.getDay() === 0 || d.getDay() === 6;
+        const fuera = s < cfg.inicio || s > plan.ses[plan.ses.length - 1].f, finde = d.getDay() === 0 || d.getDay() === 6;
         const cls = ["dia"];
         if (fuera) cls.push("dia--fuera");
         if (finde) cls.push("dia--finde");
@@ -293,7 +337,7 @@ const ESPECIALES = {
           const c = contenido(ses);
           cls.push("dia--clase", "dia--" + ses.tipo);
           if (sel === s) cls.push("dia--sel");
-          inner += `<span class="dia__k">${ses.tipo === "entrega" ? "Entrega" : ses.tipo === "pre" ? "Pre-entrega" : "Clase " + ses.n}</span><span class="dia__t">${esc(c.t)}</span>`;
+          inner += `<span class="dia__k">${etiqueta(ses)}</span><span class="dia__t">${esc(c.t)}</span>`;
           celdas += `<button class="${cls.join(" ")}" data-f="${s}" style="--c:${faseColor(c.fase)}" aria-label="${esc(largo(d))}: ${esc(c.t)}">${inner}${f ? `<span class="dia__fer">${esc(f.t)}</span>` : ""}</button>`;
         } else {
           if (f && !fuera) inner += `<span class="dia__fer">${esc(f.t)}</span>`;
@@ -318,15 +362,15 @@ const ESPECIALES = {
     $("#detalle").innerHTML = `
       <div class="det__top">
         <button class="det__nav" data-ir="${ant ? ant.f : ""}" ${ant ? "" : "disabled"} aria-label="Clase anterior">←</button>
-        <p class="det__fecha">${esc(largo(s.d).replace(/^./, c => c.toUpperCase()))} · ${CAL.horario[0]} a ${CAL.horario[1]} h</p>
+        <p class="det__fecha">${esc(largo(s.d).replace(/^./, c => c.toUpperCase()))} · ${horTxt(s)}</p>
         <button class="det__nav" data-ir="${sig ? sig.f : ""}" ${sig ? "" : "disabled"} aria-label="Clase siguiente">→</button>
       </div>
-      <p class="det__k"><span>${s.tipo === "entrega" ? "Entrega" : s.tipo === "pre" ? "Pre-entrega" : `Clase ${s.n} de ${plan.ses.length - 1}`}</span><span class="det__fase"><i></i>${esc(fz.t)}</span></p>
+      <p class="det__k"><span>${s.tipo === "trabajo" || s.tipo === "presentacion" || s.tipo === "ajuste" ? `Clase ${s.n} de ${plan.iEnt}` : etiqueta(s, true)}</span><span class="det__fase"><i></i>${esc(fz.t)}</span></p>
       <h3>${esc(c.t)}</h3>
       ${f ? `<p class="det__aviso">${esc(f.t)}: ${esc(f.a)}. Avisar con tiempo a quien viaja desde provincia.</p>` : ""}
       <div class="det__b"><span class="lbl">Traer a clase${c.traer.length > 1 ? ` · ${c.traer.length} entregas` : ""}</span>${c.traer.map(t => `<p>${c.traer.length > 1 ? `<b>${esc(t.t)}.</b> ` : ""}${esc(t.x)}</p>`).join("")}</div>
       <div class="det__b"><span class="lbl">En clase</span><p>${esc(c.clase)}</p></div>
-      <div class="det__b"><span class="lbl">Está listo si…</span>${c.listo.map((t, j) => { const id = s.f + "-" + j; return `<label class="chk"><input type="checkbox" data-k="${id}" ${ch[id] ? "checked" : ""}><span>${esc(t)}</span></label>`; }).join("")}</div>
+      ${c.listo.length ? `<div class="det__b"><span class="lbl">Está listo si…</span>${c.listo.map((t, j) => { const id = s.f + "-" + j; return `<label class="chk"><input type="checkbox" data-k="${id}" ${ch[id] ? "checked" : ""}><span>${esc(t)}</span></label>`; }).join("")}</div>` : ""}
       ${c.piezas.length ? `<div class="det__b"><span class="lbl">Piezas del TP</span><div class="chips">${c.piezas.map(id => `<span class="chip"><i>${pz(id).n}</i>${esc(pz(id).t)}</span>`).join("")}</div></div>` : ""}
       ${sig ? `<div class="det__prox"><span class="lbl">Para la clase siguiente · ${esc(corto(sig.d))}</span><p>${esc(contenido(sig).t)}</p>${hueco(s, sig) >= 4 ? `<small>Hasta esa clase pasan ${hueco(s, sig)} días: buen momento para adelantar trabajo.</small>` : ""}</div>` : ""}`;
     $$("#detalle [data-ir]").forEach(b => b.addEventListener("click", () => b.dataset.ir && elegir(b.dataset.ir, false)));
@@ -351,8 +395,8 @@ const ESPECIALES = {
       html += `<li class="ag__it ag--${s.tipo}${s.f < hoyIso ? " ag--pasada" : ""}${s.f === hoyIso ? " ag--hoy" : ""}" data-f="${s.f}" style="--c:${faseColor(c.fase)}">
         <button>
           <span class="ag__fecha"><b>${s.d.getDate()}/${s.d.getMonth() + 1}</b>${DIAS_C[s.d.getDay()]}</span>
-          <span class="ag__txt"><small>${s.tipo === "entrega" ? "Entrega final" : s.tipo === "pre" ? "Pre-entrega" : "Clase " + s.n}${s.f === hoyIso ? " · hoy" : ""}</small><b>${esc(c.t)}</b>${c.traer.length > 1 ? `<ul class="ag__lista">${c.traer.map(t => `<li><b>${esc(t.t)}.</b> ${esc(t.x)}</li>`).join("")}</ul>` : `<span>${esc(c.traer[0].x)}</span>`}</span>
-          <span class="ag__ok" title="Comprobaciones hechas">${hechos}/${c.listo.length}</span>
+          <span class="ag__txt"><small>${etiqueta(s, true)}${s.tipo === "entrega" || s.tipo === "pre" || s.tipo === "ajuste" ? " · " + horTxt(s) : ""}${s.f === hoyIso ? " · hoy" : ""}</small><b>${esc(c.t)}</b>${c.traer.length > 1 ? `<ul class="ag__lista">${c.traer.map(t => `<li><b>${esc(t.t)}.</b> ${esc(t.x)}</li>`).join("")}</ul>` : `<span>${esc(c.traer[0].x)}</span>`}</span>
+          ${c.listo.length ? `<span class="ag__ok" title="Comprobaciones hechas">${hechos}/${c.listo.length}</span>` : ""}
         </button></li>`;
     });
     $("#agenda").innerHTML = html;
@@ -361,7 +405,7 @@ const ESPECIALES = {
 
   /* ── Render: piezas en el tiempo ───────────────────────── */
   function renderPiezas() {
-    const ses = plan.ses;
+    const ses = plan.ses.filter(s => s.tipo !== "notas");
     const cab = `<div class="pt__esq">Pieza</div>` + ses.map(s => `<div class="pt__c pt__h${s.tipo === "pre" || s.tipo === "entrega" ? " pt__h--hito" : ""}" title="${esc(largo(s.d))}">${s.d.getDate()}/${s.d.getMonth() + 1}</div>`).join("");
     const filas = PIEZAS.map(p => {
       const celdas = ses.map(s => {
@@ -394,7 +438,7 @@ const ESPECIALES = {
     const ini = $("#ajInicio").value, ent = $("#ajEntrega").value;
     if (!ini || !ent || ini >= ent) return;
     cfg = { inicio: ini, entrega: ent, dias, previas: Math.max(1, Math.min(4, +$("#ajPrevias").value || 2)) };
-    store.set("tp4-cal", JSON.stringify({ v: 2, cfg }));
+    store.set("tp4-cal", JSON.stringify({ v: 3, cfg }));
     todo();
   }
   $("#ajustes").addEventListener("change", leerAjustes);
@@ -410,9 +454,9 @@ const ESPECIALES = {
     const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Catedra Belluccia//TP4 Calendario//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:TP4 · Diseño Gráfico 3"];
     plan.ses.forEach(s => {
       const c = contenido(s);
-      const titulo = s.tipo === "entrega" ? "TP4 · ENTREGA FINAL" : s.tipo === "pre" ? "TP4 · PRE-ENTREGA" : `TP4 · Clase ${s.n}: ${c.t}`;
-      const desc = `Traer: ${c.traer.map(t => (c.traer.length > 1 ? t.t + ": " : "") + t.x).join("\n")}\nEn clase: ${c.clase}\nListo si: ${c.listo.join(" / ")}`;
-      L.push("BEGIN:VEVENT", `UID:tp4-${s.f}@belluccia-2026`, `DTSTAMP:${stamp}`, `DTSTART:${utc(s.d, CAL.horario[0])}`, `DTEND:${utc(s.d, CAL.horario[1])}`,
+      const titulo = s.tipo === "entrega" ? "TP4 · ENTREGA FINAL (hasta las 20 h)" : s.tipo === "pre" ? "TP4 · PRE-ENTREGA (hasta las 20 h · vuelven 22 h)" : s.tipo === "ajuste" ? "TP4 · ÚLTIMA CORRECCIÓN (por turnos)" : s.tipo === "notas" ? "TP4 · ACTAS Y DEVOLUCIÓN DE NOTAS" : `TP4 · Clase ${s.n}: ${c.t}`;
+      const desc = `Traer: ${c.traer.map(t => (c.traer.length > 1 ? t.t + ": " : "") + t.x).join("\n")}\nEn clase: ${c.clase}${c.listo.length ? "\nListo si: " + c.listo.join(" / ") : ""}`;
+      L.push("BEGIN:VEVENT", `UID:tp4-${s.f}@belluccia-2026`, `DTSTAMP:${stamp}`, `DTSTART:${utc(s.d, hor(s)[0])}`, `DTEND:${utc(s.d, hor(s)[1])}`,
         plegar(`SUMMARY:${txt(titulo)}`), plegar(`DESCRIPTION:${txt(desc)}`), "LOCATION:FADU UBA", "END:VEVENT");
     });
     L.push("END:VCALENDAR");
